@@ -1,0 +1,9 @@
+# CODEOWNERS for Pluss
+# Every pull request that touches these paths automatically requests a
+# review from the listed owner. Combined with a ruleset that requires
+# code-owner review, this means changes can't merge without your approval.
+#
+# Docs: https://docs.github.com/articles/about-code-owners
+
+# Default owner for everything in the repo
+*       @LiF-x

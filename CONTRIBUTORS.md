@@ -2,21 +2,27 @@
 
 Who wrote what in this repository, and which parts rest on outside work.
 
-Copyright in the source headers is held by **LiFx Contributors**; this file records
-provenance behind that collective name. The project is licensed under
+Copyright in this repository is held by **LiFx Contributors** throughout — every
+source header names them and no other party. This file records provenance behind
+that collective name: who wrote which parts, and what the project historically
+grew out of. Crediting an origin here is an acknowledgement of lineage, not a
+copyright claim over anything in this repository. The project is licensed under
 [GPL-3.0](LICENSE).
 
-## Upstream basis — RedShark Foundation
+## Historical origin — RedShark Server Core Library
 
-LiFx began as a fork of the **RedShark Server Core Library (RSCL)**,
-copyright © 2023 RedShark Foundation. The framework core — process attach, the
-memory manager, the platform/type layer, the Torque console bridge, and the
-engine hook scaffolding — derives from RSCL. Internal identifiers were renamed
+LiFx began, in 2023, as a fork of the **RedShark Server Core Library (RSCL)** by
+the RedShark Foundation. The framework core — process attach, the memory
+manager, the platform/type layer, the Torque console bridge, and the engine hook
+scaffolding — started from RSCL. Internal identifiers were renamed
 during the fork (`Redshark::` → `Lifx::`, `$rscl::Version` → `$lifx::Version`,
 log prefix `[RSCL]` → `[LiFx]`, project files `RSCL.*` → `LiFx.*`), but the
 lineage is RSCL's.
 
-These twenty files are the RSCL-derived core:
+RSCL is named here as the project's starting point only. No part of this
+repository is published under a RedShark copyright.
+
+These twenty files are the ones that trace back to that core:
 
 | Area | Files |
 | --- | --- |

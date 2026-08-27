@@ -30,9 +30,10 @@ To rotate the name, edit those three locations to the same string and rebuild. N
 
 ## Fork history and naming
 
-LiFx is a fork of the **RedShark Server Core Library (RSCL)**, copyright (c) 2023
-RedShark Foundation. The framework core it derives from — and the parts that are
+LiFx began in 2023 as a fork of the **RedShark Server Core Library (RSCL)** by
+the RedShark Foundation. Which files trace back to that core — and which are
 original LiFx work — are itemised in [`CONTRIBUTORS.md`](../CONTRIBUTORS.md).
+Copyright throughout this repository is held by LiFx Contributors.
 
 LiFx is the primary brand and copyright holder throughout: namespace `Lifx::`, console constant `$lifx::Version`, log prefix `[LiFx]`, project files `LiFx.*`. The rename from RSCL covered `Redshark::` -> `Lifx::`, `$rscl::Version` -> `$lifx::Version`, the `[RSCL]` log prefix, and the `RSCL.*` project files.
 

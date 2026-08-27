@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\cm_config.h" />
+    <ClInclude Include="..\source\core\cm_aux.h" />
+    <ClInclude Include="..\source\core\cm_globals.h" />
+    <ClInclude Include="..\source\core\cm_memory_mgr.h" />
+    <ClInclude Include="..\source\core\cm_platform.h" />
+    <ClInclude Include="..\source\core\tinyxml2.h" />
+    <ClInclude Include="..\source\server\api\t3d_console.h" />
+    <ClInclude Include="..\source\server\api\lifx_character.h" />
+    <ClInclude Include="..\source\server\api\lifx_outpost.h" />
+    <ClInclude Include="..\source\server\api\lifx_effects.h" />
+    <ClInclude Include="..\source\server\api\lifx_hostile.h" />
+    <ClInclude Include="..\source\server\api\lifx_battlezone.h" />
+    <ClInclude Include="..\source\server\hooks\battlezone\hook_battlezone_containment.h" />
+    <ClInclude Include="..\source\server\hooks\outpost\hook_outpost_default_radius.h" />
+    <ClInclude Include="..\source\server\hooks\outpost\hook_outpost_proximity.h" />
+    <ClInclude Include="..\source\server\hooks\effect\hook_effect_parse.h" />
+    <ClInclude Include="..\source\server\hooks\netevent\hook_netclassrep_dumper.h" />
+    <ClInclude Include="..\source\server\hooks\netevent\sector_handoff_event.h" />
+    <ClInclude Include="..\source\server\hooks\dispatcher\dispatcher_client.h" />
+    <ClInclude Include="..\source\server\hooks\ai\hook_behavior_node.h" />
+    <ClInclude Include="..\source\server\cm_constants.h" />
+    <ClInclude Include="..\source\server\cm_offsets.h" />
+    <ClInclude Include="..\source\server\cm_server.h" />
+    <ClInclude Include="..\source\server\cm_wrappers.h" />
+    <ClInclude Include="..\source\server\hooks\engine\hook_console.h" />
+    <ClInclude Include="..\source\server\hooks\furnace\hook_brewing_tank_desc.h" />
+    <ClInclude Include="..\source\server\hooks\furnace\hook_brewing_tank_tick.h" />
+    <ClInclude Include="..\source\server\hooks\furnace\hook_proc_desc.h" />
+    <ClInclude Include="..\source\server\hooks\furnace\hook_working_fire_tick.h" />
+    <ClInclude Include="..\source\server\hooks\furnace\hook_working_furnace_tick.h" />
+    <ClInclude Include="..\source\server\hooks\furnace\hook_working_greenhouse_tick.h" />
+    <ClInclude Include="..\source\server\hooks\furnace\hook_working_trap_tick.h" />
+    <ClInclude Include="..\source\server\hooks\furnace\hook_working_windmill_tick.h" />
+    <ClInclude Include="..\source\server\hooks\character\hook_vital_process_tick.h" />
+    <ClInclude Include="..\source\server\hooks\character\hook_calc_hit_damage.h" />
+    <ClInclude Include="..\source\server\hooks\character\hook_wounds_deal_damage.h" />
+    <ClInclude Include="..\source\server\hooks\character\hook_send_changes.h" />
+    <ClInclude Include="..\source\server\hooks\character\hook_apply_damage.h" />
+    <ClInclude Include="..\source\server\hooks\character\hook_onepunchman.h" />
+    <ClInclude Include="..\source\server\hooks_engine.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\core\cm_aux.cpp" />
+    <ClCompile Include="..\source\core\cm_globals.cpp" />
+    <ClCompile Include="..\source\core\cm_memory_mgr.cpp" />
+    <ClCompile Include="..\source\core\tinyxml2.cpp" />
+    <ClCompile Include="..\source\dllmain.cpp" />
+    <ClCompile Include="..\source\server\api\t3d_console.cpp" />
+    <ClCompile Include="..\source\server\api\lifx_character.cpp" />
+    <ClCompile Include="..\source\server\api\lifx_outpost.cpp" />
+    <ClCompile Include="..\source\server\api\lifx_effects.cpp" />
+    <ClCompile Include="..\source\server\api\lifx_hostile.cpp" />
+    <ClCompile Include="..\source\server\api\lifx_battlezone.cpp" />
+    <ClCompile Include="..\source\server\hooks\battlezone\hook_battlezone_containment.cpp" />
+    <ClCompile Include="..\source\server\hooks\outpost\hook_outpost_default_radius.cpp" />
+    <ClCompile Include="..\source\server\hooks\outpost\hook_outpost_proximity.cpp" />
+    <ClCompile Include="..\source\server\hooks\effect\hook_effect_parse.cpp" />
+    <ClCompile Include="..\source\server\hooks\netevent\hook_netclassrep_dumper.cpp" />
+    <ClCompile Include="..\source\server\hooks\netevent\sector_handoff_event.cpp" />
+    <ClCompile Include="..\source\server\hooks\dispatcher\dispatcher_client.cpp" />
+    <ClCompile Include="..\source\server\hooks\ai\hook_behavior_node.cpp" />
+    <ClCompile Include="..\source\server\cm_server.cpp" />
+    <ClCompile Include="..\source\server\hooks\engine\hook_console.cpp" />
+    <ClCompile Include="..\source\server\hooks\furnace\hook_brewing_tank_desc.cpp" />
+    <ClCompile Include="..\source\server\hooks\furnace\hook_brewing_tank_tick.cpp" />
+    <ClCompile Include="..\source\server\hooks\furnace\hook_proc_desc.cpp" />
+    <ClCompile Include="..\source\server\hooks\furnace\hook_working_fire_tick.cpp" />
+    <ClCompile Include="..\source\server\hooks\furnace\hook_working_furnace_tick.cpp" />
+    <ClCompile Include="..\source\server\hooks\furnace\hook_working_greenhouse_tick.cpp" />
+    <ClCompile Include="..\source\server\hooks\furnace\hook_working_trap_tick.cpp" />
+    <ClCompile Include="..\source\server\hooks\furnace\hook_working_windmill_tick.cpp" />
+    <ClCompile Include="..\source\server\hooks\character\hook_vital_process_tick.cpp" />
+    <ClCompile Include="..\source\server\hooks\character\hook_calc_hit_damage.cpp" />
+    <ClCompile Include="..\source\server\hooks\character\hook_wounds_deal_damage.cpp" />
+    <ClCompile Include="..\source\server\hooks\character\hook_send_changes.cpp" />
+    <ClCompile Include="..\source\server\hooks\character\hook_apply_damage.cpp" />
+    <ClCompile Include="..\source\server\hooks\character\hook_onepunchman.cpp" />
+    <ClCompile Include="..\source\server\hooks_engine.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{44ae02c7-68e2-4c64-8061-2cb223dee9d8}</ProjectGuid>
+    <RootNamespace>LiFx</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>.\build\$(Configuration)\</OutDir>
+    <IntDir>.\build\$(Configuration)\ic\</IntDir>
+    <TargetName>4ba5cb5e</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>.\build\$(Configuration)\</OutDir>
+    <IntDir>.\build\$(Configuration)\ic\</IntDir>
+    <TargetName>4ba5cb5e</TargetName>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_WIN32_WINNT=0x0A00;WIN32_LEAN_AND_MEAN;_WIN64;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS;_YOUR_OWN_AURORA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\..\extra\include;.\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\..\extra\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>detours.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_WIN32_WINNT=0x0A00;WIN32_LEAN_AND_MEAN;_WIN64;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS;_YOUR_OWN_AURORA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\..\extra\include;.\..\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\..\extra\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>detours.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

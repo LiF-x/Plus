@@ -101,6 +101,41 @@
          local coords. Empty block = no neighbours. -->
     <worldNeighbours></worldNeighbours>
 
+    <!-- StartingToolsID-aware recipe selection. The stock recipe lookup does
+         not compare a recipe's StartingToolsID, so a custom high-capacity
+         device silently receives its vanilla counterpart's recipe. List the
+         device ObjectTypeIDs that should get their own recipe instead.
+         Disabled or absent = vanilla behaviour. See docs/craftwork_containers.md. -->
+    <recipeStartingTools enabled="0">
+        <!-- <tool objectTypeId="472" /> -->
+    </recipeStartingTools>
+
+    <!-- Gem drops. chancePercent (0..100) overrides the roll probability at
+         the gem call site; <item> entries replace the vanilla 481..486 pick
+         with a weighted draw. Either may be given on its own. Absent or
+         disabled = vanilla behaviour. See docs/offsets.md "Gem drop hooks". -->
+    <gemDrops enabled="0" chancePercent="5">
+        <!-- <item id="481" weight="10" /> -->
+    </gemDrops>
+
+    <!-- Extra tunnelling drops, awarded only after the vanilla material
+         reward of a tunnel dig succeeds. Every item rolls independently, so
+         one dig may award none, one, or several. quality (1..100) overrides
+         the quality inherited from the dug materials.
+         See docs/offsets.md "Tunnelling material rewards". -->
+    <tunnelDrops enabled="0">
+        <!-- <item id="1234" chancePercent="5" minQuantity="1" maxQuantity="3" /> -->
+    </tunnelDrops>
+
+    <!-- Per-species felled-tree drops. Vanilla drops 653 (softwood) or 626
+         (hardwood); each <drop> overrides one species. tree accepts a name
+         (apple, birch, elm, spruce, pine, maple, mulberry, oak, aspen, hazel,
+         juniper, spinny) or a raw TreeType 0..255.
+         See docs/offsets.md "Tree felling and movable-log creation". -->
+    <treeDrops enabled="0">
+        <!-- <drop tree="oak" itemId="626" /> -->
+    </treeDrops>
+
     <!-- Logging configuration -->
     <log>
         <level>0</level> <!-- 0 - allow all, 1 - skip INFO, 2 - skip INFO and WARN, 3 - allow only ERRORS -->

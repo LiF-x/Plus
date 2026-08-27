@@ -131,6 +131,10 @@ build_lifx() {
         source/server/cm_server.cpp
         source/server/hooks/engine/hook_console.cpp
         source/server/hooks/engine/hook_filestream.cpp
+        source/server/hooks/engine/hook_recipe_starting_tools.cpp
+        source/server/hooks/engine/hook_gem_drop.cpp
+        source/server/hooks/engine/hook_tunnel_drop.cpp
+        source/server/hooks/engine/hook_tree_drop.cpp
         source/server/hooks/furnace/hook_proc_desc.cpp
         source/server/hooks/furnace/hook_working_furnace_tick.cpp
         source/server/hooks/furnace/hook_brewing_tank_tick.cpp

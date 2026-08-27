@@ -36,6 +36,10 @@
     <ClInclude Include="..\source\server\cm_server.h" />
     <ClInclude Include="..\source\server\cm_wrappers.h" />
     <ClInclude Include="..\source\server\hooks\engine\hook_console.h" />
+    <ClInclude Include="..\source\server\hooks\engine\hook_recipe_starting_tools.h" />
+    <ClInclude Include="..\source\server\hooks\engine\hook_gem_drop.h" />
+    <ClInclude Include="..\source\server\hooks\engine\hook_tunnel_drop.h" />
+    <ClInclude Include="..\source\server\hooks\engine\hook_tree_drop.h" />
     <ClInclude Include="..\source\server\hooks\furnace\hook_brewing_tank_desc.h" />
     <ClInclude Include="..\source\server\hooks\furnace\hook_brewing_tank_tick.h" />
     <ClInclude Include="..\source\server\hooks\furnace\hook_proc_desc.h" />
@@ -74,6 +78,10 @@
     <ClCompile Include="..\source\server\hooks\ai\hook_behavior_node.cpp" />
     <ClCompile Include="..\source\server\cm_server.cpp" />
     <ClCompile Include="..\source\server\hooks\engine\hook_console.cpp" />
+    <ClCompile Include="..\source\server\hooks\engine\hook_recipe_starting_tools.cpp" />
+    <ClCompile Include="..\source\server\hooks\engine\hook_gem_drop.cpp" />
+    <ClCompile Include="..\source\server\hooks\engine\hook_tunnel_drop.cpp" />
+    <ClCompile Include="..\source\server\hooks\engine\hook_tree_drop.cpp" />
     <ClCompile Include="..\source\server\hooks\furnace\hook_brewing_tank_desc.cpp" />
     <ClCompile Include="..\source\server\hooks\furnace\hook_brewing_tank_tick.cpp" />
     <ClCompile Include="..\source\server\hooks\furnace\hook_proc_desc.cpp" />

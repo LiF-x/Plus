@@ -31,6 +31,10 @@
 #include "hooks/character/hook_onepunchman.h"
 #include "hooks/character/hook_set_control_object.h"
 #include "hooks/character/hook_npcdec_pack.h"
+#include "hooks/engine/hook_recipe_starting_tools.h"
+#include "hooks/engine/hook_gem_drop.h"
+#include "hooks/engine/hook_tunnel_drop.h"
+#include "hooks/engine/hook_tree_drop.h"
 
 // A2a #125 equip-over-ghost transport. The intercept is now a VTABLE-SLOT
 // PATCH on NPCDecorative's packUpdate slot (Hooks::NpcDecPack::InstallVtablePatch),
@@ -162,6 +166,18 @@ void Lifx::Server::Init()
 	{
 		const char* t = el->GetText();
 		if (t) config_.SectorClaims = t;
+	}
+
+	// Drop/recipe hooks configured from their own XML sections. Each returns
+	// false only on a malformed section (it has already reported the reason);
+	// a missing or disabled section is success and leaves vanilla behaviour.
+	// The hooks are attached later, from AttachHooks().
+	{
+		const tinyxml2::XMLElement* root = xml_doc.RootElement();
+		Hooks::Engine::ConfigureRecipeStartingTools(root);
+		Hooks::Engine::ConfigureGemDrops(root);
+		Hooks::Engine::ConfigureTunnelDrops(root);
+		Hooks::Engine::ConfigureTreeDrops(root);
 	}
 
 	std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
@@ -519,9 +535,24 @@ void Lifx::Server::AttachHooks()
 	Con::Echo("[lifx-equip] ISOLATION BUILD: packUpdate hook DISABLED (testing load hang)");
 #endif
 
+	// Drop/recipe hooks. Each is a no-op unless its XML section enabled it in
+	// Init(), and each byte-pattern-checks its target before attaching, so a
+	// mismatched server build reports and skips instead of corrupting code.
+	// These call DetourAttach directly, so they must stay inside this
+	// transaction.
+	Hooks::Engine::AttachRecipeStartingToolsHook();
+	Hooks::Engine::AttachGemDropHooks();
+	Hooks::Engine::AttachTunnelDropHook();
+
 	// Commit the transaction and surface success/failure. If commit fails,
 	// none of the above hooks took effect — log loud so we don't waste hours.
 	const LONG commitRc = DetourTransactionCommit();
+
+	// Tree drops replace a 26-byte selector with a jump to a generated
+	// trampoline rather than going through Detours, so it must NOT be inside
+	// the transaction above.
+	Hooks::Engine::AttachTreeDropHook();
+
 	if (commitRc != NO_ERROR) {
 		Con::Warning("[lifx] DetourTransactionCommit FAILED rc=%ld — none of the above hooks are active", (long)commitRc);
 	} else {

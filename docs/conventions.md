@@ -51,6 +51,8 @@ The existing engine hooks set the pattern: every trampoline in `hooks_engine.cpp
 
 Every source file in LiFx gets the standard MIT-style notice naming LiFx Contributors as the copyright holder. See any existing file under `source/` for the verbatim form; new files use the same template.
 
+When a file's code came from an outside contributor, add a credit line directly under the copyright line — `Contributed by <name>.` for their code, or `Declarations for the hook contributed by <name>.` for a header written here against it. The copyright line itself does not change. See `source/server/hooks/engine/hook_gem_drop.{h,cpp}` for the shape. Also add an entry to [`CONTRIBUTORS.md`](../CONTRIBUTORS.md) naming the specific files.
+
 ## Where this lives
 
 Memory copy for AI contributors: `~/.claude/projects/-home-mjoed-LifeIsFeudal-lifxpluss/memory/feedback_lifx_hook_naming.md`. Updating one means updating the other.

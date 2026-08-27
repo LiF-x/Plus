@@ -10,6 +10,8 @@ updated: 2026-08-27
 
 # Farming — harvest yield and quality
 
+Reverse-engineering and analysis contributed by **Pabluuz**.
+
 ## Farming: `Harvest Crops` yield
 
 The following RVAs apply to the 1.4.4.5 dedicated-server image. The native

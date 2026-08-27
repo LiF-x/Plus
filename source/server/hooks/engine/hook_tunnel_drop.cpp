@@ -1,5 +1,6 @@
 /* ===================================================================================
 	Copyright (c) 2026, LiFx Contributors. All Rights Reserved.
+	Contributed by Pabluuz.
 
 	This file is a part of LiFx.
 

@@ -2,6 +2,7 @@
 
 /* ===================================================================================
 	Copyright (c) 2026, LiFx Contributors. All Rights Reserved.
+	Declarations for the hook contributed by Pabluuz.
 
 	This file is a part of LiFx.
 

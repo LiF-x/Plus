@@ -2,7 +2,7 @@
 title: Architecture
 status: reference
 domain: lifx-framework
-tags: [lifx-framework, architecture]
+tags: [lifx-framework, architecture, rscl-fork]
 related: [conventions.md, loader_and_injection.md, build.md, reverse_engineering.md]
 updated: 2026-06-26
 ---
@@ -28,9 +28,13 @@ The mod DLL's filename is **deliberately opaque** — there is no static import 
 
 To rotate the name, edit those three locations to the same string and rebuild. Nothing else in the codebase reads it.
 
-## Naming
+## Fork history and naming
 
-LiFx is the primary brand and copyright holder throughout: namespace `Lifx::`, console constant `$lifx::Version`, log prefix `[LiFx]`, project files `LiFx.*`.
+LiFx is a fork of the **RedShark Server Core Library (RSCL)**, copyright (c) 2023
+RedShark Foundation. The framework core it derives from — and the parts that are
+original LiFx work — are itemised in [`CONTRIBUTORS.md`](../CONTRIBUTORS.md).
+
+LiFx is the primary brand and copyright holder throughout: namespace `Lifx::`, console constant `$lifx::Version`, log prefix `[LiFx]`, project files `LiFx.*`. The rename from RSCL covered `Redshark::` -> `Lifx::`, `$rscl::Version` -> `$lifx::Version`, the `[RSCL]` log prefix, and the `RSCL.*` project files.
 
 Identifiers tied to the LiF/cm_yo engine lineage (`cm_server`, `cm_offsets`, `__CM_*` macros, the `cm_yo` namespace concept) were left alone — those name the *target* binary, not LiFx itself.
 

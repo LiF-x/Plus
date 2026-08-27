@@ -10,6 +10,8 @@ updated: 2026-08-27
 
 # Reverse-engineering offset encyclopedia
 
+Reverse-engineering and analysis contributed by **Pabluuz**.
+
 This file collects stable RVAs and data-layout observations that are likely to
 be useful in later exploration. Unless stated otherwise, addresses are RVAs
 relative to the base of `ddctd_cm_yo_server.exe`; absolute addresses are omitted

@@ -1,0 +1,55 @@
+name: Mirror public docs to LiFxRampart
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ghdocs/docs/**"
+      - ".github/workflows/mirror-public-docs.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source (LiFx)
+        uses: actions/checkout@v4
+        with:
+          path: src
+          fetch-depth: 1
+
+      - name: Check out target (LiFxRampart)
+        uses: actions/checkout@v4
+        with:
+          repository: Rampart-Games-Limited/LiFxRampart
+          token: ${{ secrets.LIFXRAMPART_PUSH_TOKEN }}
+          path: dst
+          fetch-depth: 1
+
+      - name: Sync ghdocs/docs/ -> LiFxRampart/docs/
+        run: |
+          set -euo pipefail
+          # Replace contents of dst/docs/ with src/ghdocs/docs/.
+          # --delete prunes files that were removed in the source.
+          mkdir -p dst/docs
+          rsync -a --delete --exclude '.git' src/ghdocs/docs/ dst/docs/
+
+      - name: Commit and push if changed
+        working-directory: dst
+        env:
+          SRC_SHA: ${{ github.sha }}
+          SRC_REF: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "No changes to publish."
+            exit 0
+          fi
+          git add -A
+          git commit -m "docs: sync from LiFx@${SRC_SHA:0:7} (${SRC_REF})"
+          git push origin HEAD:main

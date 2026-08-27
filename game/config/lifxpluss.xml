@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- LiFx (lifxpluss) runtime config. Read only by the LiFx mod DLL at boot;
+     the engine does not read this file (its world config is config/world_1.xml).
+     LiFx aborts startup if this file is missing.
+     The root element is kept as <cm_config> for backwards compatibility with the
+     tinyxml2 parser in source/server/cm_server.cpp; only the <log> subtree is
+     consumed today, and <worldMaxPlayers> is currently unused (legacy). -->
+<cm_config>
+
+    <!-- Network configuration -->
+
+    <worldMaxPlayers>64</worldMaxPlayers> <!-- It's for dispatcher (RelayServer) -->
+
+    <!-- One-shot NetEvent ABI dumper. When 1, the DLL walks the engine's
+         NetClassRep list at boot and writes logs/netclassrep_dump.log with
+         each rep's first 0x80 bytes (+ EXEC tag on pointers that look like
+         code). Used to recover pack/unpack/factory fn-pointer offsets;
+         turn off afterwards. See docs/netevent_abi.md (issue #54). -->
+    <dumpNetClassRep>0</dumpNetClassRep>
+
+    <!-- SectorHandoff MVP class registration (issue #58, first chunk of #45).
+         When 1, the DLL clones ServerUUIDEvent's ClassRep template at attach
+         time, swaps slots 7 (create) + 8 (unpack) for our stubs, and inserts
+         the rep into the engine's classRep list. Off in production until the
+         full handoff protocol lands. See docs/netevent_receive_path.md. -->
+    <registerSectorHandoff>0</registerSectorHandoff>
+
+    <!-- SectorHandoff auto-post smoke test (issue #62, third chunk of #45).
+         When 1, the DLL posts one of our own events on every real (non-NULL)
+         client connection. postNetEvent itself accepts the event (returns 1)
+         but the engine's send-drainer then walks the event's vtable past
+         slot 6 (we currently clone ServerUUIDEvent's 7-slot vftable as a
+         template) — that reads adjacent .rdata bytes as fn ptrs and crashes
+         the engine. Leave this OFF until the next chunk extends our event
+         vftable with stub slots at +0x50/+0x58/+0x60. Requires
+         <registerSectorHandoff>. -->
+    <sectorHandoffAutoPost>0</sectorHandoffAutoPost>
+
+    <!-- Dispatcher daemon client (issue #74, third chunk of #47). When 1,
+         the DLL opens a one-shot TCP connection to lifxd at boot and
+         completes a JSON hello/ack handshake. Logs the assigned peer_id.
+         Off in production until the daemon is part of the deployment. -->
+    <!-- LiFx world ID. Drives the deterministic dispatcher peer UUID
+         (00000000-0000-0000-0000-{worldID:012X}). MUST be unique per
+         federated server instance — two servers reporting the same
+         worldID will collide on the same peer_id and only one will be
+         routable. Default 1 if omitted. -->
+    <worldID>1</worldID>
+
+    <dispatcherEnabled>0</dispatcherEnabled>
+    <dispatcherHost>127.0.0.1</dispatcherHost>
+    <dispatcherPort>7400</dispatcherPort>
+
+    <!-- Sector ownership claims (issue #91, chunk 10b of #47/#86).
+         Comma-separated ranges + singles, e.g. "442-450,500,505-510".
+         At session-up the DLL sends one claim_sector frame per id; the
+         dispatcher persists the (sector -> peer_id) mapping in its
+         dispatcher_sectors table. Used later for edge-trigger routing.
+         Empty = claim nothing. -->
+    <sectorClaims></sectorClaims>
+
+    <!-- Sector handoff forwarding over the dispatcher daemon (issue #82,
+         chunk 7 of #47). When sectorHandoffTargetPeer is non-empty AND
+         auto-post fires, the 96-byte wire payload is also forwarded via
+         the dispatcher daemon to that peer. When sectorHandoffReceiveLog
+         is 1, the DLL registers a delivery callback that decodes the
+         96-byte payload and logs the typed fields. Both rely on
+         dispatcherEnabled=1. -->
+    <sectorHandoffTargetPeer></sectorHandoffTargetPeer>
+    <sectorHandoffReceiveLog>0</sectorHandoffReceiveLog>
+
+    <!-- Sector handoff receive-side injection (issue #84, chunk 8 of #47).
+         When 1, the delivery callback ALSO synthesizes a real
+         engine-allocated SectorHandoffEvent from the wire payload
+         (allocate via slot-7 create() + memcpy bytes), logs a read-back
+         trace, then frees it. Driving the engine drainer to actually
+         PROCESS the event is chunk 9 (needs RE of the post-unpack
+         process slot first). Requires registerSectorHandoff. -->
+    <sectorHandoffInjectOnReceive>0</sectorHandoffInjectOnReceive>
+
+    <!-- World grid (issue #103, chunk 15a of #47/#86). Declarative
+         description of THIS world's sector grid; replaces the chunk-14
+         per-edge <sectorEdgeTriggers> list.
+           origin="cx,cy"   centre of cell (col=0, row=0) — i.e. the
+                            CENTRE OF THE SW CORNER CELL, NOT the grid
+                            centre. For a 3x3 of 2044m cells with sector
+                            442 (SW) probed at (-2042, -2042), this is
+                            origin="-2042,-2042".
+           cellSize         square cell side in metres
+           gridSize="CxR"   columns x rows
+           firstSector      sector id at (col=0, row=0); ids increase
+                            row-major SW -> NE
+         Omit (or leave attrs unset) to disable handoff entirely. -->
+    <worldGrid />
+
+    <!-- Adjacent worlds (issue #103). Each <neighbour> uses the SAME
+         attrs as <worldGrid> plus direction="north|south|east|west" that
+         names which of OUR edges this neighbour sits against. On a tick
+         where the player's position resolves to one of the neighbour's
+         sectors, the DLL fires ForwardToSector with the destination's
+         local coords. Empty block = no neighbours. -->
+    <worldNeighbours></worldNeighbours>
+
+    <!-- Logging configuration -->
+    <log>
+        <level>0</level> <!-- 0 - allow all, 1 - skip INFO, 2 - skip INFO and WARN, 3 - allow only ERRORS -->
+        <skipSQLQueriesLog>0</skipSQLQueriesLog>
+        <enableExternalErrorLog>0</enableExternalErrorLog>
+        <enableExternalSqlLog>0</enableExternalSqlLog>
+    </log>
+</cm_config>

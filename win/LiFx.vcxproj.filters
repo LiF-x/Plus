@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\source\cm_config.h" />
+    <ClInclude Include="..\source\core\cm_memory_mgr.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\core\cm_platform.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\core\cm_aux.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\server\hooks_engine.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\core\cm_globals.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\server\api\t3d_console.h">
+      <Filter>Server\API</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\server\cm_wrappers.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\server\cm_server.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\server\cm_offsets.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\core\tinyxml2.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\server\hooks\engine\hook_console.h">
+      <Filter>Server\Hooks\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\server\cm_constants.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\dllmain.cpp" />
+    <ClCompile Include="..\source\core\cm_memory_mgr.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\server\hooks_engine.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\core\cm_globals.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\server\api\t3d_console.cpp">
+      <Filter>Server\API</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\core\cm_aux.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\server\cm_server.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\core\tinyxml2.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\server\hooks\engine\hook_console.cpp">
+      <Filter>Server\Hooks\Engine</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{8d68246c-cfd4-4867-b246-afef722c2008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{68c08cfb-8234-4432-a097-68cdd3ab3bc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\API">
+      <UniqueIdentifier>{d958cd8c-aa9a-4e93-a3fa-49fb9fd35502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\Hooks">
+      <UniqueIdentifier>{bcbc8654-f38b-4508-bd71-d91fa78472ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\Hooks\Engine">
+      <UniqueIdentifier>{2ad72a11-9530-4abf-82ce-d2906ada047e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

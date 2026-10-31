@@ -505,4 +505,19 @@ enum CmOffset : U32
 	// this to capture the grave (type 1070) container pointer, then after the move
 	// clear +0x14 and call it again to repopulate the in-mem container live.
 	CONTAINER_TRYINIT                    = 0x299140,   // U64 __fastcall(CmServerInventoryContainer* container)
+
+	// ---- datablockRange (docs/yo_hooks/datablock_range.md) ----
+	DATABLOCK_COUNTER_START_IMM                 = 0xCEC86,   // Complex::ObjectType::TypeStorage ctor: mov dword ptr [rcx+8], 320h (imm32)
+	DATABLOCK_WRITE_MAX_IMM                     = 0x13372B,   // ghost pack: mov r9d, 402h (imm32) before the ranged write of a datablock id
+	DATABLOCK_READ_MAX_IMM                      = 0x133D24,   // ghost unpack: mov r8d, 402h (imm32) before the ranged read
+	DATABLOCK_DYN_FIRST_IMM                     = 0x4297F7,   // Sim init: mov ecx, 443h (imm32)
+	DATABLOCK_DYN_COUNTER_VAR                   = 0xBC8FD4,   // global next-object-id counter (int)
+	DATABLOCK_ID_BITS_IMM1                      = 0x11D7D8,   // mov r8d, 0Ah (imm32): writeInt(id - 3, 10 bits), mounted images
+	DATABLOCK_ID_BITS_IMM2                      = 0x1389B6,   // mov r8d, 0Ah (imm32): writeInt(datablock id - 3, 10 bits)
+	DATABLOCK_ID_BITS_IMM3                      = 0x138989,   // Sim2DAudioEvent::pack (fn 0x138980): mov r8d, 0Ah (imm32), writeInt(datablock id - 3, 10 bits)
+	DATABLOCK_ID_RESERVE_ADD_IMM8               = 0x11D7BE,   // mounted-image pack (fn 0x11D590): add rax, 0Ah (imm8), bit-buffer space check before the id write
+	DATABLOCK_ID_RESERVE_IMM                    = 0x11D7C8,   // mounted-image pack: mov edx, 0Ah (imm32), bit count passed to the stream's grow call
+	DATABLOCK_UNPACK_BITS_IMM1                  = 0x11F429,   // mounted-image unpack (fn 0x11F210): mov edx, 0Ah (imm32), readInt(10 bits) + 3
+	DATABLOCK_UNPACK_BITS_IMM2                  = 0x138A1A,   // Sim2DAudioEvent::unpack (fn 0x138A10): mov edx, 0Ah (imm32), readInt(10 bits) + 3
+	DATABLOCK_UNPACK_BITS_IMM3                  = 0x138A56,   // unpack of the pack at 0x1389A0 (fn 0x138A40): mov edx, 0Ah (imm32), readInt(10 bits) + 3
 };

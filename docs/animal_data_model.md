@@ -3,12 +3,17 @@ title: Animal data model
 status: re
 domain: reverse-engineering
 tags: [animal, objects-types, datablock, loot, spawn, mysql]
-related: [ai_and_spawning.md, hostile-npc-ai-path-comparison.md, bloomery.md]
+related: [ai_and_spawning.md, hostile-npc-ai-path-comparison.md, bloomery.md, animal_breeding.md]
 sources: [source/server/cm_offsets.h, source/server/hooks/character/hook_animal_death.h, source/server/api/lifx_hostile.cpp, docs/ai_and_spawning.md, docs/hostile-npc-ai-path-comparison.md]
-updated: 2026-06-26
+updated: 2026-11-11
 ---
 
 # Animal data model
+
+**Scope clarification by Zbigi:** this page describes spawned animal entities,
+their combat data and carcass processing. For animals kept in breeding buildings,
+see [Animal breeding — feeding cycles, reserves and cleanliness](animal_breeding.md).
+That system has separate native portions, food reserves and building limits.
 
 **TL;DR.** Despite what `sql/new.sql` implies, the live LiF world DB stores almost
 nothing animal-specific. Animal **combat stats** come from the `AnimalData`

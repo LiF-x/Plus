@@ -4,8 +4,8 @@ status: re
 domain: reverse-engineering
 tags: [animals, spawning, hostile-npc, tombstone, hooks, charstats]
 related: [ai_and_spawning.md, hostile-npc-ai-path-comparison.md, character_hp.md]
-sources: [source/server/cm_offsets.h, source/server/api/lifx_hostile.cpp, source/server/hooks/character/hook_animal_create.cpp, source/server/hooks/character/hook_animal_death.cpp, source/server/hooks/character/hook_setanimation.cpp, source/server/hooks_engine.cpp, ai_and_spawning.md, hostile-npc-ai-path-comparison.md]
-updated: 2026-06-26
+sources: [source/server/cm_offsets.h, source/server/api/lifx_hostile.cpp, source/server/hooks/character/hook_animal_create.cpp, source/server/hooks/character/hook_animal_death.cpp, source/server/hooks/character/hook_setanimation.cpp, source/server/hooks_engine.cpp, ai_and_spawning.md, hostile-npc-ai-path-comparison.md, docs/evidence/spawn_loading_reference.json]
+updated: 2026-11-12
 ---
 
 # On-demand animal spawning
@@ -21,8 +21,20 @@ updated: 2026-06-26
 `CmOffset::CREATE_ANIMAL` = `0x195FD0`. MSVC x64 `__fastcall`:
 
 ```
-Animal* createAnimal(Manager* mgr, u32 animalTypeId, u32 quality, int id /*0 = auto*/, u8 flag)
+Animal* createAnimal(Manager* mgr, u32 animalTypeId, float quality, int id /*0 = auto*/, u8 flag)
 ```
+
+**ABI correction by Zbigi (2026-11-12):** the former `u32 quality` declaration
+was incorrect. RVA `0x195FF3` saves the third argument from `XMM2`; `0x196080`
+passes it through `XMM1` to `0x2E3C60`, which stores it as a float at `+0x24CC`.
+Both the detour/trampoline and direct caller must declare `float`; the direct
+call now supplies `50.0f`. An integer prototype places that argument in `R8D`
+and does not initialize the floating-point argument expected by the engine.
+See [the instruction evidence](evidence/spawn_loading_reference.json) and
+[Microsoft's x64 parameter rules](https://learn.microsoft.com/en-us/cpp/build/x64-calling-convention#parameter-passing).
+This ABI correction does not prove that every direct-spawn placement and
+activation path is complete. The [loading-order guide](ai_and_spawning.md#loading-order-and-readiness)
+separates creation, readiness and simulation.
 
 What it does internally:
 
@@ -35,7 +47,7 @@ What it does internally:
 
 **Position is not a parameter** — set it via `setTransform` *after* the call, e.g. `<simId>.setTransform("x y z 0 0 1 0")`.
 
-`Lifx::spawnHostile` calls it with `quality = 50`, `id = 0` (auto), `flag = 1`.
+`Lifx::spawnHostile` calls it with `quality = 50.0f`, `id = 0` (auto), `flag = 1`.
 
 ### Manager singleton
 

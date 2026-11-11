@@ -386,7 +386,7 @@ enum CmOffset : U32
 	ANIMATED_NPC_SET_ANIMATION           = 0x2E2A90,   // void __fastcall(self, nameHandle, u8 flag) — logs "can't find animation %s" + sets seq by index; #145 anim-remap hook target
 
 	// #145 Animal-derived hostile (RE'd via Ghidra; see reference_animal_spawn_re memory):
-	CREATE_ANIMAL                        = 0x195FD0,   // Animals::Manager::createAnimal: Animal* __fastcall(mgr, u32 typeId, u32 quality, int id[0=auto], u8 flag)
+	CREATE_ANIMAL                        = 0x195FD0,   // Animals::Manager::createAnimal: Animal* __fastcall(mgr, u32 typeId, float quality [XMM2], int id[0=auto], u8 flag); ABI verified by Zbigi
 	ANIMALS_MANAGER_GLOBAL_RVA           = 0xB80C90,   // module-rel ptr to the Animals::Manager singleton (createAnimal arg1)
 	ANIMAL_GET_DATABLOCK_BY_TYPE         = 0x18C790,   // AnimalData::GetDatablockByTypeID(u32 typeId) -> AnimalData* (typeId hash map)
 	ANIMAL_VTABLE                        = 0x798AA0,   // Animals::Animal primary vtable (observed live)

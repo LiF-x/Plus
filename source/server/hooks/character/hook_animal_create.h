@@ -29,20 +29,21 @@
 	Hooks::AnimRemap::Register so the setAnimation flood is suppressed and the
 	death->tombstone redirect tracks it — regardless of HOW it was spawned.
 
-	Signature: Animal* __fastcall createAnimal(mgr, u32 typeId, u32 quality, int id, u8 flag).
+	ABI correction by Zbigi: quality is float (third argument in XMM2).
+	Signature: Animal* __fastcall createAnimal(mgr, u32 typeId, float quality, int id, u8 flag).
 *  =================================================================================== */
 
 #include "server/cm_server.h"
 #include <cstdint>
 
 __CM_DECL_EXTERNAL(void*, __fastcall, _Animal_CreateAnimal,
-                   void* mgr, uint32_t typeId, uint32_t quality, int id, unsigned char flag);
+                   void* mgr, uint32_t typeId, float quality, int id, unsigned char flag);
 
 namespace Hooks
 {
 	namespace AnimalCreate
 	{
-		void* __fastcall OnCreateAnimal(void* mgr, uint32_t typeId, uint32_t quality,
+		void* __fastcall OnCreateAnimal(void* mgr, uint32_t typeId, float quality,
 		                                int id, unsigned char flag);
 
 		// The most recently created Bandit (type 755) animal, or nullptr. Lets a

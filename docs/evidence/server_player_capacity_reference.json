@@ -1,0 +1,156 @@
+{
+  "author": "Zbigi",
+  "checked": "2026-11-11",
+  "binary": {
+    "name": "ddctd_cm_yo_server.exe",
+    "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+    "size_bytes": 12441032,
+    "image_base": "0x140000000"
+  },
+  "method": "Read-only verification of the reference executable and LiFXXL source notes; no new game process or load trial was started for this documentation.",
+  "code_sites": [
+    {
+      "name": "max_players_key_and_store",
+      "rva": "0x176e8a",
+      "file_offset": "0x17628a",
+      "bytes": "48 8D 15 9F B9 61 00 44 8B 05 E4 6D A0 00 48 8B CE E8 10 3F 2E 00 89 85 9C 00 00 00",
+      "instructions": [
+        "0x176e8a: lea rdx, [rip + 0x61b99f]",
+        "0x176e91: mov r8d, dword ptr [rip + 0xa06de4]",
+        "0x176e98: mov rcx, rsi",
+        "0x176e9b: call 0x14045adb0",
+        "0x176ea0: mov dword ptr [rbp + 0x9c], eax"
+      ]
+    },
+    {
+      "name": "settings_copy",
+      "rva": "0x174343",
+      "file_offset": "0x173743",
+      "bytes": "41 8B 86 9C 00 00 00 89 86 9C 00 00 00",
+      "instructions": [
+        "0x174343: mov eax, dword ptr [r14 + 0x9c]",
+        "0x17434a: mov dword ptr [rsi + 0x9c], eax"
+      ]
+    },
+    {
+      "name": "settings_validator",
+      "rva": "0x177e65",
+      "file_offset": "0x177265",
+      "bytes": "8B 83 9C 00 00 00 39 05 2F 61 95 00 0F 8F 37 01 00 00 3B 05 27 61 95 00 0F 8F 2B 01 00 00",
+      "instructions": [
+        "0x177e65: mov eax, dword ptr [rbx + 0x9c]",
+        "0x177e6b: cmp dword ptr [rip + 0x95612f], eax",
+        "0x177e71: jg 0x140177fae",
+        "0x177e77: cmp eax, dword ptr [rip + 0x956127]",
+        "0x177e7d: jg 0x140177fae"
+      ]
+    },
+    {
+      "name": "tick_cursor_reset",
+      "rva": "0x13a55c",
+      "file_offset": "0x13995c",
+      "bytes": "48 8D 05 4D FA A3 00 48 89 05 5E F6 A3 00",
+      "instructions": [
+        "0x13a55c: lea rax, [rip + 0xa3fa4d]",
+        "0x13a563: mov qword ptr [rip + 0xa3f65e], rax"
+      ]
+    },
+    {
+      "name": "tick_append_and_overflow",
+      "rva": "0x13b98c",
+      "file_offset": "0x13ad8c",
+      "bytes": "48 8D 0D 1D E8 A3 00 48 8B 05 2E E2 A3 00 48 3B C1 73 0D 48 89 28 48 83 05 1E E2 A3 00 08 EB 21 48 8B 0D FD E5 A3 00 48 85 C9 74 0E 48 8B 01 BA 01 00 00 00 FF 90 30 01 00 00 48 89 2D E3 E5 A3 00",
+      "instructions": [
+        "0x13b98c: lea rcx, [rip + 0xa3e81d]",
+        "0x13b993: mov rax, qword ptr [rip + 0xa3e22e]",
+        "0x13b99a: cmp rax, rcx",
+        "0x13b99d: jae 0x14013b9ac",
+        "0x13b99f: mov qword ptr [rax], rbp",
+        "0x13b9a2: add qword ptr [rip + 0xa3e21e], 8",
+        "0x13b9aa: jmp 0x14013b9cd",
+        "0x13b9ac: mov rcx, qword ptr [rip + 0xa3e5fd]",
+        "0x13b9b3: test rcx, rcx",
+        "0x13b9b6: je 0x14013b9c6",
+        "0x13b9b8: mov rax, qword ptr [rcx]",
+        "0x13b9bb: mov edx, 1",
+        "0x13b9c0: call qword ptr [rax + 0x130]",
+        "0x13b9c6: mov qword ptr [rip + 0xa3e5e3], rbp"
+      ]
+    }
+  ],
+  "constants": [
+    {
+      "name": "minimum_maxPlayers",
+      "rva": "0xacdfa0",
+      "type": "<i",
+      "value": 1
+    },
+    {
+      "name": "maximum_maxPlayers",
+      "rva": "0xacdfa4",
+      "type": "<i",
+      "value": 64
+    },
+    {
+      "name": "GameConnection_vtable_slot_0x130",
+      "rva": "0x782ed8",
+      "type": "<Q",
+      "value": 5373101712
+    }
+  ],
+  "key": {
+    "rva": "0x792830",
+    "value": "maxPlayers",
+    "bytes": "6D 61 78 50 6C 61 79 65 72 73 00",
+    "superseded_documented_rva": "0x793830",
+    "bytes_at_superseded_rva": "78 74 20 74 61 62 6C 65 73 20 28"
+  },
+  "connection_buffer": {
+    "begin_rva": "0xB79FB0",
+    "exclusive_end_rva": "0xB7A1B0",
+    "cursor_rva": "0xB79BC8",
+    "pointer_bytes": 8,
+    "capacity": 64,
+    "reference_instruction_rvas": [
+      "0x13A55C",
+      "0x13B98C",
+      "0x13B9AC",
+      "0x13B9C6"
+    ]
+  },
+  "production_incident": {
+    "date": "2026-09-05",
+    "provenance": "Aggregated results recorded in the LiFXXL incident analysis, reviewed for this contribution. Historical measurements, not a new load run.",
+    "rows": [
+      {
+        "existing_world_characters": "0..63",
+        "spawn_attempts": 123,
+        "empty_disconnects_within_one_second": 0
+      },
+      {
+        "existing_world_characters": "64",
+        "spawn_attempts": 92,
+        "empty_disconnects_within_one_second": 92
+      }
+    ],
+    "interpretation": "The browser/configured capacity and preconnected count are distinct from sustained active-world occupancy. Processing order determines the first buffer entry."
+  },
+  "source_fingerprints": [
+    {
+      "origin_file": "captainHook/docs/more-slots.md",
+      "sha256": "D26F81DF95354A5D075B706254B8BC7F50F05B78E31E639351D84D192C66C9E3"
+    },
+    {
+      "origin_file": "captainHook/docs/disconnect-empty-reason-2026-09-05.md",
+      "sha256": "66BB479984BC2F1AC72C520E7D0EA6D128D7E595C91C350FF8733AB83EAE64E1"
+    },
+    {
+      "origin_file": "captainHook/server/hooks/engine/hook_more_slots.cpp",
+      "sha256": "46CA58FD7B2F85E2EE9D437C0E52C31723CB78C50789D229B16FC36067408BA7"
+    },
+    {
+      "origin_file": "captainHook/server/hooks/engine/more_slots_code.h",
+      "sha256": "DD50A5F11485F97F7465D2AC92219C839F6F5F9B12C306D6A97C91AFE7EF1F0D"
+    }
+  ]
+}

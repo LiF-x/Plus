@@ -1,0 +1,9 @@
+Contribution by: Zbigi (LiFXXL)
+Historical offline harness output; not rerun for this contribution.
+Original log SHA-256: 2E1159BC606429154DA6DBC91811546CB4126E7F6DE4B866A407CE97FB2C03B2
+
+--- Original four-line output (unchanged) ---
+PASS: real production detour changes extra wear -50 -> 0; shield wear 825 -> 750 (100% protection).
+PASS: 82944 native state cases; 1728 corrected, 81216 unchanged; 331776 native wear comparisons.
+PASS: 1729 corrections produce only 12 diagnostic lines; ordinary blocks stay silent.
+PASS: detach restores original bytes and native regression; server never started.

@@ -64,6 +64,16 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
+**Zbigi** (LiFXXL) — shield-durability reverse engineering and recorded offline
+validation, contributed as documentation and supporting evidence:
+
+- `docs/shield_durability_underflow.md` — native failure chain, build-specific
+  RVAs and ABI, and the negative remaining-damage lower-clamp contract.
+- `docs/evidence/shield_durability_reference.json` — static instruction sites,
+  synthetic replay results and provenance fingerprints.
+- `docs/evidence/shield_durability_offline.txt` — historical isolated-harness
+  result log with attribution; not a Plus build or live-server acceptance result.
+
 ## Adding to this file
 
 When code from outside the project lands here, record it in two places: a credit

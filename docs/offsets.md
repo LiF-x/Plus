@@ -3,9 +3,9 @@ title: Reverse-engineering offset encyclopedia
 status: re
 domain: reverse-engineering
 tags: [offsets, rva, tree-drops, gem-drops, tunnelling, max-players]
-related: [reverse_engineering.md, farming.md, conventions.md]
+related: [reverse_engineering.md, farming.md, conventions.md, shield_durability_underflow.md]
 sources: [source/server/hooks/engine/hook_tree_drop.cpp, source/server/hooks/engine/hook_gem_drop.cpp, source/server/hooks/engine/hook_tunnel_drop.cpp]
-updated: 2026-08-27
+updated: 2026-11-11
 ---
 
 # Reverse-engineering offset encyclopedia
@@ -188,6 +188,12 @@ server browser advertised 128 slots.
   `[rbp+0x7188]` because of its seven pushes and unusually large stack frame.
 
 ## Status & provenance
+
+For separate combat findings contributed by **Zbigi** (LiFXXL) on this same executable hash, see
+[Shield durability underflow](shield_durability_underflow.md): the state builder
+at `0xA7180`, remaining-damage field `+0x38`, native wear at `0xA5510`, and the
+downstream unsigned conversion at `0xEEFA1`. That page retains its own evidence
+and offline-versus-live validation limits.
 
 The tree-felling selector, the `TreeType 0`/`TreeType 7` values, and the apple →
 chair override are runtime-verified. The gem and tunnelling call sites were

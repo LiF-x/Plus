@@ -57,6 +57,7 @@ LiFx is a Detours-based extension framework for the *Life is Feudal: Your Own* d
 | --- | --- | --- |
 | [Reverse engineering setup](reverse_engineering.md) | 📖 | Ghidra setup, the `LifxExport.java` / `LifxEventVtables.java` analysis scripts, and the artifact files they produce. |
 | [Reverse-engineering offset encyclopedia](offsets.md) | 🔬 | Stable RVAs and data layouts for the verified 1.4.4.5 server image: tree felling, gem drops, tunnelling rewards, and the `maxPlayers` slot limit. |
+| [Terrain data files](terrain_file_formats.md) | 🔬 | Zbigi: `.ter` surface and server `.ter2idx`/`.ter2dat` layouts, lossless serialization and consistent terrain edits. |
 | [Farming — harvest yield and quality](farming.md) | 🔬 | `Harvest Crops` RE: the exact quantity formula (weather is a fourfold switch, fertility a twofold one) and the separate item-quality formula. |
 | [NetEvent vtable layout](net_events.md) | 🔬 | Torque NetEvent vtable layout, slot semantics, and the per-event (pack, unpack, process) handler table. |
 | [NetEvent receive / send path](netevent_receive_path.md) | 🔬 | The NetEvent receive/dispatch path: how an inbound event is unpacked and routed to its process handler. |

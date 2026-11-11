@@ -1,0 +1,261 @@
+{
+  "title": "Terrain surface and server geology file layout",
+  "author": "Zbigi",
+  "reviewed": "2026-11-12",
+  "scope": "Binary layout and lossless serialization of the inspected compact baseline; no world construction workflow or runtime deployment.",
+  "binary": {
+    "name": "ddctd_cm_yo_server.exe",
+    "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+    "size_bytes": 12441032,
+    "image_base": "0x140000000"
+  },
+  "code_sites": [
+    {
+      "name": "readIndexDataBlock",
+      "rva": "0x4bd9c0",
+      "file_offset": "0x4bcdc0",
+      "bytes": "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 41 56 48 83 EC 30 49 8B F1 41 0F B7 E8 44 0F B7 F2 48 8B D9 33 C0 F0 0F C1 41 78 85 C0 75 31 48 8D 05 EB 31 3D 00 41 B9 81 03 00 00",
+      "instructions": [
+        "0x4bd9c0: mov qword ptr [rsp + 0x10], rbx",
+        "0x4bd9c5: mov qword ptr [rsp + 0x18], rbp",
+        "0x4bd9ca: mov qword ptr [rsp + 0x20], rsi",
+        "0x4bd9cf: push r14",
+        "0x4bd9d1: sub rsp, 0x30",
+        "0x4bd9d5: mov rsi, r9",
+        "0x4bd9d8: movzx ebp, r8w",
+        "0x4bd9dc: movzx r14d, dx",
+        "0x4bd9e0: mov rbx, rcx",
+        "0x4bd9e3: xor eax, eax",
+        "0x4bd9e5: lock xadd dword ptr [rcx + 0x78], eax",
+        "0x4bd9ea: test eax, eax",
+        "0x4bd9ec: jne 0x1404bda1f",
+        "0x4bd9ee: lea rax, [rip + 0x3d31eb]",
+        "0x4bd9f5: mov r9d, 0x381"
+      ]
+    },
+    {
+      "name": "index_stream_read",
+      "rva": "0x4bdae0",
+      "file_offset": "0x4bcee0",
+      "bytes": "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B D9 41 8B F8 48 8B 49 58 48 8B F2 41 8B D1 48 8B 01 FF 50 38 48 8B 4B 58 44 8B C7 48 8B D6 48 8B 01 48 8B 5C 24 30 48 8B 74 24 38 48 83 C4 20",
+      "instructions": [
+        "0x4bdae0: mov qword ptr [rsp + 8], rbx",
+        "0x4bdae5: mov qword ptr [rsp + 0x10], rsi",
+        "0x4bdaea: push rdi",
+        "0x4bdaeb: sub rsp, 0x20",
+        "0x4bdaef: mov rbx, rcx",
+        "0x4bdaf2: mov edi, r8d",
+        "0x4bdaf5: mov rcx, qword ptr [rcx + 0x58]",
+        "0x4bdaf9: mov rsi, rdx",
+        "0x4bdafc: mov edx, r9d",
+        "0x4bdaff: mov rax, qword ptr [rcx]",
+        "0x4bdb02: call qword ptr [rax + 0x38]",
+        "0x4bdb05: mov rcx, qword ptr [rbx + 0x58]",
+        "0x4bdb09: mov r8d, edi",
+        "0x4bdb0c: mov rdx, rsi",
+        "0x4bdb0f: mov rax, qword ptr [rcx]",
+        "0x4bdb12: mov rbx, qword ptr [rsp + 0x30]",
+        "0x4bdb17: mov rsi, qword ptr [rsp + 0x38]",
+        "0x4bdb1c: add rsp, 0x20"
+      ]
+    },
+    {
+      "name": "readDataColumn",
+      "rva": "0x4bd180",
+      "file_offset": "0x4bc580",
+      "bytes": "66 44 89 4C 24 20 66 44 89 44 24 18 48 89 54 24 10 48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56",
+      "instructions": [
+        "0x4bd180: mov word ptr [rsp + 0x20], r9w",
+        "0x4bd186: mov word ptr [rsp + 0x18], r8w",
+        "0x4bd18c: mov qword ptr [rsp + 0x10], rdx",
+        "0x4bd191: mov qword ptr [rsp + 8], rcx",
+        "0x4bd196: push rbp",
+        "0x4bd197: push rbx",
+        "0x4bd198: push rsi",
+        "0x4bd199: push rdi",
+        "0x4bd19a: push r12",
+        "0x4bd19c: push r13",
+        "0x4bd19e: push r14"
+      ]
+    },
+    {
+      "name": "data_column_record_to_byte_offsets",
+      "rva": "0x4bd3ed",
+      "file_offset": "0x4bc7ed",
+      "bytes": "8B 44 24 34 48 8B B5 40 30 00 00 89 06 8D 1C C5 00 00 00 00 8B 44 24 30 8D 14 C5 00 00 00 00 48 8B 8D 20 30 00 00 48 8B 49 68 48 8B 01 FF 50 38 48 8B 85 20 30 00 00 48 8B 48 68 48 8B 01 44 8B C3 49 8B D5 FF 50 20 3B C3",
+      "instructions": [
+        "0x4bd3ed: mov eax, dword ptr [rsp + 0x34]",
+        "0x4bd3f1: mov rsi, qword ptr [rbp + 0x3040]",
+        "0x4bd3f8: mov dword ptr [rsi], eax",
+        "0x4bd3fa: lea ebx, [rax*8]",
+        "0x4bd401: mov eax, dword ptr [rsp + 0x30]",
+        "0x4bd405: lea edx, [rax*8]",
+        "0x4bd40c: mov rcx, qword ptr [rbp + 0x3020]",
+        "0x4bd413: mov rcx, qword ptr [rcx + 0x68]",
+        "0x4bd417: mov rax, qword ptr [rcx]",
+        "0x4bd41a: call qword ptr [rax + 0x38]",
+        "0x4bd41d: mov rax, qword ptr [rbp + 0x3020]",
+        "0x4bd424: mov rcx, qword ptr [rax + 0x68]",
+        "0x4bd428: mov rax, qword ptr [rcx]",
+        "0x4bd42b: mov r8d, ebx",
+        "0x4bd42e: mov rdx, r13",
+        "0x4bd431: call qword ptr [rax + 0x20]",
+        "0x4bd434: cmp eax, ebx"
+      ]
+    },
+    {
+      "name": "harvest_level_buffer",
+      "rva": "0x3af973",
+      "file_offset": "0x3aed73",
+      "bytes": "4C 8D 47 10 48 8D 54 24 50 48 8B 0F E8 2C 1A 10 00",
+      "instructions": [
+        "0x3af973: lea r8, [rdi + 0x10]",
+        "0x3af977: lea rdx, [rsp + 0x50]",
+        "0x3af97c: mov rcx, qword ptr [rdi]",
+        "0x3af97f: call 0x1404b13b0"
+      ]
+    },
+    {
+      "name": "harvest_quality_substance_flags",
+      "rva": "0x3af9c0",
+      "file_offset": "0x3aedc0",
+      "bytes": "0F B6 44 24 56 89 47 38 0F B6 44 24 52 88 47 3C 0F B6 4C 24 53 0F B6 C1 C0 E8 05 24 01 88 47 3D C0 E9 06 80 E1 01 88 4F 3E",
+      "instructions": [
+        "0x3af9c0: movzx eax, byte ptr [rsp + 0x56]",
+        "0x3af9c5: mov dword ptr [rdi + 0x38], eax",
+        "0x3af9c8: movzx eax, byte ptr [rsp + 0x52]",
+        "0x3af9cd: mov byte ptr [rdi + 0x3c], al",
+        "0x3af9d0: movzx ecx, byte ptr [rsp + 0x53]",
+        "0x3af9d5: movzx eax, cl",
+        "0x3af9d8: shr al, 5",
+        "0x3af9db: and al, 1",
+        "0x3af9dd: mov byte ptr [rdi + 0x3d], al",
+        "0x3af9e0: shr cl, 6",
+        "0x3af9e3: and cl, 1",
+        "0x3af9e6: mov byte ptr [rdi + 0x3e], cl"
+      ]
+    }
+  ],
+  "schema": {
+    "byte_order": "little",
+    "ter_header": "<BII",
+    "ter_version": 9,
+    "ter_side": 1024,
+    "height_offset": 9,
+    "height_encoding": "IEEE-754 binary32",
+    "material_offset": 4194313,
+    "material_bytes": 1048576,
+    "material_table_offset": 5242889,
+    "material_count_encoding": "<I",
+    "material_name_length_bytes": 1,
+    "idx_header": "<12I",
+    "idx_header_bytes": 48,
+    "idx_entry": "<II",
+    "geo_side": 511,
+    "geo_columns": 261121,
+    "server_level": "<HBBHBB",
+    "server_level_bytes": 8,
+    "level_fields": [
+      "altitude_u16",
+      "substance_u8",
+      "level_flags_u8",
+      "quantity_u16",
+      "quality_u8",
+      "opaque_tail_u8"
+    ]
+  },
+  "observed_compact_header_template": [
+    48,
+    2,
+    "GeoVersion",
+    8,
+    8,
+    8,
+    48,
+    2089016,
+    261121,
+    0,
+    33489407,
+    "TerrainID"
+  ],
+  "aggregate": {
+    "terrains_checked": 81,
+    "files_checked": 243,
+    "terrain_id_first": 406,
+    "terrain_id_last": 486,
+    "index_entries_checked": 21150801,
+    "layer_records_checked": 42318442,
+    "finite_height_samples_checked": 84934656,
+    "material_indices_checked": 84934656,
+    "complete_material_tables_checked": 81,
+    "distinct_compact_header_profiles": 1,
+    "distinct_material_tables": 1,
+    "minimum_layers_per_column": 1,
+    "maximum_layers_per_column": 7,
+    "positive_strictly_descending_layers": true,
+    "all_record_ranges_in_bounds": true,
+    "compact_ranges_cover_data_exactly": true,
+    "maximum_surface_delta_game_units": 4.8828125045474735e-05,
+    "surface_tolerance_game_units": 0.001,
+    "height_min": 958.0,
+    "height_max": 1347.0,
+    "nonzero_level_flags": 0,
+    "opaque_tail_nonzero_records": 0,
+    "substance_zero_records": 0,
+    "material_255_samples": 0
+  },
+  "reference_headers": {
+    "terrain_446": {
+      "ter_header_hex": "09 be 01 00 00 00 04 00 00",
+      "idx_header_hex": "30 00 00 00 02 00 00 00 01 00 00 00 08 00 00 00 08 00 00 00 08 00 00 00 30 00 00 00 38 e0 1f 00 01 fc 03 00 00 00 00 00 ff 01 ff 01 be 01 00 00",
+      "ter_bytes": 5243198,
+      "idx_bytes": 2089016,
+      "dat_bytes": 4185600
+    }
+  },
+  "material_sentinel_observation": {
+    "reference": "Additional terrain 445 client surface sample",
+    "sample_value": 255,
+    "sample_count": 4092,
+    "material_table_count": 29,
+    "interpretation": "Preserve the observed out-of-table sentinel; do not remap it to material zero."
+  },
+  "lossless_roundtrip": {
+    "terrain_id": 446,
+    "files_reencoded": 3,
+    "all_bytes_identical": true,
+    "originals_modified": false,
+    "game_executed": false
+  },
+  "opaque_tail_specimen": {
+    "format": "<HBBHBB",
+    "values": [
+      5000,
+      3,
+      165,
+      40000,
+      52,
+      18
+    ],
+    "bytes_hex": "88 13 03 a5 40 9c 34 12",
+    "scope": "Serialization-only example; arbitrary flags and opaque tail are not gameplay recommendations."
+  },
+  "client_format_contrast": {
+    "record_size": 4,
+    "columns": 261121,
+    "index_bytes": 2089016,
+    "data_bytes": 1044484,
+    "one_record_per_column": true,
+    "scope": "Inspected client surface projection; it does not replace the server layer stack."
+  },
+  "interpretation_notes": {
+    "quality": "Native harvest reads one byte at level offset +6; treating +6..+7 as a semantic U16 quality is incorrect for this path.",
+    "opaque_tail": "Byte +7 is retained without assigning semantics. A raw U16 view of +6..+7 is only a storage convenience.",
+    "headers": "Several header words are recorded as observed profile values without assigning unverified allocation semantics.",
+    "runtime": "Source assets were read; three scratch copies were re-encoded. No new server/client execution or deployment was performed."
+  },
+  "publication": {
+    "individual_map_file_hashes_included": false,
+    "complete_map_files_included": false
+  }
+}

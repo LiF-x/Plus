@@ -218,7 +218,8 @@ Poking `+0x16A0` (= Table A row 47 expires_at) to a value before `applied_at` ca
 
 **Documentation correction by Zbigi, 2026-11-11.** The implementation already
 contains the broadcaster that the older investigation below listed as future work.
-This section describes the checked-in code; it is not a new live-client test.
+This section describes the checked-in code and preserves the earlier game-test
+observations below. The documentation review did not repeat those game tests.
 
 [`source/server/api/lifx_effects.cpp`](../source/server/api/lifx_effects.cpp)
 registers four `Player`-namespace methods (callable as `%p.method()`, where `%p`
@@ -236,6 +237,15 @@ All four use `PlayerEffectRow` to check the row's self-ID stamp. That check is
 **not an active-effect test**: it does not compare expiry with the current clock
 or inspect magnitude. Use supported effect IDs and existing effect state; these
 commands do not implement a general apply-new-effect operation.
+
+The ID-stamp check is also **not a bounds check**: `PlayerEffectRow` computes
+and reads the row before comparing its stamp. Callers must restrict IDs to
+supported entries; an arbitrary out-of-range ID is not guaranteed to reach a
+warning safely. The command bodies parse numeric strings with `strtoul` without
+checking the parse result or range. Expiry fields and extension arithmetic are
+unsigned 32-bit values, so an overflowing extension wraps instead of saturating
+or being rejected. Supply valid nonnegative values and keep
+`current_expiry + extra_ms <= 4294967295`.
 
 `BroadcastEffectDelta` copies one row into a 32-byte `EffectDelta` and passes a
 one-element `DeltaVec` to Player vtable slot **187**. The corresponding native

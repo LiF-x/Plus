@@ -20,6 +20,13 @@ Use supported effect IDs and existing effect state. These commands edit or resen
 that state; they are not an API for applying a new effect. Their validation does
 not establish that an effect is currently active.
 
+Restrict effect IDs to supported catalog entries before invoking the command.
+The matching-ID check does not safely validate an arbitrary out-of-range ID.
+Use valid nonnegative integer arguments. Time values must fit in the unsigned
+32-bit range (`0..4294967295`); extending past that limit wraps the stored time
+instead of reporting an error. Negative values are not a supported way to shorten
+an effect.
+
 ## `%p.lifxSetEffectExpiry(int effectID, int expires_at_ms)`
 
 Set the absolute expiry time of one effect on this player. `expires_at_ms` is
@@ -42,7 +49,7 @@ is active; the command itself does not establish that condition. The Resurrected
 duration policy can also apply to this update.
 
 ```tcl
-// Give the player 2 more minutes of Resurrected
+// Request 2 more minutes; a configured Resurrected policy may override this
 %p.lifxExtendEffect(47, 120000);
 ```
 
@@ -62,8 +69,10 @@ the icon and every derived stat changing in the same tick as this command.
 
 Request a resend of the current effect state to clients ghosting this player.
 The command does not make an expiry or magnitude edit itself. The normal duration
-policy still applies: resending an active Resurrected effect can update its duration
-to the configured override. Primarily useful for checking delivery or recovering
+policy still applies: a Resurrected entry whose expiry is later than its recorded
+application time can have its duration replaced by the configured override. That
+comparison does not check whether the expiry is still in the future. Primarily
+useful for checking delivery or recovering
 from a desynced HUD.
 
 ```tcl

@@ -5,7 +5,7 @@ status: re
 domain: reverse-engineering
 tags: [combat, shield, durability, mastery, signedness, detours]
 related: [offsets.md, character_hp.md, effects_and_abilities.md]
-sources: [docs/evidence/shield_durability_reference.json, docs/evidence/shield_durability_offline.txt, docs/offsets.md]
+sources: [docs/evidence/shield_durability_reference.json, docs/evidence/shield_durability_native_regression.txt, docs/evidence/shield_durability_runtime_reference.json, docs/offsets.md]
 updated: 2026-11-11
 ---
 
@@ -13,11 +13,10 @@ updated: 2026-11-11
 
 Diagnosis, implementation experience and validation contributed by **Zbigi** (LiFXXL).
 
-**Production context, confirmed by Zbigi on 2026-11-11:** LiFXXL operates live
-servers with players, and its documentation draws on real server testing. The
-isolated native regression results attached below are one specific evidence set;
-they do not describe the whole project as offline. Porting the correction into
-Plus and validating that implementation is a separate step.
+**Production context:** LiFXXL operates live servers with players, and this
+contribution draws on that work. It includes a recorded real-server shield session
+as well as native regression results. Porting the correction into Plus and
+validating that implementation is a separate step.
 
 **TL;DR.** The native shield-block calculation can produce a negative remaining-damage
 factor when protection exceeds 100%. The durability calculation turns this into negative
@@ -157,13 +156,33 @@ This is not a durability-disable feature. Nonnegative cases are left untouched. 
 not apply a general unsigned-loss cap in the inventory subsystem: that would change
 other items and would leave the upstream negative-damage calculation unresolved.
 
-## Evidence and reproduction boundaries
+## Recorded real-server session
 
-The attached [offline result log](evidence/shield_durability_offline.txt) contains an
+**Real-server observations contributed by Zbigi.** The preserved 2026-10-19
+session contains the `SHIELD_DURABILITY_FIX` initialization marker, followed by
+`Server is up and ready to accept connections` at `13:21:42.771`. The
+[runtime evidence record](evidence/shield_durability_runtime_reference.json)
+contains an anonymized summary rechecked against the saved main/SQL logs,
+equipment baseline and durability records on 2026-11-11.
+
+The tested Kite Shield (object type `616`) had quality `80` and starting durability
+`18000`. Between `13:47:29` and `13:48:05`, 18 SQL durability updates at nine
+timestamps reduced it to `13975`: ordinary wear of `4025`, with no zeroing of
+that shield. These are database updates, not a count of hits or blocks.
+
+The captured session contains no `SHIELD_DURABILITY_FIX_CORRECTED` marker.
+It demonstrates a running server with the hook initialized and ordinary shield
+wear during gameplay; this particular Q80 session did not demonstrate the
+negative-factor correction branch. The controlled regression below covers that
+branch. Raw logs and player/item-instance identifiers are not published.
+
+## Native regression evidence
+
+The attached [native regression log](evidence/shield_durability_native_regression.txt) contains an
 attribution header followed by the unchanged four-line LiFXXL harness output.
 The original payload's hash is recorded in the evidence JSON. Its phrase “production detour” means the
-LiFXXL hook source was compiled into the isolated harness; it does **not** mean the
-Plus DLL or a live server was tested.
+LiFXXL hook source was compiled into the isolated harness. This particular log
+records that harness, while the preceding section documents the game session.
 
 The historical 2026-10-18/19 tests mapped sections of the reference executable into
 a private test image and called its native state-builder and wear routines. They did
@@ -196,10 +215,12 @@ original LiFXXL harness and hook are not shipped by this documentation contribut
 
 ## Status & provenance
 
-**Status: `re`.** The executable hash and selected instruction sites were rechecked
-read-only on 2026-11-11. The original diagnosis, correction source and historical
-harness/log agree on the mechanism. This is stronger than a formula-only guess, but
-is not a Plus integration or live-game acceptance result.
+**Status: `re`.** The executable hash, selected instruction sites and preserved
+real-server records were rechecked read-only on 2026-11-11. The original diagnosis,
+correction source and native regression agree on the failure mechanism. The
+recorded gameplay session additionally establishes initialization and ordinary
+wear with the hook present. These evidence sets have distinct scopes; implementing
+and accepting the correction in Plus remains separate.
 
 For validation of a future Plus implementation, distinguish an initialization log from a correction
 record that captures the actual negative factor and the builder inputs. A shield

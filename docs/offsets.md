@@ -193,7 +193,7 @@ For separate combat findings contributed by **Zbigi** (LiFXXL) on this same exec
 [Shield durability underflow](shield_durability_underflow.md): the state builder
 at `0xA7180`, remaining-damage field `+0x38`, native wear at `0xA5510`, and the
 downstream unsigned conversion at `0xEEFA1`. That page retains its own evidence
-and offline-versus-live validation limits.
+and separates recorded game-session observations from native regression results.
 
 The tree-felling selector, the `TreeType 0`/`TreeType 7` values, and the apple →
 chair override are runtime-verified. The gem and tunnelling call sites were

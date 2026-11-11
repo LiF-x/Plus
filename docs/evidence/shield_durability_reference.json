@@ -3,7 +3,7 @@
   "author": "Zbigi",
   "project": "LiFXXL",
   "inspection_date": "2026-11-11",
-  "production_context": "Zbigi confirmed on 2026-11-11 that LiFXXL runs live servers with players and its documentation draws on real server tests. The historical isolated harness results below are a specific evidence set, not a statement that the project is offline; they do not establish acceptance of a Plus port.",
+  "production_context": "LiFXXL operates live servers with players and draws on real server testing. This record captures reference-code and native regression evidence; the companion runtime record captures a real-server shield session.",
   "validation": "Read-only static PE inspection; historical test records imported, not rerun.",
   "binary": {
     "name": "ddctd_cm_yo_server.exe",
@@ -375,8 +375,6 @@
     "corrected": 1728,
     "unchanged": 81216,
     "native_wear_comparisons": 331776,
-    "offline_log": "shield_durability_offline.txt",
-    "offline_log_format": "Attribution header followed by unchanged original four-line output.",
     "replay_results": [
       {
         "quality": 50,
@@ -638,6 +636,9 @@
         "origin_file": "captainHook/tmp/shield_durability_fix_test/run.log",
         "sha256": "2E1159BC606429154DA6DBC91811546CB4126E7F6DE4B866A407CE97FB2C03B2"
       }
-    ]
-  }
+    ],
+    "native_regression_log": "shield_durability_native_regression.txt",
+    "native_regression_log_format": "Attribution header followed by unchanged original four-line output."
+  },
+  "runtime_evidence": "shield_durability_runtime_reference.json"
 }

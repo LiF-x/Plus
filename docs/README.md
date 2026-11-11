@@ -76,7 +76,7 @@ LiFx is a Detours-based extension framework for the *Life is Feudal: Your Own* d
 | [Outposts](outposts.md) | 🔬 | Outpost/claim radius system and the proximity rules between outposts, monuments, and personal claims. |
 | [Bloomery & furnace/recipe system](bloomery.md) | ✅ | Full furnace/recipe system: `recalcTick` walkthrough, the 59-row proc-descriptor table, bloomery whitelist, kiln/vostaskus cycles, and hook recipes. |
 | [Craftwork working-containers (tanning tub)](craftwork_containers.md) | 🔬 | The tanning tub (type 472, `WorkingContainer`/`CmCraftworkManager`, `UseTanningTube` id 85): the last unhooked craftwork leaf, why its output type/quantity is engine-computed not data, and the RE-to-hook path. |
-| [Effects & abilities](effects_and_abilities.md) | 🔬 | Effect/ability subsystem: effect-XML parser at RVA 0x4DD100, the 311 `*_Ability` RTTI classes, and hookable seams. |
+| [Effects & abilities](effects_and_abilities.md) | 🔬 | Effect-XML parser at RVA 0x4DD100, the 311 `*_Ability` RTTI classes, and hookable seams; **Zbigi** documents the current four-method Player API and separates historical direct-write limitations from current broadcast behavior. |
 | [Encrypted assets (LFXE)](dts_encryption.md) | ✅ | LFXE encrypted assets: the universal FileStream decrypt hook, the ChaCha20 container format, the key path, and the packer. |
 | [Universal LFXE hook RE](lfxe_texture_re.md) | 🔬 | RE behind the universal LFXE hook (#116): FileStream as the single seam, the disproved mmap hypothesis, and both-binary offsets. |
 
@@ -110,7 +110,7 @@ The `../ghdocs/docs/` mirror — these pages document only the public, TorqueScr
 | Page | What it covers |
 | --- | --- |
 | [Players](../ghdocs/docs/players.md) | Read/write a player's HP, apply damage/heal, knock out, kill. |
-| [Effects](../ghdocs/docs/effects.md) | Modify an active effect on a Player (expiry, extend, clear, force a HUD refresh). |
+| [Effects](../ghdocs/docs/effects.md) | Edit existing Player effect state or request a resend; duration policy, validation and client-update limits clarified by **Zbigi**. |
 | [Timers](../ghdocs/docs/timers.md) | Override the post-respawn Resurrected debuff duration, globally or per player. |
 | [Outposts](../ghdocs/docs/outposts.md) | Default/live outpost radius, production retargeting, proximity rules. |
 | [NPCs](../ghdocs/docs/npcs.md) | Spawn NPCs, keep them respawned near players, bind appearance/equipment. |

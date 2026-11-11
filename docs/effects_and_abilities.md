@@ -4,7 +4,8 @@ status: re
 domain: reverse-engineering
 tags: [effects, abilities, rtti, xml-parser]
 related: [character_hp.md, ai_and_spawning.md]
-updated: 2026-06-26
+sources: [source/server/api/lifx_effects.cpp, source/server/hooks/effect/hook_broadcast_effects.cpp, source/server/hooks/effect/hook_broadcast_effects.h, source/server/hooks/effect/hook_assign_effect.cpp, source/server/cm_server.cpp, source/server/cm_offsets.h]
+updated: 2026-11-11
 ---
 
 # Effects and Abilities
@@ -215,30 +216,85 @@ Poking `+0x16A0` (= Table A row 47 expires_at) to a value before `applied_at` ca
 
 ### Shipping API
 
-`source/server/api/lifx_effects.cpp` now exposes three `Player`-namespace methods (callable as `%p.method()`, where `%p` is obtained by `LiFxUtility::getPlayer(charID).getControlObject()`):
+**Documentation correction by Zbigi, 2026-11-11.** The implementation already
+contains the broadcaster that the older investigation below listed as future work.
+This section describes the checked-in code; it is not a new live-client test.
+
+[`source/server/api/lifx_effects.cpp`](../source/server/api/lifx_effects.cpp)
+registers four `Player`-namespace methods (callable as `%p.method()`, where `%p`
+is obtained by `LiFxUtility::getPlayer(charID).getControlObject()`). The
+[script-facing reference](../ghdocs/docs/effects.md) documents their use.
 
 | Method | Purpose |
 |---|---|
-| `%p.lifxSetEffectExpiry(effectID, expires_at_ms)` | Write absolute expires_at directly. |
-| `%p.lifxExtendEffect(effectID, extra_ms)` | Add `extra_ms` to the current expires_at. |
-| `%p.lifxClearEffect(effectID)` | Set expires_at = applied_at → effect immediately expires server-side. |
+| `%p.lifxSetEffectExpiry(effectID, expires_at_ms)` | Write absolute `expires_at`, then request a broadcast of the resulting row. |
+| `%p.lifxExtendEffect(effectID, extra_ms)` | Add `extra_ms` to the current `expires_at`, then request a broadcast. |
+| `%p.lifxClearEffect(effectID)` | Set both `expires_at` and magnitude to **zero**, then request a broadcast. `applied_at` is left unchanged. |
+| `%p.lifxBroadcastEffect(effectID)` | Request a broadcast of the current row without a direct write in the command itself; the broadcast hook can still apply duration policy as described below. |
 
-All three validate the row's self-ID stamp before writing — if the row isn't where we expect (engine version differs), they refuse rather than corrupt memory.
+All four use `PlayerEffectRow` to check the row's self-ID stamp. That check is
+**not an active-effect test**: it does not compare expiry with the current clock
+or inspect magnitude. Use supported effect IDs and existing effect state; these
+commands do not implement a general apply-new-effect operation.
 
-### Known limitations
+`BroadcastEffectDelta` copies one row into a 32-byte `EffectDelta` and passes a
+one-element `DeltaVec` to Player vtable slot **187**. The corresponding native
+entry is `CmOffset::OBJEFFECTS_BROADCAST_DELTA = 0xEBFF0`. The row fields are
+read from `Player + 0x1238 + effectID * 24`: expiry at `+0`, applied time at `+4`,
+self-ID at `+8`, and the 64-bit magnitude payload at `+16`. `ClearEffect` zeroes
+the low 32-bit magnitude field at `+16`; it does not clear the entire row.
 
-Three behaviors observed in vivo that the current API doesn't address:
+The helper's logged `broadcast=1` means it found a non-null virtual function
+and called it. The helper ignores the native function's return value and returns
+`true` after dispatch, so this is **not a delivery acknowledgement or proof that a
+client rendered the HUD**. The editing methods write first; a failed broadcast
+does not roll back those writes.
 
-1. **Client UI HUD doesn't refresh after a write.** The Resurrected icon and countdown remain visible on the client even after a clean `lifxClearEffect`. Server-side gameplay (HP modifiers, regen rates, magnitude application) IS correct. To make the UI catch up, we'd need a separate `AddEffect`/`RemoveEffect` net-event sender — `Character_SendChanges` (RVA `0x1BC3D0`) tested with `mask=0xFFFFFFFF` updates HP/stat fields but doesn't touch the effects panel.
+### Interaction with the Resurrected duration policy
 
-2. **Stat-recompute lag.** After a clear, the magnitude penalty (e.g. Resurrected's HP_MAX -10%) sometimes persists for a tick or requires a second `lifxClearEffect` call before the engine drops it. Server-side `expires_at` IS authoritative — the user observed HP regen rate change in response to the writes — but the engine appears to cache a derived stat snapshot that isn't immediately invalidated by zeroing Table A.
+[`Hooks::Effect::BroadcastDelta`](../source/server/hooks/effect/hook_broadcast_effects.cpp)
+is attached in `Lifx::Server::AttachHooks`. For effect **47**, an entry with
+`expires_at_ms > applied_at_ms` is processed through `ResolveResurrectionMs`.
+The callback, per-player and global overrides can replace the requested duration;
+the hook updates both the outgoing entry and the matching server row. Entries
+with `expires_at_ms <= applied_at_ms`, including the zero-expiry clear, pass
+through without a duration override.
 
-3. **Secondary effect storage exists but couldn't be localized.** `lifxFindEffect(47)` on a fresh post-respawn Player returned only one inline hit (`+0x16A8`), confirming Table A holds the only literal-ID reference. But the residual penalty after clear strongly suggests the engine maintains a second structure (an "active effects manager" sub-object holding pointers to Table A rows, plus pre-computed stat contributions). Finding it is the natural follow-up: snapshot Player on a wider range, watch for byte mutations on apply that aren't in Table A.
+Consequently, a manual expiry edit or `lifxBroadcastEffect(47)` can trigger the
+configured policy again. The broadcast-only command is not a guarantee that the
+underlying row remains unchanged through the entire call chain. See the
+[timer policy reference](../ghdocs/docs/timers.md) for the public controls.
+
+### Historical limitations — superseded API description
+
+The following observations came from the earlier direct-write investigation and
+are retained as history. They do not describe the current command bodies:
+
+1. **HUD remained stale after direct writes.** The old experiment found that
+   `Character_SendChanges` (`0x1BC3D0`) with `mask=0xFFFFFFFF` did not refresh the
+   effects panel. The missing-sender conclusion is superseded by the implemented
+   `ObjEffectsEvent` delta broadcaster above.
+
+2. **Residual penalties after expiry-only clears.** Earlier tests reported
+   Resurrected's HP_MAX penalty persisting for a tick or requiring a second clear.
+   The current `ClearEffect` also zeroes magnitude. That source change addresses
+   the residual value, but does not itself establish the exact tick on which every
+   engine-derived stat or client display will update.
+
+3. **Secondary storage was a hypothesis.** `lifxFindEffect(47)` returned one inline
+   hit at `+0x16A8` in the earlier probe. The residual penalty motivated an
+   active-effects-manager/cache hypothesis; it did not establish another structure's
+   identity or location. No such structure is newly confirmed by this correction.
 
 ### Follow-up work (separate issues)
 
-- **Locate the `AddEffect`/`RemoveEffect` net event sender** so client UI stays in sync with server state.
-- **Locate the "active effects manager" sub-object** so clears are atomic without the recompute lag.
+- **Validate the current commands in-game:** observe the owning client and another
+  client ghosting the Player after expiry edits and a clear. Check HUD timing and
+  derived stats separately from the server's broadcast log.
+- **Check Resurrected edits with the configured duration policy:** a requested
+  expiry may be replaced by the callback/per-player/global override.
+- **Investigate residual stat lag only if it reproduces with the current clear
+  implementation.** The older expiry-only observation is not current proof.
 - **Optional: wrap as TorqueScript helpers.** A `LiFxUtility::setEffectExpiry(charID, effectID, ms)` global function combining `getPlayer(charID).getControlObject().lifxSetEffectExpiry(effectID, ms)` would make server-side scripts ergonomic.
 
 ## Worked example: adding a new effect
@@ -353,3 +409,14 @@ Outputs:
 | `effects_fan_in.tsv` | Functions ranked by how many distinct parameter tokens they reference — the effect parser is the top row by a wide margin. |
 | `effects_classes.tsv` | 802 RTTI classes matching the `Effect`/`Ability`/`SpecialAttack`/`Trigger`/`Buff`/`Debuff` substrings. |
 | `effects_class_vtables.tsv` | First 16 vtable slots for every class in `effects_classes.tsv`. The basis for the inheritance table above. |
+
+## Status & provenance
+
+The **Player API documentation correction by Zbigi (2026-11-11)** was checked
+against `SetEffectExpiry`, `ExtendEffect`, `ClearEffect`, `BroadcastEffectCmd`,
+`PlayerEffectRow` and `BroadcastEffectDelta` in the linked implementation, plus
+the attached Resurrected broadcast hook and `ResolveResurrectionMs`. It changes
+documentation only. No server or client was started, and no new HUD, gameplay or
+network-delivery test was performed. Earlier observations elsewhere on this page
+retain their original evidence scope; historical limitations are labelled above
+instead of being presented as unimplemented features in the current code.

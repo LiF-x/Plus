@@ -64,6 +64,14 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
+**Zbigi** (LiFXXL) — AiPlayer documentation and reference evidence:
+
+- `docs/ai_and_spawning.md` — scope clarification and section 10: DB-backed
+  `Player` identities, local input, combat, work, lifecycle and real-server trials.
+  Authorship of the existing animal/NPC research is unchanged.
+- `docs/evidence/ai_player_reference.json` — selected source/report excerpts
+  and native byte verification for that contribution.
+
 ## Adding to this file
 
 When code from outside the project lands here, record it in two places: a credit

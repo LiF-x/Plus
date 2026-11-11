@@ -1,19 +1,29 @@
 ---
 title: AI behaviors & spawning
-status: verified
+status: re
 domain: reverse-engineering
-tags: [ai, behavior-tree, spawning, animation, triggers]
+tags: [ai, behavior-tree, spawning, animation, triggers, character-id]
 related: [animal_spawn.md, animal_data_model.md, character_ai_re.md]
-updated: 2026-06-26
+sources: [docs/evidence/ai_player_reference.json, docs/character_ai_re.md]
+updated: 2026-11-11
 ---
 
 # AI Behaviors and Spawning
 
 A complete map of the LiF AI behavior-tree system (42 nodes), the animal spawn manager, the Torque-standard trigger volumes, and concrete recipes for "spawn entity in zone, play animation on spawn".
 
+**Scope clarification and §10 contribution: Zbigi (LiFXXL), 2026-11-11.**
+For a server-controlled character with a real database `CharacterID`, see
+[§10, LifXXLAiPlayer](#10-lifxxlaiplayer--a-player-with-a-real-characterid).
+That implementation loads an ordinary `Player` and supplies its input locally;
+the behavior-tree catalog below describes a different engine path. The earlier
+wording that *every* AI-controlled creature uses these trees was too broad.
+The existing [character AI research](character_ai_re.md) covers the
+`NPCDecorative` approach. Its original findings and authorship are retained.
+
 ## 1. The AI behavior-tree system at a glance
 
-LiF runs every AI-controlled creature on a Torque-style behavior tree. Trees are authored as XML files, loaded by the **`BehaviorsManager`** singleton, and built from a fixed set of C++ node classes under the namespace `AI::Nodes::*`. The tree is "ticked" per frame; each node returns success / failure / running and the composites decide what to evaluate next.
+LiF's native animal/NPC behavior-tree path uses Torque-style behavior trees. Trees are authored as XML files, loaded by the **`BehaviorsManager`** singleton, and built from a fixed set of C++ node classes under the namespace `AI::Nodes::*`. The tree is "ticked" per frame; each node returns success / failure / running and the composites decide what to evaluate next.
 
 The system is **already extensively script-exposed** — you can register new behavior XMLs, hot-reload them, and inspect loaded trees from TorqueScript without touching C++:
 
@@ -701,3 +711,295 @@ initPlayerSpawnPoints();                              // (re)init player-only sp
 ```
 
 If you want me to chase the XML formats more precisely — read `_loadPatternsFromXML` (`0x19C7A0`) and `SpawnPattern::loadFromXml` (`0x19DD50`) decompiles to nail down the exact element/attribute names — say the word.
+
+## 10. LifXXLAiPlayer — a Player with a real CharacterID
+
+**Author: Zbigi (LiFXXL).** Reference revision: 2026-10-13; documentation
+review: 2026-11-11. [Reference evidence](evidence/ai_player_reference.json)
+contains selected source excerpts, native byte checks and extracts from the
+real-server trial report. This section documents the LiFXXL implementation;
+the commands below are **not supplied by this documentation change to Plus**.
+
+### 10.1 What "AiPlayer" means here
+
+`LifXXLAiPlayer` is the controller's name. It creates `new Player`, loads an
+existing database character through a local `GameConnection`, and provides
+movement/action decisions on the server. It does not instantiate a Torque
+class named `AIPlayer`, nor create an `NPCDecorative` and merely attach a label.
+The character has its own `CmCharacterInfo`, appearance, inventory, equipment,
+skills and vital state through the normal character-loading path.
+
+| Identity | Meaning |
+|---|---|
+| `CharacterID` / `charID` | Persistent `character.ID`; requested ID must match both `connection.getCharacterId()` and `actor.getCharacterId()`. |
+| `AccountID` | Account associated with the database row; reading it does not authenticate a remote client. |
+| `SimObjectID` | Runtime object ID. The connection and actor have different IDs; native unregister takes the **connection's saved object ID**, not `charID`. |
+| Native pointer | Address of the currently registered object; checked together with identity during teardown. |
+| GID usage | Native object-lifetime bookkeeping; separate from database and SimObject identity. |
+
+| Path | Character and behavior model |
+|---|---|
+| Animals / native AI (§§1–9) | Datablocks, native AI nodes, behavior XML and animal spawn rules. |
+| [Character-backed NPC research](character_ai_re.md) | `NPCDecorative` / `NPCS::PlayerBased`, custom tree nodes and its own character/equipment integration. |
+| LifXXLAiPlayer | Actual DB-loaded `Player`, local connection, normal player tick supplied with synthetic input; script controllers choose work or combat. |
+
+A real database character is still not a connected human client. This path
+has no remote peer, incoming player packets or client acknowledgements. It
+exercises character simulation and native actions, but does not establish a
+higher network-player limit. Registering a behavior XML alone does not install
+this controller or give its `Player` an animal behavior tree.
+
+### 10.2 Loading and spawning
+
+The reference uses dedicated, allowlisted character rows and asynchronous
+loading. Its lifecycle is:
+
+1. Require the mod and native hooks to be ready, the game running, and no
+   overlapping spawn batch. Validate positive IDs, allowlist membership and
+   duplicates. Reject IDs already present in `NetConnection::findByCharId`.
+2. Read existing, non-deleted character rows, including account, activation
+   state and saved position. Save the original `IsActive`; if loading requires
+   temporary activation, restore that value afterwards. This is not a database
+   character-creation command.
+3. Recheck registration after the DB callback. Create a local `GameConnection`,
+   register its exact identity with the native bridge, then set its character
+   fields, call `registerByCharacter()` and `initPlayerManager()`.
+4. Poll for loaded character data. The loader cancels the stock pending spawn
+   callback for its own connection, retries while the datablock remains
+   `DefaultPlayerData`, and fails on timeout. Defaults are `1000 ms` retry and
+   `60` attempts; asynchronous callbacks must remain valid throughout.
+5. Create `new Player` with the loaded datablock. Set `actor.client`,
+   `connection.Player`, control object and referenced client. The reference
+   script also calls `setScopeAlways()`.
+6. Verify both returned character IDs, bind the actor to the native controller,
+   set its position and enable processing. Resolve saved `GeoID` against a
+   loaded `TerrainBlock` and the actual terrain surface, rather than guessing Z.
+7. Restore any temporary `IsActive` change. Failed restoration or identity
+   validation enters the loader's failure/cleanup path.
+
+The duplicate checks do not implement a complete human-login takeover policy.
+Use characters reserved for server control; a port needs an explicit policy
+for concurrent login, reconnect, saving and ownership of a character session.
+
+**Object lifetime matters independently of visibility.** The reference binds
+the actor only after checking its process-interface vtable, then calls native
+`increaseGIDusage` once for local ownership. Rebinding the same actor is
+idempotent. Without this ownership, an earlier run retained 100 loader objects
+but zero `Player` objects. A loader count is therefore not a population count.
+The later ownership fix passed two load/cleanup/reload cycles without observers.
+The retained script still uses `setScopeAlways()`; the ownership fix alone does
+not establish any distance-based visibility policy.
+
+### 10.3 Native connection bridge and ABI
+
+All addresses below are **RVAs** for the reference Windows x64 server
+`ddctd_cm_yo_server.exe`, version `1.4.4.5`, size `12,441,032`, preferred image
+base `0x140000000`. The evidence records its SHA-256 and complete-instruction
+byte excerpts. These are build-specific observations, not portable offsets.
+
+| Entry / field | RVA or offset | Use in this reference |
+|---|---|---|
+| `postNetEvent` | `0x542CC0` | Intercept outgoing events for registered local connections. |
+| Event-interface `this` | Full connection `+0x1F8` | Subtract before looking up the full object in the local registry. |
+| NetEvent reference count | Event `+0x18` | Match native release ownership; destructor dispatch uses vtable slot `1`. |
+| `sendDisconnectPacket` | `0x548790` | Its second argument is the **full connection pointer** in this ABI. |
+| Player disconnect notification | `0x17DCC0` | Suppress only within the exact local connection's teardown scope. |
+| SimObject ID | Object `+0x90` | Preserve identity even after the connection is destroyed. |
+| Process-interface vtable | `0x75CC20`, at actor `+0x128` | Validate the expected native `Player` interface before binding. |
+| `increaseGIDusage` | `0x54A200` | Hold the actor independently of remote observers. |
+| ProcessList object callback | `0x13B8A0` | Feed registered actors through the engine's existing scheduling. |
+| `Player::processTick` | `0xFF5A0`, `this = actor +0x128` | Consume the local `Move` input. |
+| Neutral `Move` template | `0xACD410`, `96` bytes | Starting state before applying controls. |
+| Clear control binding | `0x137D40` | Null-capable native call used before connection destruction. |
+| Native respawn | `0xEC0F0` | Respawn a dead, registered combat character. |
+
+For a registered local connection, the bridge rejects outgoing events and
+releases them through the reference-count/destructor path. It does not queue
+events indefinitely waiting for a client that cannot acknowledge them, or
+fabricate acknowledgements. Other connections call the original functions.
+
+Two ABI details distinguish the current source from older notes: the event
+interface pointer needs the `0x1F8` adjustment, and the disconnect function's
+second argument must not be interpreted as an embedded `NetAddress`. The
+`notifyDisconnect` suppression requires the thread-local release scope,
+character ID, full pointer and saved object ID to agree; a global exception
+for every occurrence of a character ID would be too broad.
+
+### 10.4 Movement and decisions
+
+The `process` mode supplies a `Move` when the stock ProcessList visits the
+registered actor. The engine retains tick order, cadence and catch-up. The
+controller does not add a second physics timer. Unregistered actors take the
+original callback. `paused` suppresses this local-input tick path; `harness`
+allows explicit main-thread `LifXXL_tickAiActors()` calls for controlled trials.
+Pausing this input path is not a pause of every character subsystem.
+
+`LifXXL_setAiControls` validates finite input and writes the following layout:
+
+| Control | `Move` offset | Accepted input |
+|---|---|---|
+| X / Y | `0x18` / `0x1C` | Each in `[-1, 1]`. |
+| Yaw / pitch delta | `0x24` / `0x28` | Each in `[-0.25, 0.25]`; consumed once, then reset. |
+| Turn rate | `0x4C` | `[-2, 2]`; held across ticks. |
+| Seven button flags | Bytes `0x3D` through `0x43` | Mask `0..127`, one bit per byte. |
+| Attack direction | `0x44` | `-1..3`. |
+
+Movement axes and buttons remain held until replaced. Stop them explicitly
+when changing roles, beginning work, dying or stopping a controller. The
+archive's `crowd`, `workers` and `combat` scripts implement decisions above
+this input interface; a new behavior needs its own target selection, navigation,
+range checks and state machine. The native tick supplies player simulation,
+not a complete autonomous pathfinding policy.
+
+### 10.5 Combat, equipment, death and respawn
+
+The combat controller selects targets, approaches, turns, manages spacing and
+submits native attack/defence inputs. The current role initializer assigns
+sword-and-shield, axe, two-handed sword or anti-cavalry pike. Additional ranged
+and mounted helpers exist in the archive; their presence does not prove every
+role was exercised in the 100-character trial.
+
+Target assignment is a separate decision helper with capacity `200`: it scores
+enemy distance, adds `3` per already assigned attacker, and subtracts `1.5`
+for retaining a previous target. It does not apply damage. Weapon drawing uses
+the native slot-toggle entry at `0x102FD0`; the scripts confirm weapon-image
+state instead of treating a successful toggle return as proof it was drawn.
+Equipment and reserve ammunition use native `ItemMove` at `0x287290`, with
+owned items and slot checks. Ammunition slots are `10` or `12`.
+
+Death and respawn use the real character path. The native respawn wrapper
+checks registered ownership, its dedicated combat-ID range, finite position
+and dead state, clears controls and calls `0xEC0F0`. Its position override is
+restricted to that actor and return addresses `0xEC4BC` / `0xEC4CE`. The
+controller chooses a free terrain position and waits for equipment readiness
+before returning the character to combat.
+
+Respawn equipment is an **explicit trial fixture**: the script may supply
+missing items after normal death loss, then equip and verify them. This is
+not evidence that normal respawn restores lost gear. Similarly, worker
+material replenishment is fixture behavior, not self-sufficient AI production.
+Policies for loot, resupply and respawn costs belong in the intended game mode.
+
+### 10.6 Work through native abilities
+
+The worker controller covers Lower (`7`), Raise (`70`), Plant (`26`), Plow
+(`69`) and Sow (`133`). It approaches a target cell and submits native ability
+parameters for the loaded character. The bridge checks the dedicated worker
+identity/ability range, an explicitly armed work area, the engine thread,
+terrain availability and absence of an unfinished prior action.
+
+The definition lookup is `0x31CAE0`; native submission is `0x3B5640`.
+`LifXXL_aiWorkerAbility(id, x, y, execute)` has distinct results:
+
+| Result | Meaning |
+|---|---|
+| `0` | Requirement check denied. |
+| `3` | Requirement check allowed (`execute=0`); no action performed. |
+| `1` | Submitted (`execute=1`); completion and world changes still need checking. |
+| `2` | Prior action/async work still pending. |
+| Negative | Identity, area, terrain, definition or observer error. |
+
+With no remote progress-bar client, `LifXXL_aiWorkerProgress()` supplies the
+completion signal at `0x3B4F10` only after the native timing predicate accepts,
+for the matching character and ticket. It does not skip native duration or
+enable instant-action flags. Completion still runs through asynchronous engine
+ownership. `LifXXL_aiWorkerBusy()==0` alone is insufficient for safe reuse:
+`LifXXL_aiWorkerQuiescent()` returns `1` only after both active and asynchronous
+work have drained (`0` pending, `-1` observer unavailable).
+
+Confirm changed terrain/inventory after an action. Planting requires a forest
+before/after check; unchanged height or soil is not a failed planting result.
+Stop submitting actions and drain outstanding work before deleting a worker.
+
+### 10.7 Command surface and integration boundaries
+
+These names belong to the **LiFXXL reference**, not the stock engine or current
+Plus API. The loader owns the low-level registration/binding/release sequence.
+
+| Scope | Commands |
+|---|---|
+| Script entry points | `lifxxlAiPlayerSpawn(characterIds)`, `lifxxlAiPlayerStatus()`, `lifxxlAiPlayerClear()`. |
+| Global native diagnostics / scheduling | `LifXXL_aiPlayerConnectionHooksReady()`, `LifXXL_aiTickMode(mode)`, `LifXXL_aiTickStats([reset])`, `LifXXL_tickAiActors()`. |
+| Connection lifecycle | `LifXXL_registerAiPlayerConnection(charID)`, `LifXXL_bindAiActor(actorID)`, `LifXXL_beginAiPlayerConnectionRelease()`, `LifXXL_getAiPlayerDroppedEvents()`. |
+| Global final unregister | `LifXXL_unregisterAiPlayerConnection(connectionObjectID)`. |
+| Connection input / vitals | `LifXXL_setAiMove(x,y)`, `LifXXL_setAiControls(x,y,yaw,pitch,turnRate,buttonMask[,attackDirection])`, `LifXXL_aiVitals()`. |
+| Connection combat | `LifXXL_aiToggleWeapon(slot)`, `LifXXL_aiEquipFixture(root,item,slot)`, `LifXXL_aiEquipAmmo(root,item,slot)`, `LifXXL_aiRespawn(x,y,z)`. |
+| Connection work | `LifXXL_aiWorkerAbility(id,x,y,execute)`, `LifXXL_aiWorkerProgress()`, `LifXXL_aiWorkerBusy()`, `LifXXL_aiWorkerQuiescent()`. |
+| Target decisions / horse diagnostics | Global `LifXXL_aiCombatRetarget(count,positions,teams,alive,previous)`; horse method `LifXXL_aiHorseVitals()`. |
+
+The archived configuration starts disabled: `$LifXXLAiPlayer::TestEnabled=false`,
+with empty default and allowed character lists. Native attachment requires
+`LIFXXL_AIPLAYER_TEST=1` and `mods/LifXXLAiPlayer/test-only.enabled`, plus the
+expected byte signatures. Script startup also checks its intended server
+environment and `dbi`. These are deliberate deployment gates, not evidence
+that the recorded server trials were simulated.
+
+A port needs the loader, connection bridge, input layout, controllers and their
+native dependencies together. Worker completion requires the ability-lifetime
+observer; targeted respawn requires its scoped position hook. Copying only
+`mod.cs`, enabling a flag or registering a behavior XML is insufficient.
+The archived complete DLL is not a standalone AiPlayer release. The full source
+snapshot and the separately preserved installed scripts also differ; use the
+2026-10-13 full-source revision consistently when reviewing this design.
+
+| Capacity in that revision | What it limits |
+|---|---|
+| `500` | Maximum IDs accepted in one loader request. |
+| `512` | Slots in the native synthetic-connection registry. |
+| `200` | Actors accepted by the combat-target decision helper. |
+| `100` workers / separately `100` fighters | Populations observed in the cited real-server trials. |
+
+These bounds are not interchangeable. Older archive revisions have different
+limits and incomplete movement/combat features. None of these constants
+certifies 500 concurrent clients or 500 combatants.
+
+### 10.8 Cleanup and persistent effects
+
+Stop role/controller schedules and drain native work first. Preserve the actor
+and both client links while connection destruction releases `CmCharacterInfo`:
+its `stopSim()` path still needs to resolve the loaded player. Cancel pending
+load callbacks, enter the exact native release scope, clear the native control
+binding, call `unregisterByCharacter()` and destroy the connection. Then
+unregister the bridge slot using the saved **connection SimObjectID**. Only
+afterwards clear referenced-client links and delete a surviving actor.
+
+Restore temporary activation changes and verify no connection, actor or
+character registration remains before reloading the same identity. Do not
+balance the local GID ownership by calling `decreaseGIDusage` during destruction:
+reaching zero there can recursively delete the player; the reference relies
+on explicit character/player teardown instead.
+
+Cleanup removes runtime actors, not the consequences of their gameplay.
+Terrain work, crops, trees, item use and character-state writes can persist in
+the actual world database. The archive records that these effects were not
+rolled back when AiPlayer was separated from the main installation.
+
+### 10.9 Status & provenance
+
+**Author: Zbigi.** The [evidence file](evidence/ai_player_reference.json) includes
+reviewable source excerpts and selected report passages. The reference is an
+archive of work on a real LiFXXL server, not proof that this optional controller
+is enabled on the current server. Documentation preparation read that archive
+and checked native bytes; it did not run a new gameplay trial or deploy Plus.
+
+The 2026-10-13 report records these **separate real-server runs**:
+
+| Observation | Recorded result and interpretation |
+|---|---|
+| Local-owner lifecycle | Two load / 30 seconds without observers / cleanup / reload cycles passed; no residual player, connection or character registration. |
+| 100 workers | 34 terrain, 33 forest, 33 crop workers; 140 samples retained 100 valid `Player` objects. Some exhausted targets and rested. |
+| Confirmed cell changes | `1022` Lower + `2059` Raise + `417` Plow + `1149` Sow = `4647` results with `cell_verified=1`. |
+| Incomplete confirmation | Another `890` Raise results lacked confirmed cell changes. `1026` planting-path completions lacked a forest baseline, so they are not a confirmed new-tree count. |
+| 100 fighters, after removing workers | `104` completed respawns, zero recorded respawn failures; 51 samples showed 100 objects and 99–100 alive. |
+| Respawn readiness | Death detection through equipment readiness: median `521 ms`, minimum `20 ms`, maximum `1464 ms`. |
+| HP-change counter | Last sample: `2450` controller-observed changes; not a count of unique hits or packets. |
+
+The report explicitly states there were no remote clients in those measurement
+windows and no client RTT measurement. These were real server runs; the results
+have a narrower scope for networking and player experience. They do not establish
+combined worker/combat capacity, 200-fighter acceptance, 500-player acceptance
+or continuous long-term operation.
+
+The page uses `status: re` because it combines existing engine research with
+this build-specific implementation and bounded runtime evidence. The inherited
+animal/XML recipes in §§1–9 were not revalidated by the AiPlayer review.

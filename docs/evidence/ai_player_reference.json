@@ -1,0 +1,608 @@
+{
+  "title": "LifXXLAiPlayer: DB-backed Player lifecycle and native input",
+  "author": "Zbigi",
+  "reviewed": "2026-11-11",
+  "canonical_document": "docs/ai_and_spawning.md",
+  "reference_revision": "2026-10-13 full-source archive",
+  "scope": "Selected AiPlayer source and real-server report excerpts; this is documentation, not a Plus implementation or a new gameplay trial.",
+  "provenance": "Source excerpts are exact selected lines. The report excerpts are original Polish text; the canonical document provides the English interpretation. Excerpts are not complete source files or raw telemetry.",
+  "binary": {
+    "name": "ddctd_cm_yo_server.exe",
+    "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+    "size_bytes": 12441032,
+    "image_base": "0x140000000",
+    "file_version": "1.4.4.5"
+  },
+  "code_sites": [
+    {
+      "name": "postNetEvent",
+      "rva": "0x542cc0",
+      "file_offset": "0x5420c0",
+      "bytes": "40 53 55 56 57 41 56 B8 70 18 00 00 E8 FF CC 19 00 48 2B E0 48 C7 44 24 50 FE FF FF FF 48 8B DA",
+      "instructions": [
+        "0x542cc0: push rbx",
+        "0x542cc2: push rbp",
+        "0x542cc3: push rsi",
+        "0x542cc4: push rdi",
+        "0x542cc5: push r14",
+        "0x542cc7: mov eax, 0x1870",
+        "0x542ccc: call 0x1406df9d0",
+        "0x542cd1: sub rsp, rax",
+        "0x542cd4: mov qword ptr [rsp + 0x50], 0xfffffffffffffffe",
+        "0x542cdd: mov rbx, rdx"
+      ]
+    },
+    {
+      "name": "sendDisconnectPacket",
+      "rva": "0x548790",
+      "file_offset": "0x547b90",
+      "bytes": "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 B8 30 19 00 00 E8 26 72 19 00 48 2B E0 48 8B CA",
+      "instructions": [
+        "0x548790: mov qword ptr [rsp + 8], rbx",
+        "0x548795: mov qword ptr [rsp + 0x10], rbp",
+        "0x54879a: mov qword ptr [rsp + 0x18], rsi",
+        "0x54879f: push rdi",
+        "0x5487a0: mov eax, 0x1930",
+        "0x5487a5: call 0x1406df9d0",
+        "0x5487aa: sub rsp, rax",
+        "0x5487ad: mov rcx, rdx"
+      ]
+    },
+    {
+      "name": "notifyDisconnect",
+      "rva": "0x17dcc0",
+      "file_offset": "0x17d0c0",
+      "bytes": "48 8B C4 57 41 54 41 55 41 56 41 57 48 83 EC 40 48 C7 40 C8 FE FF FF FF 48 89 58 10 48 89 68 18",
+      "instructions": [
+        "0x17dcc0: mov rax, rsp",
+        "0x17dcc3: push rdi",
+        "0x17dcc4: push r12",
+        "0x17dcc6: push r13",
+        "0x17dcc8: push r14",
+        "0x17dcca: push r15",
+        "0x17dccc: sub rsp, 0x40",
+        "0x17dcd0: mov qword ptr [rax - 0x38], 0xfffffffffffffffe",
+        "0x17dcd8: mov qword ptr [rax + 0x10], rbx",
+        "0x17dcdc: mov qword ptr [rax + 0x18], rbp"
+      ]
+    },
+    {
+      "name": "increaseGIDusage",
+      "rva": "0x54a200",
+      "file_offset": "0x549600",
+      "bytes": "40 53 57 B8 58 18 00 00 E8 C3 57 19 00 48 2B E0 FF 81 20 01 00 00 48 8B FA 80 B9 24 01 00 00 00",
+      "instructions": [
+        "0x54a200: push rbx",
+        "0x54a202: push rdi",
+        "0x54a203: mov eax, 0x1858",
+        "0x54a208: call 0x1406df9d0",
+        "0x54a20d: sub rsp, rax",
+        "0x54a210: inc dword ptr [rcx + 0x120]",
+        "0x54a216: mov rdi, rdx",
+        "0x54a219: cmp byte ptr [rcx + 0x124], 0"
+      ]
+    },
+    {
+      "name": "processObject",
+      "rva": "0x13b8a0",
+      "file_offset": "0x13aca0",
+      "bytes": "40 55 56 57 41 56 41 57 48 83 EC 30 48 C7 44 24 20 FE FF FF FF 48 89 5C 24 60 48 8B DA 48 8B F9",
+      "instructions": [
+        "0x13b8a0: push rbp",
+        "0x13b8a2: push rsi",
+        "0x13b8a3: push rdi",
+        "0x13b8a4: push r14",
+        "0x13b8a6: push r15",
+        "0x13b8a8: sub rsp, 0x30",
+        "0x13b8ac: mov qword ptr [rsp + 0x20], 0xfffffffffffffffe",
+        "0x13b8b5: mov qword ptr [rsp + 0x60], rbx",
+        "0x13b8ba: mov rbx, rdx",
+        "0x13b8bd: mov rdi, rcx"
+      ]
+    },
+    {
+      "name": "Player_processTick",
+      "rva": "0xff5a0",
+      "file_offset": "0xfe9a0",
+      "bytes": "48 8B C4 55 56 57 41 54 41 55 41 56 41 57 48 8D A8 A8 FE FF FF 48 81 EC 20 02 00 00",
+      "instructions": [
+        "0xff5a0: mov rax, rsp",
+        "0xff5a3: push rbp",
+        "0xff5a4: push rsi",
+        "0xff5a5: push rdi",
+        "0xff5a6: push r12",
+        "0xff5a8: push r13",
+        "0xff5aa: push r14",
+        "0xff5ac: push r15",
+        "0xff5ae: lea rbp, [rax - 0x158]",
+        "0xff5b5: sub rsp, 0x220"
+      ]
+    },
+    {
+      "name": "setControlObject",
+      "rva": "0x137d40",
+      "file_offset": "0x137140",
+      "bytes": "48 89 5C 24 20 56 57 41 56 48 83 EC 20 48 8B 81 38 0B 00 00 33 F6 48 8B DA 48 8B F9 48 85 C0",
+      "instructions": [
+        "0x137d40: mov qword ptr [rsp + 0x20], rbx",
+        "0x137d45: push rsi",
+        "0x137d46: push rdi",
+        "0x137d47: push r14",
+        "0x137d49: sub rsp, 0x20",
+        "0x137d4d: mov rax, qword ptr [rcx + 0xb38]",
+        "0x137d54: xor esi, esi",
+        "0x137d56: mov rbx, rdx",
+        "0x137d59: mov rdi, rcx",
+        "0x137d5c: test rax, rax"
+      ]
+    },
+    {
+      "name": "RespawnPlayer",
+      "rva": "0xec0f0",
+      "file_offset": "0xeb4f0",
+      "bytes": "40 55 53 56 57 41 56 48 8D AC 24 20 E8 FF FF B8 E0 18 00 00 E8 C7 38 5F 00 48 2B E0",
+      "instructions": [
+        "0xec0f0: push rbp",
+        "0xec0f2: push rbx",
+        "0xec0f3: push rsi",
+        "0xec0f4: push rdi",
+        "0xec0f5: push r14",
+        "0xec0f7: lea rbp, [rsp - 0x17e0]",
+        "0xec0ff: mov eax, 0x18e0",
+        "0xec104: call 0x1406df9d0",
+        "0xec109: sub rsp, rax"
+      ]
+    },
+    {
+      "name": "toggleWeapon",
+      "rva": "0x102fd0",
+      "file_offset": "0x1023d0",
+      "bytes": "4C 8B DC 57 41 56 41 57 48 83 EC 50 49 C7 43 C8 FE FF FF FF 49 89 5B 08 49 89 6B 10 49 89 73 18",
+      "instructions": [
+        "0x102fd0: mov r11, rsp",
+        "0x102fd3: push rdi",
+        "0x102fd4: push r14",
+        "0x102fd6: push r15",
+        "0x102fd8: sub rsp, 0x50",
+        "0x102fdc: mov qword ptr [r11 - 0x38], 0xfffffffffffffffe",
+        "0x102fe4: mov qword ptr [r11 + 8], rbx",
+        "0x102fe8: mov qword ptr [r11 + 0x10], rbp",
+        "0x102fec: mov qword ptr [r11 + 0x18], rsi"
+      ]
+    },
+    {
+      "name": "ItemMove",
+      "rva": "0x287290",
+      "file_offset": "0x286690",
+      "bytes": "48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 30 FF FF FF 48 81 EC D0 01 00 00",
+      "instructions": [
+        "0x287290: mov qword ptr [rsp + 8], rcx",
+        "0x287295: push rbp",
+        "0x287296: push rsi",
+        "0x287297: push rdi",
+        "0x287298: push r12",
+        "0x28729a: push r13",
+        "0x28729c: push r14",
+        "0x28729e: push r15",
+        "0x2872a0: lea rbp, [rsp - 0xd0]",
+        "0x2872a8: sub rsp, 0x1d0"
+      ]
+    },
+    {
+      "name": "abilityDefinition",
+      "rva": "0x31cae0",
+      "file_offset": "0x31bee0",
+      "bytes": "89 54 24 10 48 B8 25 23 22 84 E4 9C F2 CB 44 8B D2 48 8B D1 48 B9 B3 01 00 00 00 01 00 00",
+      "instructions": [
+        "0x31cae0: mov dword ptr [rsp + 0x10], edx",
+        "0x31cae4: movabs rax, 0xcbf29ce484222325",
+        "0x31caee: mov r10d, edx",
+        "0x31caf1: mov rdx, rcx",
+        "0x31caf4: movabs rcx, 0x100000001b3"
+      ]
+    },
+    {
+      "name": "abilitySubmission",
+      "rva": "0x3b5640",
+      "file_offset": "0x3b4a40",
+      "bytes": "40 53 55 B8 48 18 00 00 E8 83 A3 32 00 48 2B E0 48 8B E9 48 8B DA 48 8D 0D FB 9C 47 00",
+      "instructions": [
+        "0x3b5640: push rbx",
+        "0x3b5642: push rbp",
+        "0x3b5643: mov eax, 0x1848",
+        "0x3b5648: call 0x1406df9d0",
+        "0x3b564d: sub rsp, rax",
+        "0x3b5650: mov rbp, rcx",
+        "0x3b5653: mov rbx, rdx",
+        "0x3b5656: lea rcx, [rip + 0x479cfb]"
+      ]
+    },
+    {
+      "name": "abilityCompletion",
+      "rva": "0x3b4f10",
+      "file_offset": "0x3b4310",
+      "bytes": "4C 89 4C 24 20 57 48 83 EC 60 48 C7 44 24 30 FE FF FF FF 48 89 5C 24 70 48 89 74 24 78 49 8B F1",
+      "instructions": [
+        "0x3b4f10: mov qword ptr [rsp + 0x20], r9",
+        "0x3b4f15: push rdi",
+        "0x3b4f16: sub rsp, 0x60",
+        "0x3b4f1a: mov qword ptr [rsp + 0x30], 0xfffffffffffffffe",
+        "0x3b4f23: mov qword ptr [rsp + 0x70], rbx",
+        "0x3b4f28: mov qword ptr [rsp + 0x78], rsi",
+        "0x3b4f2d: mov rsi, r9"
+      ]
+    }
+  ],
+  "native_data": [
+    {
+      "name": "neutral_Move_template",
+      "rva": "0xacd410",
+      "size_bytes": 96,
+      "bytes": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF FF FF FF 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
+    }
+  ],
+  "source_fragments": [
+    {
+      "id": "default_gates",
+      "origin": "server_mods/LifXXLAiPlayer/config.cs",
+      "excerpts": [
+        {
+          "first_line": 2,
+          "last_line": 7,
+          "text": "$LifXXLAiPlayer::TestEnabled = false;\n$LifXXLAiPlayer::DefaultCharacterIds = \"\";\n$LifXXLAiPlayer::AllowedCharacterIds = \"\";\n$LifXXLAiPlayer::CharacterLoadRetryMs = 1000;\n$LifXXLAiPlayer::CharacterLoadMaxAttempts = 60;\n$LifXXLAiPlayer::SameCellSpacing = 2.5;"
+        }
+      ]
+    },
+    {
+      "id": "loader_capacity_and_allowlist",
+      "origin": "server_mods/LifXXLAiPlayer/mod.cs",
+      "excerpts": [
+        {
+          "first_line": 185,
+          "last_line": 195,
+          "text": "    if (%count < 1 || %count > 500)\n    {\n        error(\"LifXXLAiPlayer: provide between 1 and 500 dedicated test CharacterIDs.\");\n        return false;\n    }\n\n    // Jedna mapa czlonkostwa zamiast ponownego skanowania listy dla kazdego ID.\n    %allowedCount = getWordCount($LifXXLAiPlayer::AllowedCharacterIds);\n    for (%i = 0; %i < %allowedCount; %i++)\n        %allowed[getWord($LifXXLAiPlayer::AllowedCharacterIds, %i)] = true;\n    %normalized = \"\";"
+        }
+      ]
+    },
+    {
+      "id": "load_connection",
+      "origin": "server_mods/LifXXLAiPlayer/mod.cs",
+      "excerpts": [
+        {
+          "first_line": 428,
+          "last_line": 455,
+          "text": "function LifXXLAiPlayerCharacter::beginCharacterLoad(%this)\n{\n    if (isObject(NetConnection::findByCharId(%this.charId)))\n    {\n        %this.fail(\"CharacterID became registered during DB activation\");\n        return;\n    }\n\n    %connection = new GameConnection(\"\")\n    {\n        lifxxlAiPlayerLoader = %this;\n        lifxxlAiPlayerSynthetic = true;\n    };\n    if (!%connection.LifXXL_registerAiPlayerConnection(%this.charId))\n    {\n        %connection.delete();\n        %this.fail(\"CaptainHook rejected the server-local GameConnection\");\n        return;\n    }\n    %this.connectionObjectId = %connection.getId();\n    %connection.charId = %this.charId;\n    %connection.lifxxlAiPlayerAccountId = %this.accountId;\n    %connection.registerByCharacter();\n    %this.connection = %connection;\n    %this.state = \"LOADING\";\n    %connection.initPlayerManager();\n    LifXXLAiPlayer.schedule(100, \"pollCharacterInfo\", %this);\n}"
+        }
+      ]
+    },
+    {
+      "id": "loaded_player",
+      "origin": "server_mods/LifXXLAiPlayer/mod.cs",
+      "excerpts": [
+        {
+          "first_line": 491,
+          "last_line": 504,
+          "text": "    %loader.state = \"SPAWNING\";\n    %actor = new Player(\"\")\n    {\n        dataBlock = %datablock;\n    };\n    if (!isObject(%actor))\n    {\n        %loader.fail(\"new Player failed\");\n        return;\n    }\n\n    %loader.actor = %actor;\n    %actor.client = %connection;\n    %connection.Player = %actor;"
+        },
+        {
+          "first_line": 507,
+          "last_line": 513,
+          "text": "    %actor.setScopeAlways();\n    %connection.setControlObject(%actor);\n    if (isMethod(Player, setReferencedClient))\n    {\n        %actor.setReferencedClient(%connection);\n    }\n    %this.schedule(100, \"finishCharacterSpawn\", %loader);"
+        },
+        {
+          "first_line": 528,
+          "last_line": 544,
+          "text": "    if (%loader.connection.getCharacterId() != %loader.charId ||\n        %loader.actor.getCharacterId() != %loader.charId)\n    {\n        %loader.fail(\"Player did not inherit the expected CharacterID\");\n        return;\n    }\n\n    if (!%loader.connection.LifXXL_bindAiActor(%loader.actor.getId()))\n    {\n        %loader.fail(\"native actor binding failed\");\n        return;\n    }\n    %loader.actor.position = %loader.position;\n    %loader.actor.rotation = \"0 0 1 0\";\n    %loader.actor.setProcessTick(1);\n    %loader.state = \"ACTIVE\";\n    LifXXLAiPlayerActive.add(%loader);"
+        },
+        {
+          "first_line": 549,
+          "last_line": 559,
+          "text": "    if (%loader.changedIsActive)\n    {\n        %loader.state = \"RESTORING\";\n        dbi.Update(\n            \"UPDATE `character` SET IsActive =\" SPC\n                %loader.originalIsActive SPC \"WHERE ID =\" SPC %loader.charId,\n            LifXXLAiPlayerCharacterRestored,\n            %loader);\n        return;\n    }\n    %loader.finishOne(true);"
+        }
+      ]
+    },
+    {
+      "id": "release_order",
+      "origin": "server_mods/LifXXLAiPlayer/mod.cs",
+      "excerpts": [
+        {
+          "first_line": 657,
+          "last_line": 698,
+          "text": "function LifXXLAiPlayerCharacter::releaseRuntime(%this)\n{\n    // Keep Player and both client links intact while GameConnection destroys\n    // CharacterInfo. stopSim() must still be able to resolve the loaded Player.\n    if (isObject(%this.connection))\n    {\n        %connection = %this.connection;\n        %this.connection = 0;\n        %connection.lifxxlAiPlayerLoader = 0;\n        if (%connection.schDataLoaded !$= \"\")\n        {\n            cancel(%connection.schDataLoaded);\n            %connection.schDataLoaded = \"\";\n        }\n        if (!%connection.LifXXL_beginAiPlayerConnectionRelease())\n        {\n            error(\"LifXXLAiPlayer: cannot enter native release scope for objectId\" SPC\n                %this.connectionObjectId @ \".\");\n        }\n        %connection.unregisterByCharacter();\n        %connection.delete();\n    }\n    if (%this.connectionObjectId > 0)\n    {\n        if (!LifXXL_unregisterAiPlayerConnection(%this.connectionObjectId))\n        {\n            error(\"LifXXLAiPlayer: native connection release failed for objectId\" SPC\n                %this.connectionObjectId @ \".\");\n        }\n        %this.connectionObjectId = 0;\n    }\n    if (isObject(%this.actor))\n    {\n        if (isMethod(Player, setReferencedClient))\n        {\n            %this.actor.setReferencedClient(0);\n        }\n        %this.actor.client = 0;\n        %this.actor.delete();\n        %this.actor = 0;\n    }\n}"
+        }
+      ]
+    },
+    {
+      "id": "native_constants",
+      "origin": "server/hooks/engine/hook_ai_player_connection.cpp",
+      "excerpts": [
+        {
+          "first_line": 29,
+          "last_line": 36,
+          "text": "            constexpr std::uintptr_t kPostNetEventRva = 0x542CC0;\n            constexpr std::uintptr_t kSendDisconnectPacketRva = 0x548790;\n            constexpr std::uintptr_t kNotifyDisconnectRva = 0x17DCC0;\n            constexpr std::size_t kSimObjectIdOffset = 0x90;\n            constexpr std::size_t kNetAddressOffset = 0xB44;\n            constexpr std::size_t kNetEventRefCountOffset = 0x18;\n            constexpr std::size_t kGameConnectionBaseOffset = 0x1F8;\n            constexpr std::size_t kMaxSyntheticConnections = 512;"
+        }
+      ]
+    },
+    {
+      "id": "local_event_sink",
+      "origin": "server/hooks/engine/hook_ai_player_connection.cpp",
+      "excerpts": [
+        {
+          "first_line": 199,
+          "last_line": 229,
+          "text": "            void ReleaseRejectedNetEvent(LPVOID event)\n            {\n                auto* refCount = reinterpret_cast<volatile LONG*>(\n                    static_cast<std::uint8_t*>(event)\n                    + kNetEventRefCountOffset);\n                InterlockedIncrement(refCount);\n                const LONG previous = InterlockedExchangeAdd(refCount, -1);\n                if (previous == 1)\n                {\n                    auto** vtable = *reinterpret_cast<LPVOID**>(event);\n                    reinterpret_cast<DeleteNetEventFn>(vtable[1])(event);\n                }\n            }\n\n            bool __fastcall OnPostNetEvent(LPVOID connection, LPVOID event)\n            {\n                // Event interface this is GameConnection + 0x1F8; console\n                // commands receive the complete SimObject. Compare exact\n                // registered ownership without dereferencing another connection.\n                const auto object = reinterpret_cast<LPVOID>(\n                    reinterpret_cast<std::uintptr_t>(connection) - kGameConnectionBaseOffset);\n                SyntheticConnection* slot = FindByConnection(object);\n                if (slot == nullptr)\n                    return gPostNetEvent(connection, event);\n                if (event == nullptr)\n                    return gPostNetEvent(connection, event);\n\n                slot->droppedEvents.fetch_add(1, std::memory_order_relaxed);\n                ReleaseRejectedNetEvent(event);\n                return false;\n            }"
+        }
+      ]
+    },
+    {
+      "id": "disconnect_identity",
+      "origin": "server/hooks/engine/hook_ai_player_connection.cpp",
+      "excerpts": [
+        {
+          "first_line": 231,
+          "last_line": 265,
+          "text": "            void __fastcall OnSendDisconnectPacket(\n                LPVOID netInterface,\n                LPVOID address,\n                const char* reason)\n            {\n                // Native second argument is the full connection, not NetAddress.\n                SyntheticConnection* slot = FindByConnection(address);\n                if (slot != nullptr)\n                {\n                    slot->suppressedDisconnectPackets.fetch_add(\n                        1,\n                        std::memory_order_relaxed);\n                    return;\n                }\n                gSendDisconnectPacket(netInterface, address, reason);\n            }\n\n            void __fastcall OnNotifyDisconnect(LPVOID manager, U32 characterId)\n            {\n                SyntheticConnection* slot = gReleaseScope.slot;\n                if (slot != nullptr\n                    && gReleaseScope.characterId == characterId\n                    && slot->connection.load(std::memory_order_acquire)\n                        == gReleaseScope.connection\n                    && slot->objectId.load(std::memory_order_acquire)\n                        == gReleaseScope.objectId\n                    && slot->characterId.load(std::memory_order_acquire)\n                        == characterId)\n                {\n                    slot->suppressedPlayerNotifications.fetch_add(\n                        1,\n                        std::memory_order_relaxed);\n                    return;\n                }\n                gNotifyDisconnect(manager, characterId);"
+        }
+      ]
+    },
+    {
+      "id": "local_player_owner",
+      "origin": "server/hooks/engine/hook_ai_player_connection.cpp",
+      "excerpts": [
+        {
+          "first_line": 454,
+          "last_line": 479,
+          "text": "            bool BindAiActor(LPVOID connection, S32 argc, const char* argv[])\n            {\n                auto* slot = FindByConnection(connection);\n                U32 actorId = 0;\n                if (!slot || argc != 3 || !ParseU32(argv[2], actorId)) return false;\n                const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));\n                auto* actor = reinterpret_cast<FindObjectFn>(base + 0x428D00)(argv[2]);\n                if (!actor || *reinterpret_cast<std::uintptr_t*>(static_cast<unsigned char*>(actor) + 0x128) != base + 0x75CC20)\n                    return false;\n                if (slot->actor == actor && slot->actorId == actorId) return true;\n                // A server-local owner must keep its Player alive independently\n                // of real clients. LiF deletes a Player when the last remote ghost\n                // releases GID usage. Stock explicit CharacterInfo/Player teardown\n                // still destroys the object; this embedded counter owns no heap\n                // resource and dies with it. Never balance it via decreaseGIDusage\n                // during teardown: reaching zero would recursively delete Player.\n                using IncreaseGidUsageFn = void (__fastcall*)(LPVOID, const char*);\n                reinterpret_cast<IncreaseGidUsageFn>(base + 0x54A200)(\n                    actor, \"LifXXLAiPlayer server-local owner\");\n                slot->actor = actor;\n                slot->actorId = actorId;\n                slot->moveX = slot->moveY = 0;\n                slot->controls = {};\n                slot->harnessTicks = slot->processTicks = slot->processVisits = 0;\n                gActorPointerMask |= ConnectionPointerBit(actor);\n                return true;"
+        }
+      ]
+    },
+    {
+      "id": "clear_control",
+      "origin": "server/hooks/engine/hook_ai_player_connection.cpp",
+      "excerpts": [
+        {
+          "first_line": 380,
+          "last_line": 383,
+          "text": "                using SetControlObjectFn = void (__fastcall*)(LPVOID, LPVOID);\n                const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));\n                reinterpret_cast<SetControlObjectFn>(base + 0x137D40)(object, nullptr);\n                return true;"
+        }
+      ]
+    },
+    {
+      "id": "player_tick",
+      "origin": "server/hooks/engine/hook_ai_player_connection.cpp",
+      "excerpts": [
+        {
+          "first_line": 664,
+          "last_line": 695,
+          "text": "            void TickOne(SyntheticConnection& slot)\n            {\n                const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));\n                alignas(16) std::array<unsigned char, 96> move{};\n                std::memcpy(move.data(), reinterpret_cast<const void*>(base + 0xACD410), move.size());\n                AiControlInput::Apply(move.data(),slot.controls);\n                reinterpret_cast<PlayerTickFn>(base + 0xFF5A0)(\n                    static_cast<unsigned char*>(slot.actor) + 0x128, move.data(), true);\n            }\n\n            void __fastcall OnProcessObject(LPVOID list, LPVOID processObject)\n            {\n                const auto actor = reinterpret_cast<LPVOID>(reinterpret_cast<std::uintptr_t>(processObject) - 0x128);\n                if (gActorPointerMask & ConnectionPointerBit(actor))\n                {\n                    for (auto& slot : gSyntheticConnections)\n                    {\n                        if (slot.actor != actor || !slot.connection.load(std::memory_order_acquire)) continue;\n                        ++slot.processVisits;\n                        // This branch only supplies synthetic input. The stock ProcessList\n                        // decides ordering, cadence and catch-up. No extra timer in mode 2.\n                        // Real players and every other ProcessObject use the original path.\n                        if (gAiTickMode == 2 && *(static_cast<unsigned char*>(processObject) + 0x20))\n                        {\n                            TickOne(slot);\n                            ++slot.processTicks;\n                        }\n                        return;\n                    }\n                }\n                gProcessObject(list, processObject);\n            }"
+        }
+      ]
+    },
+    {
+      "id": "native_respawn",
+      "origin": "server/hooks/engine/hook_ai_player_connection.cpp",
+      "excerpts": [
+        {
+          "first_line": 620,
+          "last_line": 634,
+          "text": "                auto* stats=static_cast<unsigned char*>(slot->actor)+0xAA8;\n                using DeadFn=bool(__fastcall*)(void*);\n                const auto dead=*reinterpret_cast<DeadFn*>(*reinterpret_cast<unsigned char**>(stats)+0x38);\n                if(!dead(stats))return false;\n                const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));\n                constexpr unsigned char prefix[]{0x40,0x55,0x53,0x56,0x57,0x41,0x56};\n                if(std::memcmp(reinterpret_cast<void*>(base+0xEC0F0),prefix,sizeof prefix)) {\n                    Con::Error(\"CROWD_RESPAWN unsupported native prologue\");return false;\n                }\n                slot->controls={};slot->moveX=slot->moveY=0;\n                AiRespawn::Scope scope(slot->actor,point);\n                using RespawnFn=bool(__fastcall*)(void*);\n                const bool accepted=reinterpret_cast<RespawnFn>(base+0xEC0F0)(slot->actor);\n                Con::Info(\"CROWD_RESPAWN_NATIVE character=%u accepted=%u dead_after=%u\",character,unsigned(accepted),unsigned(dead(stats)));\n                return accepted && !dead(stats);"
+        }
+      ]
+    },
+    {
+      "id": "controls",
+      "origin": "server/hooks/engine/ai_control_input.h",
+      "excerpts": [
+        {
+          "first_line": 26,
+          "last_line": 46,
+          "text": "    return std::isfinite(s.x)&&std::isfinite(s.y)&&std::isfinite(s.yaw)&&\n        std::isfinite(s.pitch)&&std::isfinite(s.turnRate)&&\n        std::abs(s.x)<=1&&std::abs(s.y)<=1&&std::abs(s.yaw)<=0.25f&&\n        std::abs(s.pitch)<=0.25f&&std::abs(s.turnRate)<=2&&s.buttons<=127&&\n        s.attackDirection>=-1&&s.attackDirection<=3;\n}\ninline void Apply(unsigned char* move,State& s) {\n    std::memcpy(move+0x18,&s.x,4);\n    std::memcpy(move+0x1c,&s.y,4);\n    std::memcpy(move+0x24,&s.yaw,4);\n    std::memcpy(move+0x28,&s.pitch,4);\n    std::memcpy(move+0x4c,&s.turnRate,4);\n    std::memcpy(move+0x44,&s.attackDirection,4);\n    for(unsigned i=0;i<7;++i)move[0x3d+i]=static_cast<unsigned char>((s.buttons>>i)&1);\n    // Yaw/pitch sa przyrostem jednej wiadomosci sterowania, a nie predkoscia.\n    // Nadrabianie wielu tickow nie moze powtarzac tego samego ruchu myszy.\n    // Osie ruchu, przyciski i turnRate pozostaja przytrzymane.\n    s.yaw=0;\n    s.pitch=0;\n}\n}"
+        }
+      ]
+    },
+    {
+      "id": "respawn_scope",
+      "origin": "server/hooks/engine/ai_respawn_scope.h",
+      "excerpts": [
+        {
+          "first_line": 14,
+          "last_line": 20,
+          "text": "    ~Scope() { active_=previous_; }\n    Scope(const Scope&)=delete;\n    Scope& operator=(const Scope&)=delete;\n    static const float* Target(const void* player,std::uintptr_t caller,std::uintptr_t image) {\n        if(!active_ || active_->player_!=player ||\n           (caller!=image+0xEC4BC && caller!=image+0xEC4CE))return nullptr;\n        return active_->point_.data();"
+        }
+      ]
+    },
+    {
+      "id": "target_capacity",
+      "origin": "server/hooks/engine/ai_combat_targets.h",
+      "excerpts": [
+        {
+          "first_line": 9,
+          "last_line": 9,
+          "text": "constexpr std::size_t Capacity=200;"
+        },
+        {
+          "first_line": 30,
+          "last_line": 40,
+          "text": "    std::array<int,Capacity> assigned{},targets{};targets.fill(-1);\n    for (std::size_t i=0;i<n;++i) {\n        const auto& own=actors[i];float best=1e9f;\n        if (!own.alive) continue;\n        for (std::size_t j=0;j<n;++j) {\n            const auto& other=actors[j];if (own.team==other.team || !other.alive) continue;\n            const float x=own.x-other.x,y=own.y-other.y,z=own.z-other.z;\n            float score=std::sqrt(x*x+y*y+z*z)+float(assigned[j])*3.0f;\n            if (own.previous==int(j)) score-=1.5f;\n            if (score<best) {best=score;targets[i]=int(j);}\n        }"
+        }
+      ]
+    },
+    {
+      "id": "worker_quiescence",
+      "origin": "server/hooks/engine/worker_ability_bridge.cpp",
+      "excerpts": [
+        {
+          "first_line": 97,
+          "last_line": 103,
+          "text": "int Quiescent(unsigned character) {\n    std::string error;\n    if(Hooks::Engine::ValidateObservedAbilityQuiescence(character,error)) return 1;\n    if(error==\"arena-ability-pending-active-perform\" || error==\"arena-ability-pending-async-context\") return 0;\n    Con::Error(\"WORKER_QUIESCENCE char=%u error=%s\",character,error.c_str());\n    return -1;\n}"
+        }
+      ]
+    },
+    {
+      "id": "worker_completion",
+      "origin": "server/hooks/engine/worker_ability_bridge.cpp",
+      "excerpts": [
+        {
+          "first_line": 113,
+          "last_line": 126,
+          "text": "    }\n    if(!imp) return 0;\n    const auto ticket=Field<unsigned char>(imp,0x30);\n    if(ticket!=tickets[character-203] || Field<unsigned>(imp,0x20)!=character) return -2;\n    // The stock client normally sends 'done' after its progress bar. Synthetic\n    // connections drop UI events, so send its equivalent only after the native\n    // timing predicate accepts, and once before AsyncBase takes ownership.\n    if(Field<unsigned>(imp,0xF0)!=2 || Field<unsigned char>(imp,0xE8)) return 2;\n    auto** vtable=*reinterpret_cast<void***>(imp);\n    if(!reinterpret_cast<bool(__fastcall*)(void*)>(vtable[6])(imp)) return 2;\n    void* completionPayload[2]{};\n    Fn<void(__fastcall*)(void*,unsigned,unsigned char,void*)>(0x3B4F10)(manager,character,ticket,completionPayload);\n    Con::Info(\"CROWD_WORKER_DONE_SIGNAL char=%u ticket=%u\",character,ticket);\n    return 1;"
+        }
+      ]
+    },
+    {
+      "id": "worker_submission",
+      "origin": "server/hooks/engine/worker_ability_bridge.cpp",
+      "excerpts": [
+        {
+          "first_line": 145,
+          "last_line": 166,
+          "text": "    static_assert(sizeof(entity)==16);\n    Params params; void* p=params.bytes.data();\n    Field<void*>(p,0)=connection;\n    Field<unsigned>(p,0x18)=character;\n    auto* manager=*reinterpret_cast<void**>(Base()+0xB539B0);\n    auto* definition=Fn<void*(__fastcall*)(void*,unsigned)>(0x31CAE0)(manager,ability);\n    if(!definition) { Con::Error(\"WORKER_ABILITY missing stock definition %u\",ability); return -4; }\n    Field<void*>(p,0x20)=definition;\n    auto& ticket=tickets[character-203]; ticket=static_cast<unsigned char>((ticket%254)+1);\n    Field<unsigned char>(p,0x28)=ticket;\n    // Native shared_ptr copy preserves ownership for queued/async execution.\n    Fn<void(__fastcall*)(void*,const void*)>(0x08FA00)(params.bytes.data()+0x30,&entity);\n    // All GM/test/instant flags remain stock defaults (zero).\n    if(!execute) {\n        auto** vtable=*reinterpret_cast<void***>(definition);\n        const bool allowed=reinterpret_cast<bool(__fastcall*)(void*,void*)>(vtable[4])(definition,p);\n        if(!allowed) { Con::Info(\"CROWD_WORKER_DENIED char=%u ability=%u\",character,ability); return 0; }\n        return 3; // Requirement check can send stock failure messages; it does not perform the action.\n    }\n    Fn<void(__fastcall*)(void*,void*)>(0x3B5640)(reinterpret_cast<void*>(Base()+0xB9A480),p);\n    Con::Info(\"CROWD_WORKER_SUBMITTED char=%u ability=%u ticket=%u xy=%.3f %.3f active=%d\",character,ability,ticket,x,y,Busy(character));\n    return 1; // Submission is not proof of terrain/inventory completion."
+        }
+      ]
+    },
+    {
+      "id": "worker_abilities",
+      "origin": "server_mods/LifXXLAiPlayer/workers.cs",
+      "excerpts": [
+        {
+          "first_line": 279,
+          "last_line": 287,
+          "text": "        %before=LifXXL_workerCell(%x,%y); %sub=getWord(%before,1); %ability=0;\n        if (%w.role==0) { %ability=7; if (%w.lowered) %ability=70; }\n        if (%w.role==1) { %ability=70; if (%sub==7 || %sub==8) %ability=26; }\n        if (%w.role==2)\n        {\n            %ability=70;\n            if (%sub==1 || %sub==9) %ability=69;\n            if (%sub==6 || %sub==10) %ability=133;\n            if (%sub==101) { %w.cellIndex++; continue; }"
+        }
+      ]
+    },
+    {
+      "id": "combat_roles",
+      "origin": "server_mods/LifXXLAiPlayer/combat/combat-roles.cs",
+      "excerpts": [
+        {
+          "first_line": 5,
+          "last_line": 15,
+          "text": "    %role=\"sword_shield\"; %image=\"NordicSword\";\n    if (%r==1) { %role=\"axe\"; %image=\"Bardiche\"; }\n    if (%r==2) { %role=\"two_hand\"; %image=\"Claymore\"; }\n    if (%r==3) { %role=\"anti_cavalry\"; %image=\"MediumPike\"; }\n    %this.role[%i]=%role; %this.primaryName[%i]=%image;\n    %this.ranged[%i]=(%role $= \"bow\" || %role $= \"crossbow\");\n    %this.shield[%i]=(%role $= \"sword_shield\");\n    %this.weaponRequestAt[%i]=0; %this.weaponWanted[%i]=-1;\n    %this.weaponConfirmed[%i]=false; %this.weaponReady[%i]=false;\n    %this.specialSwitchAt[%i]=0; %this.rangedEmpty[%i]=false;\n    %this.reserveIndex[%i]=0; %this.reserveAttempts[%i]=0; %this.reserveRetry[%i]=0;"
+        }
+      ]
+    },
+    {
+      "id": "respawn_supply",
+      "origin": "server_mods/LifXXLAiPlayer/combat/combat-respawn.cs",
+      "excerpts": [
+        {
+          "first_line": 80,
+          "last_line": 97,
+          "text": "    if (!%this.valid() || %rows==0 || %this.root<=0) { %this.fail(\"equipment_identity\"); return; }\n    %missing=0;\n    for (%g=0;%g<getWordCount(%this.slots);%g++)\n    {\n        %slot=getWord(%this.slots,%g); %want=getWord(%this.types,%g);\n        if (%item[%slot]>0 && %type[%slot]!=%want) { %this.fail(\"unexpected_equipment\"); return; }\n        if (%item[%slot]>0) { %this.ready[%slot]=true; continue; }\n        %missing++;\n        if (%this.phase $= \"INITIAL\")\n        {\n            %ok=%this.actor.inventoryAddItem(%want,1,50,10000,10000);\n            echo(\"CROWD_RESPAWN_FIXTURE_ITEM char=\" @ %this.charId SPC \"type=\" @ %want SPC \"slot=\" @ %slot SPC \"result=\" @ %ok);\n            if (%ok !$= \"\" && !%ok) { %this.fail(\"supply_rejected\"); return; }\n        }\n    }\n    if (%missing==0) { %this.finish(); return; }\n    if (%this.phase $= \"VERIFY\") %this.schedule(250,\"readEquipment\");\n    else { %this.phase=\"MOVING\"; %this.schedule(250,\"readItems\"); }"
+        }
+      ]
+    },
+    {
+      "id": "native_commands",
+      "origin": "server/hooks/engine/hook_ai_player_connection.cpp",
+      "excerpts": [
+        {
+          "first_line": 840,
+          "last_line": 857,
+          "text": "            Con::AddCommand(nullptr,\"LifXXL_aiCombatRetarget\",AiCombatRetarget,\"Pure melee target decisions: count,positions,teams,alive,previous. No engine mutation.\",6,6);\n            Con::AddCommand(\"GameConnection\",\"LifXXL_aiWorkerAbility\",static_cast<IntCallback>(AiWorkerAbility),\"Synthetic worker stock cell ability: id,x,y,execute (0=dry check)\",6,6);\n            Con::AddCommand(\"GameConnection\",\"LifXXL_aiWorkerBusy\",static_cast<IntCallback>(AiWorkerBusy),\"Read-only active stock ability entry; not async-quiescence proof\",2,2);\n            Con::AddCommand(\"GameConnection\",\"LifXXL_aiWorkerQuiescent\",static_cast<IntCallback>(AiWorkerQuiescent),\"1=idle including async lifetime, 0=pending, -1=observer unavailable\",2,2);\n            Con::AddCommand(\"GameConnection\",\"LifXXL_aiWorkerProgress\",static_cast<IntCallback>(AiWorkerProgress),\"Send stock completion only when native duration elapsed\",2,2);\n            Con::AddCommand(nullptr, \"LifXXL_aiTickMode\", static_cast<BoolCallback>(SetAiTickMode), \"paused/harness/process; synthetic actors only\", 2, 2);\n            Con::AddCommand(nullptr, \"LifXXL_aiTickStats\", static_cast<BoolCallback>(AiTickStats), \"Per-actor ticks, optional reset\", 1, 2);\n            Con::Info(\"LifXXL AI ProcessList hook attach=%ld.\", gProcessObjectAttachResult);\n            Con::AddCommand(\"GameConnection\", \"LifXXL_bindAiActor\", static_cast<BoolCallback>(BindAiActor), \"LifXXL_bindAiActor(actorId)\", 3, 3);\n            Con::AddCommand(\"GameConnection\", \"LifXXL_setAiMove\", static_cast<BoolCallback>(SetAiMove), \"Test-only local movement input x/y\", 4, 4);\n            Con::AddCommand(\"GameConnection\", \"LifXXL_setAiControls\", static_cast<BoolCallback>(SetAiControls), \"Test-only x y yaw pitch turnRate buttonMask [attackDirection]\", 8, 9);\n            Con::AddCommand(\"GameConnection\", \"LifXXL_aiVitals\", AiVitals, \"Synthetic actor: hardHP softHP hardStamina softStamina\", 2, 2);\n            Con::AddCommand(\"GameConnection\", \"LifXXL_aiRespawn\", AiRespawnPlayer, \"Test only: stock RespawnPlayer for dead synthetic combat fixture at x y z\", 5, 5);\n            Con::AddCommand(\"GameConnection\", \"LifXXL_aiEquipFixture\", AiEquipFixture, \"Test only: native ItemMove into equipment of owned synthetic combat fixture\", 5, 5);\n            Con::AddCommand(\"Horse\", \"LifXXL_aiHorseVitals\", AiHorseVitals, \"Read-only current native horse HP maxHP stamina\", 2, 2);\n            Con::AddCommand(\"GameConnection\", \"LifXXL_aiToggleWeapon\", static_cast<BoolCallback>(AiToggleWeapon), \"Synthetic actor: stock weapon slot toggle 0..5\", 3, 3);\n            Con::AddCommand(\"GameConnection\", \"LifXXL_aiEquipAmmo\", static_cast<BoolCallback>(AiEquipAmmo), \"Synthetic actor: move existing reserve root/item into ammo slot 10 or 12\", 5, 5);\n            Con::AddCommand(nullptr, \"LifXXL_tickAiActors\", static_cast<IntCallback>(TickAiActors), \"Test-only native Player tick\", 1, 1);"
+        }
+      ]
+    },
+    {
+      "id": "native_attach_gates",
+      "origin": "server/hooks/engine/hook_ai_player_connection.cpp",
+      "excerpts": [
+        {
+          "first_line": 759,
+          "last_line": 766,
+          "text": "        void AttachAiPlayerConnectionHook()\n        {\n            const char* server = std::getenv(\"LIFXXL_AIPLAYER_TEST\");\n            if (!server || std::strcmp(server, \"1\") != 0 ||\n                GetFileAttributesW(L\"mods\\\\LifXXLAiPlayer\\\\test-only.enabled\") == INVALID_FILE_ATTRIBUTES)\n                return;\n            const std::uintptr_t moduleBase = reinterpret_cast<std::uintptr_t>(\n                GetModuleHandleW(nullptr));"
+        }
+      ]
+    },
+    {
+      "id": "runtime_method",
+      "origin": "LiFXXL AiPlayer runtime report, 2026-10-13",
+      "excerpts": [
+        {
+          "first_line": 27,
+          "last_line": 31,
+          "text": "Brak rzeczywistych klientów podczas prób. Boty korzystają z natywnych\nPlayer, fizyki, akcji i obrażeń, ale nie odtwarzają kosztu 100 połączeń\nsieciowych. Pole players w metrykach połączeń pozostaje dlatego 0.\nPopulację sprawdzano osobno przez istniejące Player i identyfikatory fixture.\nRTT/ping klienta NIE ZMIERZONO. Czas ticka nie jest pingiem."
+        }
+      ]
+    },
+    {
+      "id": "runtime_lifetime",
+      "origin": "LiFXXL AiPlayer runtime report, 2026-10-13",
+      "excerpts": [
+        {
+          "first_line": 60,
+          "last_line": 67,
+          "text": "Osobno wdrożono istniejącego kandydata poprawki własności GID AiPlayer.\nPrzed restartem było 100 loaderów, ale ZERO Playerów. Taki stan nie jest\nobciążeniem setką postaci. Teraz syntetyczne połączenie utrzymuje Playera\nniezależnie od obserwatorów. Dwa cykle: load, clearScopeAlways, 30 sekund\nbez klientów, cleanup, ponowny load — przeszły. Po cleanup brak Playera,\npołączenia i rejestracji CharacterID. W dalszych próbach również utrzymano\nrzeczywiste 100 Playerów. To poprawka wiarygodności testu, nie zysk dla\nnormalnych graczy. Nie wykonano wejścia/wyjścia prawdziwego klienta."
+        }
+      ]
+    },
+    {
+      "id": "runtime_workers",
+      "origin": "LiFXXL AiPlayer runtime report, 2026-10-13",
+      "excerpts": [
+        {
+          "first_line": 84,
+          "last_line": 102,
+          "text": "100 ROBOTNIKÓW\n\n34 terraformacja, 33 las, 33 uprawy. Gotowość grupy około 10:14:51.\nOsobne liczenie Playerów: 140 próbek ze 100 poprawnymi obiektami,\npo próbkach ładowania. Zakończenie i cleanup 10:26:30.\nAkcje zakończone z potwierdzoną zmianą komórki:\n1022 obniżenia, 2059 podwyższeń, 417 orań, 1149 zasiewów = 4647 wyników.\nLiczniki kontrolera mogą różnić się od liczby rekordów wyników;\nmiarodajny powyższy licznik pochodzi z poszczególnych RESULT cell_verified=1.\nByło także 890 podwyższeń bez potwierdzonej zmiany i liczne odrzucenia\nprób. Nie przedstawiamy wszystkich zgłoszeń jako skutecznej pracy.\n\n1026 zakończeń ścieżki sadzenia wymaga osobnego sprawdzenia lasu;\nplant nie zmienia wysokości/gleby, więc cell_verified=0 nie oznacza tu błędu.\nOdczyt DB po teście: 957 komórek z TreePlantMethod=1 oraz 69 z metodą 0\nna wskazanych pozycjach. Nie wykonano snapshotu lasu przed tą próbą,\nwięc NIE jest to dowód posadzenia 957 nowych drzew w tym przebiegu.\nPóźniej część działek się wyczerpała, boty odpoczywały; nie był to test\n100 osób nieprzerwanie wykonujących akcję przez cały czas."
+        }
+      ]
+    },
+    {
+      "id": "runtime_combat",
+      "origin": "LiFXXL AiPlayer runtime report, 2026-10-13",
+      "excerpts": [
+        {
+          "first_line": 122,
+          "last_line": 122,
+          "text": "Osobny test po usunięciu robotników. Przygotowano wyłącznie niezaładowane"
+        },
+        {
+          "first_line": 124,
+          "last_line": 129,
+          "text": "wyposażenie (24 sloty). Bez leczenia w trakcie walki. Natywny respawn\npo śmierci; 104 zakończone odrodzenia, zero CROWD_RESPAWN_FAIL.\nOd wykrycia śmierci do gotowości wraz z wyposażeniem: mediana 521 ms,\nminimum 20 ms, maksimum 1464 ms. Nie obiecujemy zerowej przerwy w walce.\n51 próbek: 100 obiektów, 99–100 żywych; ostatnia próbka 2450 zdarzeń\nzmiany HP liczonych przez kontroler, a nie 2450 unikalnych pakietów trafień."
+        }
+      ]
+    }
+  ],
+  "runtime_report": {
+    "date": "2026-10-13",
+    "environment": "Actual LiFXXL dedicated-server execution with DB-backed Player actors",
+    "remote_clients_in_measurement_windows": 0,
+    "client_rtt_measured": false,
+    "independent_trials": true,
+    "workers": {
+      "actors": 100,
+      "valid_population_samples": 140,
+      "terrain_workers": 34,
+      "forest_workers": 33,
+      "crop_workers": 33,
+      "cell_verified": {
+        "lower": 1022,
+        "raise_": 2059,
+        "plow": 417,
+        "sow": 1149,
+        "total": 4647
+      },
+      "additional_unconfirmed_raise": 890,
+      "planting_path_completions_without_forest_baseline": 1026
+    },
+    "combat": {
+      "actors": 100,
+      "population_samples": 51,
+      "alive_range": [
+        99,
+        100
+      ],
+      "completed_respawns": 104,
+      "reported_respawn_failures": 0,
+      "readiness_ms": {
+        "min": 20,
+        "median": 521,
+        "max": 1464
+      },
+      "final_controller_hp_changes": 2450
+    },
+    "interpretation": "Historical report observations, not a new run or independently reproduced raw-telemetry analysis. Local actors do not reproduce 100 remote connections. Loader/registry capacities do not certify that population in gameplay."
+  }
+}

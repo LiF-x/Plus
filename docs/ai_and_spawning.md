@@ -3,13 +3,17 @@ title: AI behaviors & spawning
 status: verified
 domain: reverse-engineering
 tags: [ai, behavior-tree, spawning, animation, triggers]
-related: [animal_spawn.md, animal_data_model.md, character_ai_re.md]
-updated: 2026-06-26
+related: [animal_spawn.md, animal_data_model.md, character_ai_re.md, navmesh_world_bounds.md]
+updated: 2026-11-12
 ---
 
 # AI Behaviors and Spawning
 
 A complete map of the LiF AI behavior-tree system (42 nodes), the animal spawn manager, the Torque-standard trigger volumes, and concrete recipes for "spawn entity in zone, play animation on spawn".
+
+**Larger-map reference by Zbigi:** [Full-world navigation and cache](navmesh_world_bounds.md)
+covers `GlobalNavMesh` initialization for a complete 9 × 9 map, compatible
+cache bounds, current 81-terrain coverage and real-server startup observations.
 
 ## 1. The AI behavior-tree system at a glance
 

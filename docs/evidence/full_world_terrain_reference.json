@@ -1,0 +1,167 @@
+{
+  "author": "Zbigi",
+  "checked": "2026-11-11",
+  "method": "Read-only checks of reference executables, source configuration and the complete local 81-terrain baseline. This is asset/reference validation within the operating LiFXXL project, not a newly launched game session.",
+  "images": [
+    {
+      "binary": {
+        "name": "ddctd_cm_yo_server.exe",
+        "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+        "size_bytes": 12441032,
+        "image_base": "0x140000000"
+      },
+      "code_sites": [
+        {
+          "name": "registered_terrain_count",
+          "rva": "0x588fa4",
+          "file_offset": "0x5883a4",
+          "bytes": "8B 1D 5E 4B 67 00",
+          "instructions": [
+            "0x588fa4: mov ebx, dword ptr [rip + 0x674b5e]"
+          ]
+        },
+        {
+          "name": "terrain_array_element_and_rebuild",
+          "rva": "0x58903c",
+          "file_offset": "0x58843c",
+          "bytes": "8B CF 48 8B 05 CB 4A 67 00 48 8B 1C C8 48 8D 4D 90 E8 1E 0B F8 FF 48 85 DB 74 08 48 8B CB E8 B1 0B 00 00 FF C7",
+          "instructions": [
+            "0x58903c: mov ecx, edi",
+            "0x58903e: mov rax, qword ptr [rip + 0x674acb]",
+            "0x589045: mov rbx, qword ptr [rax + rcx*8]",
+            "0x589049: lea rcx, [rbp - 0x70]",
+            "0x58904d: call 0x140509b70",
+            "0x589052: test rbx, rbx",
+            "0x589055: je 0x14058905f",
+            "0x589057: mov rcx, rbx",
+            "0x58905a: call 0x140589c10",
+            "0x58905f: inc edi"
+          ]
+        },
+        {
+          "name": "per_terrain_geodata_dimensions",
+          "rva": "0x589ca7",
+          "file_offset": "0x5890a7",
+          "bytes": "48 8B B6 E0 00 00 00 4C 8B F6 49 C1 EE 20",
+          "instructions": [
+            "0x589ca7: mov rsi, qword ptr [rsi + 0xe0]",
+            "0x589cae: mov r14, rsi",
+            "0x589cb1: shr r14, 0x20"
+          ]
+        }
+      ]
+    },
+    {
+      "binary": {
+        "name": "yo_cm_client.exe",
+        "sha256": "1D3F7FD3E64B119DC032CDA77D353AFEFC340AF46C6B7AE30890A9BC99E37999",
+        "size_bytes": 24607688,
+        "image_base": "0x140000000"
+      },
+      "code_sites": [
+        {
+          "name": "client_axis_size_selection",
+          "rva": "0x18a139",
+          "file_offset": "0x189539",
+          "bytes": "E8 A2 6A 8E 00 B9 01 00 00 00 4C 8D 8F A8 01 00 00 84 C0 4C 8D 87 A0 01 00 00 BB 03 00 00 00 48 8D 97 98 01 00 00 0F 45 D9 89 9F 98 01 00 00 89 9F 9C 01 00 00 8B 8F 94 01 00 00 E8 87 04 00 00",
+          "instructions": [
+            "0x18a139: call 0x140a70be0",
+            "0x18a13e: mov ecx, 1",
+            "0x18a143: lea r9, [rdi + 0x1a8]",
+            "0x18a14a: test al, al",
+            "0x18a14c: lea r8, [rdi + 0x1a0]",
+            "0x18a153: mov ebx, 3",
+            "0x18a158: lea rdx, [rdi + 0x198]",
+            "0x18a15f: cmovne ebx, ecx",
+            "0x18a162: mov dword ptr [rdi + 0x198], ebx",
+            "0x18a168: mov dword ptr [rdi + 0x19c], ebx",
+            "0x18a16e: mov ecx, dword ptr [rdi + 0x194]",
+            "0x18a174: call 0x14018a600"
+          ]
+        }
+      ]
+    }
+  ],
+  "client_size_location": {
+    "file_offset": "0x189554",
+    "immediate_rva": "0x18A154",
+    "instruction_rva": "0x18A153",
+    "instruction": "mov ebx, 3",
+    "function_start_rva": "0x189F10",
+    "function_end_exclusive_rva": "0x18A30A",
+    "preferred_image_base": "0x140000000",
+    "scope": "A per-axis size selected as 3 or 1 and passed to the following helper; this instruction alone does not prove a universal coordinate-boundary mechanism."
+  },
+  "reference_server_script": {
+    "TerrainXCount": 3,
+    "TerrainYCount": 3,
+    "ServerXCount": 1,
+    "ServerYCount": 1,
+    "TerrainSkipCount": 441,
+    "ServerSkipCount": 0
+  },
+  "verified_map_package": {
+    "grid_x": 9,
+    "grid_y": 9,
+    "terrain_skip_count": 405,
+    "first_terrain_id": 406,
+    "last_terrain_id": 486,
+    "terrain_count": 81,
+    "files_checked": 243,
+    "index_header_bytes": 48,
+    "index_record_bytes": 8,
+    "server_data_record_bytes": 8,
+    "columns_per_terrain": 261121,
+    "total_columns": 21150801,
+    "checks": [
+      "Exactly one complete triplet for every expected terrain ID",
+      "Header identity and eight-byte server records",
+      "Complete 511 by 511 index",
+      "Every level range fits its corresponding data file",
+      "File hashes retained in the local verification inventory; individual map-file hashes are not published."
+    ]
+  },
+  "area_examples": [
+    {
+      "grid": 3,
+      "terrain_count": 9,
+      "relative_to_3x3": 1.0,
+      "total_columns": 2350089
+    },
+    {
+      "grid": 5,
+      "terrain_count": 25,
+      "relative_to_3x3": 2.7777777777777777,
+      "total_columns": 6528025
+    },
+    {
+      "grid": 9,
+      "terrain_count": 81,
+      "relative_to_3x3": 9.0,
+      "total_columns": 21150801
+    }
+  ],
+  "source_fingerprints": [
+    {
+      "origin_file": "dev/sourceServer/scripts/server/cm_config.cs",
+      "sha256": "C7FFF8D65A65069E13B9F3EF241F62BBEA0C929F2CC7F5817F310238BEBD696A"
+    },
+    {
+      "origin_file": "dev/sourceClient/scripts/cm_config.cs",
+      "sha256": "F35D0069305BD5979BDB99A25C84165AF67154DAC5B642B42A4DAECA65C2B5BF"
+    },
+    {
+      "origin_file": "captainHook/server/hooks/engine/hook_launcher_terrain.cpp",
+      "sha256": "B370BED89CAEFDA15F999E124BD1D7B68E0AC694176AB8B6F5EB80E15C802835"
+    },
+    {
+      "origin_file": "tools/terrain_format.py",
+      "sha256": "28BE7F86EFECC13535433709F36D1C1FBD5D197FE9F4DD7147A605181C8B302F"
+    }
+  ],
+  "source_facts": {
+    "configuration_timing": "The current LiFXXL source applies its override after Loading CmConfiguration and when Init of DB interface is observed, then reads back the values.",
+    "package_id_mapping": "The current 9x9 override sets TerrainSkipCount to 405; the baseline headers independently confirm terrain IDs 406..486.",
+    "client_format": "The inspected projection tool writes .ter2idxcl/.ter2datcl, four-byte surface records, separately from full eight-byte server geology records."
+  }
+}

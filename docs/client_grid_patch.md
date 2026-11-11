@@ -5,10 +5,18 @@ domain: client
 tags: [client, exe-patch, world-grid, federation, handoff]
 related: [loader_and_injection.md, sector_handoff_design.md, conventions.md]
 sources: [source/loader/pdh_loader.cpp, docs/loader_and_injection.md, docs/conventions.md, source/server/cm_offsets.h]
-updated: 2026-06-26
+updated: 2026-11-11
 ---
 
 # Client 9x9 grid-size patch
+
+**Reference clarification by Zbigi:** the newly fingerprinted client maps file
+offset `0x189554` to RVA `0x18A154`, inside `mov ebx, 3` at `0x18A153`.
+The surrounding instructions select a per-axis size of 3 or 1; that evidence
+alone does not establish a universal coordinate clamp. The earlier unmapped
+image description is superseded by the exact build and bytes in
+[Larger maps — full-world terrain loading](full_world_terrain.md), which also
+documents the complete data/configuration requirements for one server.
 
 > **Not sanctioned.** This documents a raw byte-patch of the client exe. **The project rule is "never patch the client/server exe binaries."** All client behaviour changes go through DLL injection (the same `pdh.dll`-proxy + Detours pattern LiFx uses on the server — see [`loader_and_injection.md`](loader_and_injection.md)), never a binary edit. This page records the clamp's location as a verified RE finding so we know **where to hook it from an injected DLL**; we do **not** apply the byte-patch in production.
 

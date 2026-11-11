@@ -4,7 +4,7 @@ status: re
 domain: reverse-engineering
 tags: [farming, harvest, crops, weather, fertility]
 related: [offsets.md, reverse_engineering.md, bloomery.md]
-sources: [offsets.md, docs/evidence/field_crop_native_reference.json]
+sources: [offsets.md, docs/evidence/field_crop_native_reference.json, docs/evidence/crop_food_feed_reference.json]
 updated: 2026-11-11
 ---
 
@@ -180,6 +180,147 @@ intended, review the client container filter and server consumption path as a
 separate feature. This result does not establish anything about animal taming,
 which is a different ability and food-selection path.
 
+### Make a new harvest edible by players
+
+**Implementation guide by Zbigi.** Start with the item's `objects_types` row,
+not its terrain substance ID or sow ability ID. The native **Eat** ability is
+`43`. Its `skill_types.xml` inventory-item requirement is:
+
+```xml
+<ent_req type="object_type_id" parent="1">227 228 229 230 231 232</ent_req>
+```
+
+The matching requirement exists in both reference client/server XMLs and the
+inspected LiFXXL merged XML. `parent="1"` permits descendants of those categories.
+The server's native Eat path independently checks the same ancestry through
+`0x27EB30`, at `0x370063..0x370110`. A menu entry by itself is not sufficient.
+The [food/feed evidence](evidence/crop_food_feed_reference.json) records the XML
+requirements, category rows and native instructions.
+
+| Parent category | Reference name | Use when defining food |
+| --- | --- | --- |
+| `232` | Other | Raw edible produce, following Peas (`354`) or Carrot (`358`). |
+| `231` | 1 ingredient | Food classified as a one-ingredient meal. |
+| `230` | 2 ingredients | Two-ingredient meal. |
+| `229` | 3 ingredients | Three-ingredient meal. |
+| `228` | 4 ingredients | Four-ingredient meal. |
+| `227` | 5 ingredients | Five-ingredient meal. |
+
+For a new raw vegetable intended to be eaten directly:
+
+1. Allocate an unused object-type ID, or edit the existing crop item rather than
+   defining a second row with its ID. Keep its sow/harvest mappings consistent.
+2. In that item's complete `objects_types` definition, use an appropriate edible
+   parent. For the Peas/Carrot pattern, the relevant field is:
+
+   ```xml
+   <ParentID>232</ParentID>
+   ```
+
+3. Retain a valid inventory-item definition, positive `UnitWeight`, stack size,
+   name/icon and translations. The parent field above is an edit to an existing
+   complete row, not a complete item definition or a new `IsEdible` flag.
+4. Export the corresponding server object-type/SQL data and deliver the matching
+   item and ability definitions to the client through the mod's normal data
+   pipeline. The existing Eat ability can handle this category; a new ability ID
+   or a new item-ID-specific Eat hook is unnecessary for this standard path.
+5. With a normal player who can eat, check the Eat action, consumed stack count,
+   hunger/food effects and retained behavior after reconnecting. Preserve the
+   normal server validation and consumption pipeline.
+
+**Category `250` is a trap for this purpose.** Its name is “Edible harvest”, but
+its ancestry is `250 -> 202 -> 16 -> 7 -> 2`; it does not descend from any of the
+six Eat categories. Category `21` (“Food and drink”) alone is also not one of the
+six accepted categories. In the inspected LiFXXL crop source, Broad Beans `3873`
+and Turnip `3874` use `232`, while Leek `3875` uses `250`. The latter source row
+does not gain direct eating through the reference category rules just because
+its parent is named “Edible harvest”. This describes those definitions and the
+reference path, not an observation of the deployed server's current behavior.
+
+If an ingredient must stay under `250`, one option is a cooking recipe producing
+a separate food item under an accepted category. If direct eating is required
+without changing its parent, both the XML eligibility and native Eat category
+handling need an explicit extension. Adding only `250` or the new item ID to the
+XML leaves the native classification unchanged. Reparenting an existing item may
+also change which category-based recipe requirements accept it; review those
+recipes. The meal category affects native food behavior, so choose it for the
+intended food rather than using the highest category merely to enable Eat.
+
+### Add the harvest as feed for breeding buildings
+
+**Implementation guide by Zbigi.** Keep this separate from the player's Eat
+category. An item may be food, feed, both, or neither. The `cropTypes` proposal
+has no animal-feed option; the following is the integration contract for an
+additional native extension, not configuration already supplied by Plus.
+
+1. Define the exact **object-type IDs** allowed as extra feed. Keep the stock
+   accepted set and add only the intended new items. For example, the inspected
+   LiFXXL feed extension accepts `{3873, 3874, 3875}` for its Broad Beans, Turnip
+   and Leek. These are not the five IDs in the earlier `cropTypes` example.
+2. Extend both the **lookup-by-ID** and **definition-predicate** paths on the
+   server and client. Intercept after the item definition has been resolved;
+   a missing definition must still be rejected. Preserve the native return and
+   cleanup path, including the client lookup's owner/reference cleanup.
+3. For an additional ID, continue to the native acceptance path. For every
+   other ID, preserve the original predicate. Do not replace the filter with
+   “all vegetables”, “all inventory items” or a range containing unrelated IDs.
+4. Keep a positive and consistent `UnitWeight` in server and client definitions.
+   Deploy matching data and native support, then verify both insertion and the
+   subsequent server feeding cycle. Successful insertion alone is not a feeding
+   test; server-only support also does not establish client UI acceptance.
+
+For the exact server/client hashes recorded in the evidence:
+
+| Image and path | Function RVA | Decision site | Native accept | Vanilla fallback |
+| --- | --- | --- | --- | --- |
+| Server lookup by ID | `0x1B0E10` | `0x1B0E2C` | `0x1B0E54` | `0x1B0E32` |
+| Server definition predicate | `0x1B0E70` | `0x1B0E73` | `0x1B0E9E` | `0x1B0E79` |
+| Client lookup by ID | `0x32A460` | `0x32A51C` | `0x32A548` | `0x32A522` |
+| Client definition predicate | `0x32A550` | `0x32A553` | `0x32A57E` | `0x32A559` |
+
+Each decision site begins with `8D 81 A0 FE FF FF` (`lea eax,[rcx-352]`), with
+the resolved item-type ID in `ECX`. The client lookup's acceptance sets `BL=1`
+and jumps to shared cleanup; do not replace it with an early `return true`.
+These are build-specific integration points, not interchangeable patch bytes.
+An implementation must preserve displaced instructions, registers, stack and
+control flow, and follow Plus's in-memory patching convention. A copied `CALL`
+payload cannot be treated as a `JMP` payload: their stack effects differ.
+
+Feed quantity uses item mass. In the inspected LiFXXL definitions,
+`UnitWeight` values `80`, `230` and `120` correspond to `0.08`, `0.23` and
+`0.12` mass per Broad Beans, Turnip and Leek respectively. Thus 100 turnips at
+weight 230 occupy `100 * 230 / 1000 = 23` feed-mass units. Do not use zero weight
+or enlarge the building's generic `MaxContSize` as a substitute for feed support.
+
+The reference breeding-building table at server RVA `0xACEB40` has five records
+of `0x2C` bytes and a `0xFFFFFFFF` terminator. Its feed limit is a `u32` at
+record `+0x1C`, and its animal limit is a `u32` at `+0x14`:
+
+| Object-type ID | Breeding building | Feed-mass limit | Animal limit |
+| --- | --- | ---: | ---: |
+| `144` | Coop | 5 | 20 |
+| `143` | Barn | 40 | 15 |
+| `517` | Wooden Barn | 40 | 15 |
+| `133` | Small Stable | 80 | 8 |
+| `134` | Large Stable | 500 | 50 |
+
+A storage shed, decorative coop or another mod's barn does not acquire native
+breeding support from its name or appearance. Check its actual object-type ID
+and implementation. Extending feed acceptance in existing breeding buildings
+does not register a new building type.
+
+The reference feeding path uses a shared food reserve. Adding an item to this
+filter does not implement “this crop only for chickens” or separate diets for
+each species. Species-specific feed requires a separate design that also deals
+with mixed populations and leftover food after animals are changed.
+
+For verification, test one new feed at a time with the previous food reserve
+depleted and a known animal population; record item quantity, stored food,
+quality and the next feeding cycle. Include a valid stock feed and a non-food
+item, a full-container case, and reconnect/restart persistence during a planned
+test window. Keep the existing feeding period, breeding rules and consumption
+logic unless changing them is a separate requirement.
+
 ## Status & provenance of the custom-crop contribution
 
 **Zbigi confirms that LiFXXL operates live servers with players and its
@@ -193,6 +334,12 @@ the exact bytes, decoded instructions, image identities and reference feed
 decisions. Those decisions follow the decoded predicate; they are not a new
 measurement of food consumption in a running building. No executable was modified
 or launched during this inspection, and no acceptance of a Plus port is implied.
+
+The eating/feed guide adds a second evidence record with six native code ranges,
+the Eat requirement from three XML sources, selected item-category/source rows
+and all five reference breeding-building records. The LiFXXL implementation's
+feed decision sites were compared with the original binaries. The guide records
+how to integrate the feature into Plus; it does not install that feature.
 
 For acceptance of a particular Plus integration, record the exact DLL, client
 and data versions, then check a normal player's seed selection and consumption,

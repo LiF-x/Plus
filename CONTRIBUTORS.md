@@ -64,6 +64,11 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
+**Zbigi** (LiFXXL) — `tunnel_geometry` documentation and reference evidence:
+
+- `docs/tunnel_geometry.md` — Air-layer top versus height, slope and surface clipping, U16 material overflow, and reconstruction from persistent geology.
+- `docs/evidence/tunnel_geometry_reference.json` — inspected native bytes and source evidence.
+
 ## Adding to this file
 
 When code from outside the project lands here, record it in two places: a credit

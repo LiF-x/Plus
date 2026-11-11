@@ -11,7 +11,13 @@ updated: 2026-11-11
 
 # Shield durability underflow from over-100-percent protection
 
-Reverse-engineering and offline validation contributed by **Zbigi** (LiFXXL).
+Diagnosis, implementation experience and validation contributed by **Zbigi** (LiFXXL).
+
+**Production context, confirmed by Zbigi on 2026-11-11:** LiFXXL operates live
+servers with players, and its documentation draws on real server testing. The
+isolated native regression results attached below are one specific evidence set;
+they do not describe the whole project as offline. Porting the correction into
+Plus and validating that implementation is a separate step.
 
 **TL;DR.** The native shield-block calculation can produce a negative remaining-damage
 factor when protection exceeds 100%. The durability calculation turns this into negative
@@ -195,7 +201,7 @@ read-only on 2026-11-11. The original diagnosis, correction source and historica
 harness/log agree on the mechanism. This is stronger than a formula-only guess, but
 is not a Plus integration or live-game acceptance result.
 
-For future runtime validation, distinguish an initialization log from a correction
+For validation of a future Plus implementation, distinguish an initialization log from a correction
 record that captures the actual negative factor and the builder inputs. A shield
 reaching zero in an item/SQL log alone cannot distinguish this bug from ordinary wear
 exceeding its remaining durability. Likewise, executing a clamp does not imply every

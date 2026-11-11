@@ -3,6 +3,7 @@
   "author": "Zbigi",
   "project": "LiFXXL",
   "inspection_date": "2026-11-11",
+  "production_context": "Zbigi confirmed on 2026-11-11 that LiFXXL runs live servers with players and its documentation draws on real server tests. The historical isolated harness results below are a specific evidence set, not a statement that the project is offline; they do not establish acceptance of a Plus port.",
   "validation": "Read-only static PE inspection; historical test records imported, not rerun.",
   "binary": {
     "name": "ddctd_cm_yo_server.exe",

@@ -1,7 +1,7 @@
 {
   "author": "Zbigi",
   "inspection_date": "2026-11-11",
-  "production_context": "Zbigi confirms that LiFXXL runs live servers with players and its documentation draws on real server tests. This evidence record covers a specific reference-binary inspection and does not label the project as offline.",
+  "production_context": "LiFXXL operates live servers with players, and its documentation draws on real server tests. Zbigi contributes that production experience; this evidence record captures the specific reference-binary inspection supporting the Plus review.",
   "method": "Read-only PE byte inspection and disassembly of original reference binaries; neither executable was launched. Feed decisions are evaluated from the decoded predicate, not measured in a running building.",
   "scope": "Unmodified reference binaries and the pinned PR source; not the currently deployed LiFXXL or Plus process.",
   "reviewed_pr": {

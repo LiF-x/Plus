@@ -1,7 +1,7 @@
 {
   "author": "Zbigi",
   "inspection_date": "2026-11-11",
-  "production_context": "LiFXXL operates live servers with players; Zbigi confirms real server testing. This record describes the exact source and reference-binary checks used for the Plus documentation contribution.",
+  "production_context": "LiFXXL operates live servers with players and real server testing. Zbigi contributes that production experience; this record captures the exact source and reference-binary checks supporting the Plus guide.",
   "method": "Read-only XML/source inspection and PE disassembly. No game process was launched or executable modified for this contribution.",
   "server": {
     "executable": "ddctd_cm_yo_server.exe",

@@ -323,10 +323,10 @@ logic unless changing them is a separate requirement.
 
 ## Status & provenance of the custom-crop contribution
 
-**Zbigi confirms that LiFXXL operates live servers with players and its
-documentation draws on real server tests.** The contribution above brings that
-project experience into a review of a particular Plus proposal. It does not
-classify LiFXXL or its documentation as offline.
+**Production experience contributed by Zbigi:** LiFXXL operates live servers with
+players, and its documentation draws on real server tests. The contribution above
+brings that experience into a review of a particular Plus proposal and a practical
+integration guide. The checks below describe the preparation of this contribution.
 
 For this review, the original server and client hashes, three short native code
 paths, and the pinned PR source were inspected on 2026-11-11. The JSON contains

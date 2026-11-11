@@ -3,9 +3,9 @@ title: Reverse-engineering offset encyclopedia
 status: re
 domain: reverse-engineering
 tags: [offsets, rva, tree-drops, gem-drops, tunnelling, max-players]
-related: [reverse_engineering.md, farming.md, conventions.md]
+related: [reverse_engineering.md, farming.md, conventions.md, physics_world_bounds.md]
 sources: [source/server/hooks/engine/hook_tree_drop.cpp, source/server/hooks/engine/hook_gem_drop.cpp, source/server/hooks/engine/hook_tunnel_drop.cpp]
-updated: 2026-08-27
+updated: 2026-11-12
 ---
 
 # Reverse-engineering offset encyclopedia
@@ -188,6 +188,11 @@ server browser advertised 128 slots.
   `[rbp+0x7188]` because of its seven pushes and unusually large stack frame.
 
 ## Status & provenance
+
+**Additional reference by Zbigi:** [Full-world physics bounds](physics_world_bounds.md)
+documents `BtWorld` initialization (`0x14E0D0`), its constructor input vectors
+(`0x789020` / `0x789030`), and the native `2044`-unit terrain stride when sizing
+the collision broadphase for a complete 9 × 9 world.
 
 The tree-felling selector, the `TreeType 0`/`TreeType 7` values, and the apple →
 chair override are runtime-verified. The gem and tunnelling call sites were

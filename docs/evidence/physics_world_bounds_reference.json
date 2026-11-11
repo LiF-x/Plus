@@ -1,0 +1,319 @@
+{
+  "title": "Full-world physics bounds for a 9x9 map",
+  "author": "Zbigi",
+  "reviewed": "2026-11-12",
+  "scope": "Single server loading the complete map. Native static inspection and selected uniform-extent implementation excerpts; no new server execution or benchmark.",
+  "binary": {
+    "name": "ddctd_cm_yo_server.exe",
+    "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+    "size_bytes": 12441032,
+    "image_base": "0x140000000",
+    "file_version": "1.4.4.5"
+  },
+  "code_sites": [
+    {
+      "name": "BtWorld_bounds_loads_and_constructor",
+      "rva": "0x14e18d",
+      "file_offset": "0x14d58d",
+      "bytes": "0F 28 05 9C AE 63 00 0F 29 44 24 70 0F 28 0D 80 AE 63 00 0F 29 4C 24 60 BA 10 00 00 00 B9 B0 00 00 00 E8 AC 4B 51 00 48 89 84 24 A0 18 00 00 48 85 C0 74 27 C6 44 24 28 00 4C 89 7C 24 20 41 B9 60 E3 16 00 4C 8D 44 24 60 48 8D 54 24 70 48 8B C8 E8 1D 38 52 00",
+      "instructions": [
+        "0x14e18d: movaps xmm0, xmmword ptr [rip + 0x63ae9c]",
+        "0x14e194: movaps xmmword ptr [rsp + 0x70], xmm0",
+        "0x14e199: movaps xmm1, xmmword ptr [rip + 0x63ae80]",
+        "0x14e1a0: movaps xmmword ptr [rsp + 0x60], xmm1",
+        "0x14e1a5: mov edx, 0x10",
+        "0x14e1aa: mov ecx, 0xb0",
+        "0x14e1af: call 0x140662d60",
+        "0x14e1b4: mov qword ptr [rsp + 0x18a0], rax",
+        "0x14e1bc: test rax, rax",
+        "0x14e1bf: je 0x14014e1e8",
+        "0x14e1c1: mov byte ptr [rsp + 0x28], 0",
+        "0x14e1c6: mov qword ptr [rsp + 0x20], r15",
+        "0x14e1cb: mov r9d, 0x16e360",
+        "0x14e1d1: lea r8, [rsp + 0x60]",
+        "0x14e1d6: lea rdx, [rsp + 0x70]",
+        "0x14e1db: mov rcx, rax",
+        "0x14e1de: call 0x140671a00"
+      ]
+    },
+    {
+      "name": "axis_sweep_constructor",
+      "rva": "0x671a00",
+      "file_offset": "0x670e00",
+      "bytes": "40 53 48 83 EC 40 0F B6 44 24 78 48 8B D9 88 44 24 38 48 8B 44 24 70 48 89 44 24 30 44 89 4C 24 28 41 B9 FE FF FF FF C7 44 24 20 FF FF FF 7F E8 CC FC FF FF",
+      "instructions": [
+        "0x671a00: push rbx",
+        "0x671a02: sub rsp, 0x40",
+        "0x671a06: movzx eax, byte ptr [rsp + 0x78]",
+        "0x671a0b: mov rbx, rcx",
+        "0x671a0e: mov byte ptr [rsp + 0x38], al",
+        "0x671a12: mov rax, qword ptr [rsp + 0x70]",
+        "0x671a17: mov qword ptr [rsp + 0x30], rax",
+        "0x671a1c: mov dword ptr [rsp + 0x28], r9d",
+        "0x671a21: mov r9d, 0xfffffffe",
+        "0x671a27: mov dword ptr [rsp + 0x20], 0x7fffffff",
+        "0x671a2f: call 0x140671700"
+      ]
+    },
+    {
+      "name": "axis_sweep_internal",
+      "rva": "0x671700",
+      "file_offset": "0x670b00",
+      "bytes": "48 89 4C 24 08 57 41 56 41 57 48 83 EC 40 48 C7 44 24 20 FE FF FF FF 48 89 5C 24 68",
+      "instructions": [
+        "0x671700: mov qword ptr [rsp + 8], rcx",
+        "0x671705: push rdi",
+        "0x671706: push r14",
+        "0x671708: push r15",
+        "0x67170a: sub rsp, 0x40",
+        "0x67170e: mov qword ptr [rsp + 0x20], 0xfffffffffffffffe",
+        "0x671717: mov qword ptr [rsp + 0x68], rbx"
+      ]
+    },
+    {
+      "name": "addHandle_quantization",
+      "rva": "0x671d30",
+      "file_offset": "0x671130",
+      "bytes": "48 89 5C 24 18 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 40 0F 10 59 10 0F 57 D2 0F 10 0A 45 33 F6 66 0F 6F 2D 87 59 11 00 0F 5C CB 0F 10 61 30 48 8B F9 0F 54 CD 0F 59 CC 0F 2F D1 0F 29 4C 24 30 72 05 45 8B E6 EB 1C 44 8B 61 0C 0F 57 C0 8B 49 08 F3 49 0F 2A C4 0F 2F C8 73 05 F3 4C 0F 2C E1 44 23 E1 F3 0F 10 4C 24 34 0F 2F D1 72 05 45 8B FE EB 1C 44 8B 7F 0C 0F 57 C0 8B 4F 08 F3 49 0F 2A C7 0F 2F C8 73 05 F3 4C 0F 2C F9 44 23 F9 F3 0F 10 4C 24 38 0F 2F D1 73 1C 44 8B 77 0C 0F 57 C0 8B 4F 08 F3 49 0F 2A C6 0F 2F C8 73 05 F3 4C 0F 2C F1 44 23 F1 41 0F 10 08 BB 01 00 00 00 0F 5C CB 0F 54 CD 0F 59 CC 0F 2F D1 0F 29 4C 24 30 72 04 8B F3 EB 1C 8B 77 0C 0F 57 C0 8B 4F 08 F3 48 0F 2A C6 0F 2F C8 73 05 F3 48 0F 2C F1 23 F1 0B F3 F3 0F 10 4C 24 34 0F 2F D1 72 04 8B EB EB 1C 8B 6F 0C 0F 57 C0 8B 4F 08 F3 48 0F 2A C5 0F 2F C8 73 05 F3 48 0F 2C E9 23 E9 0B EB F3 0F 10 4C 24 38 0F 2F D1 73 1D 8B 5F 0C",
+      "instructions": [
+        "0x671d30: mov qword ptr [rsp + 0x18], rbx",
+        "0x671d35: push rbp",
+        "0x671d36: push rsi",
+        "0x671d37: push rdi",
+        "0x671d38: push r12",
+        "0x671d3a: push r13",
+        "0x671d3c: push r14",
+        "0x671d3e: push r15",
+        "0x671d40: sub rsp, 0x40",
+        "0x671d44: movups xmm3, xmmword ptr [rcx + 0x10]",
+        "0x671d48: xorps xmm2, xmm2",
+        "0x671d4b: movups xmm1, xmmword ptr [rdx]",
+        "0x671d4e: xor r14d, r14d",
+        "0x671d51: movdqa xmm5, xmmword ptr [rip + 0x115987]",
+        "0x671d59: subps xmm1, xmm3",
+        "0x671d5c: movups xmm4, xmmword ptr [rcx + 0x30]",
+        "0x671d60: mov rdi, rcx",
+        "0x671d63: andps xmm1, xmm5",
+        "0x671d66: mulps xmm1, xmm4",
+        "0x671d69: comiss xmm2, xmm1",
+        "0x671d6c: movaps xmmword ptr [rsp + 0x30], xmm1",
+        "0x671d71: jb 0x140671d78",
+        "0x671d73: mov r12d, r14d",
+        "0x671d76: jmp 0x140671d94",
+        "0x671d78: mov r12d, dword ptr [rcx + 0xc]",
+        "0x671d7c: xorps xmm0, xmm0",
+        "0x671d7f: mov ecx, dword ptr [rcx + 8]",
+        "0x671d82: cvtsi2ss xmm0, r12",
+        "0x671d87: comiss xmm1, xmm0",
+        "0x671d8a: jae 0x140671d91",
+        "0x671d8c: cvttss2si r12, xmm1",
+        "0x671d91: and r12d, ecx",
+        "0x671d94: movss xmm1, dword ptr [rsp + 0x34]",
+        "0x671d9a: comiss xmm2, xmm1",
+        "0x671d9d: jb 0x140671da4",
+        "0x671d9f: mov r15d, r14d",
+        "0x671da2: jmp 0x140671dc0",
+        "0x671da4: mov r15d, dword ptr [rdi + 0xc]",
+        "0x671da8: xorps xmm0, xmm0",
+        "0x671dab: mov ecx, dword ptr [rdi + 8]",
+        "0x671dae: cvtsi2ss xmm0, r15",
+        "0x671db3: comiss xmm1, xmm0",
+        "0x671db6: jae 0x140671dbd",
+        "0x671db8: cvttss2si r15, xmm1",
+        "0x671dbd: and r15d, ecx",
+        "0x671dc0: movss xmm1, dword ptr [rsp + 0x38]",
+        "0x671dc6: comiss xmm2, xmm1",
+        "0x671dc9: jae 0x140671de7",
+        "0x671dcb: mov r14d, dword ptr [rdi + 0xc]",
+        "0x671dcf: xorps xmm0, xmm0",
+        "0x671dd2: mov ecx, dword ptr [rdi + 8]",
+        "0x671dd5: cvtsi2ss xmm0, r14",
+        "0x671dda: comiss xmm1, xmm0",
+        "0x671ddd: jae 0x140671de4",
+        "0x671ddf: cvttss2si r14, xmm1",
+        "0x671de4: and r14d, ecx",
+        "0x671de7: movups xmm1, xmmword ptr [r8]",
+        "0x671deb: mov ebx, 1",
+        "0x671df0: subps xmm1, xmm3",
+        "0x671df3: andps xmm1, xmm5",
+        "0x671df6: mulps xmm1, xmm4",
+        "0x671df9: comiss xmm2, xmm1",
+        "0x671dfc: movaps xmmword ptr [rsp + 0x30], xmm1",
+        "0x671e01: jb 0x140671e07",
+        "0x671e03: mov esi, ebx",
+        "0x671e05: jmp 0x140671e23",
+        "0x671e07: mov esi, dword ptr [rdi + 0xc]",
+        "0x671e0a: xorps xmm0, xmm0",
+        "0x671e0d: mov ecx, dword ptr [rdi + 8]",
+        "0x671e10: cvtsi2ss xmm0, rsi",
+        "0x671e15: comiss xmm1, xmm0",
+        "0x671e18: jae 0x140671e1f",
+        "0x671e1a: cvttss2si rsi, xmm1",
+        "0x671e1f: and esi, ecx",
+        "0x671e21: or esi, ebx",
+        "0x671e23: movss xmm1, dword ptr [rsp + 0x34]",
+        "0x671e29: comiss xmm2, xmm1",
+        "0x671e2c: jb 0x140671e32",
+        "0x671e2e: mov ebp, ebx",
+        "0x671e30: jmp 0x140671e4e",
+        "0x671e32: mov ebp, dword ptr [rdi + 0xc]",
+        "0x671e35: xorps xmm0, xmm0",
+        "0x671e38: mov ecx, dword ptr [rdi + 8]",
+        "0x671e3b: cvtsi2ss xmm0, rbp",
+        "0x671e40: comiss xmm1, xmm0",
+        "0x671e43: jae 0x140671e4a",
+        "0x671e45: cvttss2si rbp, xmm1",
+        "0x671e4a: and ebp, ecx",
+        "0x671e4c: or ebp, ebx",
+        "0x671e4e: movss xmm1, dword ptr [rsp + 0x38]",
+        "0x671e54: comiss xmm2, xmm1",
+        "0x671e57: jae 0x140671e76",
+        "0x671e59: mov ebx, dword ptr [rdi + 0xc]"
+      ]
+    },
+    {
+      "name": "terrain_coordinate_formula",
+      "rva": "0x578fb8",
+      "file_offset": "0x5783b8",
+      "bytes": "45 2B D3 C7 43 08 00 00 00 00 44 2B C7 48 8B C3 48 8B 7C 24 40 66 41 0F 6E DA 0F 5B DB 66 41 0F 6E C0 F3 0F 59 1D D6 A0 35 00 0F 5B C0 F3 0F 5C 1D C7 A0 35 00 F3 0F 59 05 C3 A0 35 00 F3 0F 5C 05 B7 A0 35 00 F3 0F 11 1B F3 0F 11 43 04 48 83 C4 30 5B C3",
+      "instructions": [
+        "0x578fb8: sub r10d, r11d",
+        "0x578fbb: mov dword ptr [rbx + 8], 0",
+        "0x578fc2: sub r8d, edi",
+        "0x578fc5: mov rax, rbx",
+        "0x578fc8: mov rdi, qword ptr [rsp + 0x40]",
+        "0x578fcd: movd xmm3, r10d",
+        "0x578fd2: cvtdq2ps xmm3, xmm3",
+        "0x578fd5: movd xmm0, r8d",
+        "0x578fda: mulss xmm3, dword ptr [rip + 0x35a0d6]",
+        "0x578fe2: cvtdq2ps xmm0, xmm0",
+        "0x578fe5: subss xmm3, dword ptr [rip + 0x35a0c7]",
+        "0x578fed: mulss xmm0, dword ptr [rip + 0x35a0c3]",
+        "0x578ff5: subss xmm0, dword ptr [rip + 0x35a0b7]",
+        "0x578ffd: movss dword ptr [rbx], xmm3",
+        "0x579001: movss dword ptr [rbx + 4], xmm0",
+        "0x579006: add rsp, 0x30",
+        "0x57900a: pop rbx",
+        "0x57900b: ret"
+      ]
+    }
+  ],
+  "native_data": [
+    {
+      "name": "maximum_then_minimum_float4",
+      "rva": "0x789020",
+      "format": "<8f",
+      "values": [
+        6144.0,
+        6144.0,
+        2000.0,
+        0.0,
+        -6144.0,
+        -6144.0,
+        -1000.0,
+        0.0
+      ],
+      "bytes": "00 00 C0 45 00 00 C0 45 00 00 FA 44 00 00 00 00 00 00 C0 C5 00 00 C0 C5 00 00 7A C4 00 00 00 00"
+    }
+  ],
+  "geometry": {
+    "terrain_ids": [
+      406,
+      486
+    ],
+    "grid": [
+      9,
+      9
+    ],
+    "reference_terrain": 446,
+    "native_stride": {
+      "name": "terrain_coordinate_stride",
+      "rva": "0x8d30b8",
+      "type": "<f",
+      "value": 2044.0
+    },
+    "native_corner_bias": {
+      "name": "terrain_corner_bias",
+      "rva": "0x8d30b4",
+      "type": "<f",
+      "value": 1020.0
+    },
+    "formula": "column=(TerrainID-406)%9; row=(TerrainID-406)//9; x=(column-4)*2044-1020; y=(row-4)*2044-1020",
+    "full_xy_min": [
+      -9196,
+      -9196
+    ],
+    "full_xy_max": [
+      9200,
+      9200
+    ],
+    "center_xy": [
+      2,
+      2
+    ]
+  },
+  "configured_example": {
+    "half_extent_xy": 12288,
+    "z_min": -1000,
+    "z_max": 2000,
+    "margin_to_native_min": 3092,
+    "margin_to_native_max": 3088,
+    "hypothetical_exact_bounds_with_margin_3072": [
+      -12268,
+      -12268,
+      12272,
+      12272
+    ],
+    "explanation": "12288 is the existing conservative symmetric reference setting, not the exact native terrain half-width or a measured optimum."
+  },
+  "source_fragments": [
+    {
+      "id": "native_constants",
+      "origin_file": "captainHook/server/hooks/engine/hook_physics_world_bounds.cpp",
+      "excerpts": [
+        {
+          "first_line": 16,
+          "last_line": 30,
+          "text": "        // YO dedicated server 1.4.4.5. These are the two BtWorld constructor\n        // input vectors, not the bounds of an already constructed broadphase.\n        constexpr std::uintptr_t kBoundsRva = 0x789020;\n        constexpr std::uintptr_t kBoundsLoadsRva = 0x14E18D;\n        constexpr std::array<std::uint8_t, 24> kExpectedBoundsLoads = {\n            0x0F, 0x28, 0x05, 0x9C, 0xAE, 0x63, 0x00,\n            0x0F, 0x29, 0x44, 0x24, 0x70,\n            0x0F, 0x28, 0x0D, 0x80, 0xAE, 0x63, 0x00,\n            0x0F, 0x29, 0x4C, 0x24, 0x60\n        };\n        using Bounds = std::array<float, 8>;\n        constexpr Bounds kOriginalBounds = {\n            6144.0f, 6144.0f, 2000.0f, 0.0f,\n            -6144.0f, -6144.0f, -1000.0f, 0.0f\n        };"
+        }
+      ]
+    },
+    {
+      "id": "uniform_configuration",
+      "origin_file": "captainHook/server/hooks/engine/hook_physics_world_bounds.cpp",
+      "excerpts": [
+        {
+          "first_line": 106,
+          "last_line": 130,
+          "text": "        const auto* section = root->FirstChildElement(\"physicsWorldBounds\");\n        if (section == nullptr)\n            return true;\n        bool enabled = false;\n        if (section->QueryBoolAttribute(\"enabled\", &enabled) != tinyxml2::XML_SUCCESS)\n        {\n            CaptainHook::ShowErrorMessage(\"physicsWorldBounds requires enabled=true or false.\");\n            return false;\n        }\n        if (!enabled)\n            return true;\n\n        float extent = 0.0f;\n        if (section->QueryFloatAttribute(\"halfExtentXY\", &extent) != tinyxml2::XML_SUCCESS\n            || !std::isfinite(extent) || extent <= 6144.0f || extent > 65536.0f)\n        {\n            CaptainHook::ShowErrorMessage(\n                \"Invalid physicsWorldBounds halfExtentXY. Expected a finite value greater than 6144 and at most 65536.\");\n            return false;\n        }\n        gBounds.configured[0] = gBounds.configured[1] = extent;\n        gBounds.configured[4] = gBounds.configured[5] = -extent;\n        gBounds.enabled = true;\n        return true;\n    }"
+        }
+      ]
+    },
+    {
+      "id": "guarded_startup_and_restore",
+      "origin_file": "captainHook/server/hooks/engine/hook_physics_world_bounds.cpp",
+      "excerpts": [
+        {
+          "first_line": 132,
+          "last_line": 173,
+          "text": "    void AttachPhysicsWorldBoundsHook()\n    {\n        if (!gBounds.enabled)\n            return;\n        if (gBounds.attached || gBounds.protectionPending)\n        {\n            CaptainHook::ShowErrorMessage(\"Physics world bounds patch is already installed.\");\n            return;\n        }\n        const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));\n        if (std::memcmp(reinterpret_cast<const void*>(base + kBoundsLoadsRva),\n                kExpectedBoundsLoads.data(), kExpectedBoundsLoads.size()) != 0)\n        {\n            CaptainHook::ShowErrorMessage(\"Can't install physics world bounds: BtWorld vector-load fingerprint mismatch.\");\n            return;\n        }\n        auto* address = reinterpret_cast<void*>(base + kBoundsRva);\n        if (std::memcmp(address, kOriginalBounds.data(), sizeof(Bounds)) != 0)\n        {\n            CaptainHook::ShowErrorMessage(\"Can't install physics world bounds: original constructor vectors differ.\");\n            return;\n        }\n        gBounds.address = address;\n        WriteBounds(gBounds.configured, true);\n    }\n\n    void DetachPhysicsWorldBoundsHook()\n    {\n        if (!gBounds.attached)\n        {\n            if (gBounds.protectionPending)\n                RestoreProtection();\n            return;\n        }\n        if (std::memcmp(gBounds.address, gBounds.configured.data(), sizeof(Bounds)) != 0)\n        {\n            CaptainHook::ShowErrorMessage(\"Can't detach physics world bounds: another writer changed the vectors.\");\n            return;\n        }\n        WriteBounds(kOriginalBounds, false);\n    }\n"
+        }
+      ]
+    },
+    {
+      "id": "memory_write_and_protection",
+      "origin_file": "captainHook/server/hooks/engine/hook_physics_world_bounds.cpp",
+      "excerpts": [
+        {
+          "first_line": 56,
+          "last_line": 71,
+          "text": "        bool WriteBounds(const Bounds& values, bool attached)\n        {\n            DWORD previous = 0;\n            if (!VirtualProtect(gBounds.address, sizeof(Bounds), PAGE_READWRITE, &previous))\n            {\n                CaptainHook::ShowErrorMessage(\"Can't write physics world bounds: VirtualProtect failed.\");\n                return false;\n            }\n            // Keep the original protection across a failed restore and detach.\n            if (!gBounds.protectionPending)\n                gBounds.originalProtection = previous;\n            gBounds.protectionPending = true;\n            std::memcpy(gBounds.address, values.data(), sizeof(Bounds));\n            gBounds.attached = attached;\n            RestoreProtection();\n            return true;"
+        }
+      ]
+    }
+  ],
+  "external_reference": {
+    "url": "https://github.com/bulletphysics/bullet3/blob/master/src/BulletCollision/BroadphaseCollision/btAxisSweep3Internal.h",
+    "role": "Algorithm interpretation only; not proof of the embedded Bullet version or YO addresses."
+  }
+}

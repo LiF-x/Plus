@@ -1,0 +1,247 @@
+{
+  "title": "Ordinary claims and settings reference",
+  "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "updated": "2026-11-12",
+  "scope": "Personal, YO guild and outpost claims; curated reference SQL/script observations and existing Plus API behavior.",
+  "context": "Documentation prepared from notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
+  "validation": {
+    "method": "Read-only comparison of reference scripts, SQL procedures, native bytes and existing Plus source.",
+    "live_server_context": "LiFXXL is a running server project. No live world database or server console was queried for this contribution.",
+    "deployment": "No server/client changes, restarts or new runtime session performed.",
+    "limitations": [
+      "Reference defaults are not a snapshot of current LiFXXL settings.",
+      "The early CREATE TABLE blocks are historical; the later SupportPoints and LandType migrations matter.",
+      "The area helper halves an integer extent; it does not establish a universal conversion for every placement-distance command."
+    ]
+  },
+  "binary": {
+    "name": "ddctd_cm_yo_server.exe",
+    "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+    "size_bytes": 12441032,
+    "image_base": "0x140000000"
+  },
+  "code_sites": [
+    {
+      "name": "Guild land area calculation",
+      "rva": "0x2b1c40",
+      "file_offset": "0x2b1040",
+      "bytes": "8B 41 04 0F 57 C0 D1 E8 F3 48 0F 2A C0 0F 28 C8 F3 0F 59 0D E4 3B 48 00 F3 0F 59 C8 F3 48 0F 2C C1 C3",
+      "instructions": [
+        "0x2b1c40: mov eax, dword ptr [rcx + 4]",
+        "0x2b1c43: xorps xmm0, xmm0",
+        "0x2b1c46: shr eax, 1",
+        "0x2b1c48: cvtsi2ss xmm0, rax",
+        "0x2b1c4d: movaps xmm1, xmm0",
+        "0x2b1c50: mulss xmm1, dword ptr [rip + 0x483be4]",
+        "0x2b1c58: mulss xmm1, xmm0",
+        "0x2b1c5c: cvttss2si rax, xmm1",
+        "0x2b1c61: ret"
+      ]
+    },
+    {
+      "name": "Stored extent getter",
+      "rva": "0x2b1c80",
+      "file_offset": "0x2b1080",
+      "bytes": "8B 41 04 C3",
+      "instructions": [
+        "0x2b1c80: mov eax, dword ptr [rcx + 4]",
+        "0x2b1c83: ret"
+      ]
+    },
+    {
+      "name": "Guild level extent lookup",
+      "rva": "0x2b1d70",
+      "file_offset": "0x2b1170",
+      "bytes": "48 83 EC 38 8D 41 FF 3C 03 76 30 41 B9 49 00 00 00 48 8D 05 C8 5F 52 00 4C 8D 05 D9 5F 52 00 48 89 44 24 20 48 8D 15 F5 5F 52 00 41 8D 49 B8 E8 5C FB 24 00 33 C0 48 83 C4 38 C3 0F B6 C1 48 6B C8 1C 48 8D 05 87 FA 81 00 48 03 C8 75 07 33 C0 48 83 C4 38 C3 8B 41 04 48 83 C4 38 C3",
+      "instructions": [
+        "0x2b1d70: sub rsp, 0x38",
+        "0x2b1d74: lea eax, [rcx - 1]",
+        "0x2b1d77: cmp al, 3",
+        "0x2b1d79: jbe 0x1402b1dab",
+        "0x2b1d7b: mov r9d, 0x49",
+        "0x2b1d81: lea rax, [rip + 0x525fc8]",
+        "0x2b1d88: lea r8, [rip + 0x525fd9]",
+        "0x2b1d8f: mov qword ptr [rsp + 0x20], rax",
+        "0x2b1d94: lea rdx, [rip + 0x525ff5]",
+        "0x2b1d9b: lea ecx, [r9 - 0x48]",
+        "0x2b1d9f: call 0x140501900",
+        "0x2b1da4: xor eax, eax",
+        "0x2b1da6: add rsp, 0x38",
+        "0x2b1daa: ret",
+        "0x2b1dab: movzx eax, cl",
+        "0x2b1dae: imul rcx, rax, 0x1c",
+        "0x2b1db2: lea rax, [rip + 0x81fa87]",
+        "0x2b1db9: add rcx, rax",
+        "0x2b1dbc: jne 0x1402b1dc5",
+        "0x2b1dbe: xor eax, eax",
+        "0x2b1dc0: add rsp, 0x38",
+        "0x2b1dc4: ret",
+        "0x2b1dc5: mov eax, dword ptr [rcx + 4]",
+        "0x2b1dc8: add rsp, 0x38",
+        "0x2b1dcc: ret"
+      ]
+    },
+    {
+      "name": "Default outpost extent",
+      "rva": "0x187360",
+      "file_offset": "0x186760",
+      "bytes": "B8 14 00 00 00 C3",
+      "instructions": [
+        "0x187360: mov eax, 0x14",
+        "0x187365: ret"
+      ]
+    },
+    {
+      "name": "Monument minimum distance",
+      "rva": "0x2b1ef0",
+      "file_offset": "0x2b12f0",
+      "bytes": "B8 96 00 00 00 C3",
+      "instructions": [
+        "0x2b1ef0: mov eax, 0x96",
+        "0x2b1ef5: ret"
+      ]
+    },
+    {
+      "name": "Outpost minimum distance",
+      "rva": "0x2b1f00",
+      "file_offset": "0x2b1300",
+      "bytes": "B8 2C 01 00 00 C3",
+      "instructions": [
+        "0x2b1f00: mov eax, 0x12c",
+        "0x2b1f05: ret"
+      ]
+    },
+    {
+      "name": "Personal outpost distance call",
+      "rva": "0x2d1c65",
+      "file_offset": "0x2d1065",
+      "bytes": "E8 F6 56 EB FF",
+      "instructions": [
+        "0x2d1c65: call 0x140187360"
+      ]
+    },
+    {
+      "name": "Personal monument distance call",
+      "rva": "0x2cfe45",
+      "file_offset": "0x2cf245",
+      "bytes": "E8 16 75 EB FF",
+      "instructions": [
+        "0x2cfe45: call 0x140187360"
+      ]
+    }
+  ],
+  "constants": [
+    {
+      "name": "Area multiplier",
+      "rva": "0x73583c",
+      "type": "<f",
+      "value": 3.1415927410125732
+    },
+    {
+      "name": "Guild level 1 stored extent",
+      "rva": "0xad1860",
+      "type": "<I",
+      "value": 20
+    },
+    {
+      "name": "Guild level 2 stored extent",
+      "rva": "0xad187c",
+      "type": "<I",
+      "value": 30
+    },
+    {
+      "name": "Guild level 3 stored extent",
+      "rva": "0xad1898",
+      "type": "<I",
+      "value": 50
+    },
+    {
+      "name": "Guild level 4 stored extent",
+      "rva": "0xad18b4",
+      "type": "<I",
+      "value": 100
+    }
+  ],
+  "source_excerpts": [
+    {
+      "name": "Reference claim settings",
+      "origin_file": "dev/sourceServer/scripts/server/cm_config.cs",
+      "line_start": 177,
+      "text": "$cm_config::Claims::guildLevel1RadiusTown = 20;\n$cm_config::Claims::guildLevel1RadiusCountry = 20;\n$cm_config::Claims::guildLevel2RadiusTown = 30;\n$cm_config::Claims::guildLevel2RadiusCountry = 30;\n$cm_config::Claims::guildLevel3RadiusTown = 50;\n$cm_config::Claims::guildLevel3RadiusCountry = 50;\n$cm_config::Claims::guildLevel4RadiusTown = 100;\n$cm_config::Claims::guildLevel4RadiusCountry = 100;\n$cm_config::Claims::guildLevel1MinSacrificeBasePrice = 1;\n$cm_config::Claims::guildLevel2MinSacrificeBasePrice = 10;\n$cm_config::Claims::guildLevel3MinSacrificeBasePrice = 50;\n$cm_config::Claims::guildLevel4MinSacrificeBasePrice = 100;\n$cm_config::Claims::GuildCellPrice = 1;\n$cm_config::Claims::MonumentGrowth = 0.05;"
+    },
+    {
+      "name": "Land geometry and owner columns",
+      "origin_file": "dev/sourceServer/sql/patch.sql",
+      "line_start": 668,
+      "text": "CREATE TABLE IF NOT EXISTS `guild_lands` (\n\t\t`ID` int(10) unsigned NOT NULL AUTO_INCREMENT,\n\t\t`GuildID` int(10) unsigned NOT NULL,\n\t\t`Name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,\n\t\t`CenterGeoID` int(10) unsigned NOT NULL,\n\t\t`Radius` int(10) unsigned NOT NULL,\n\t\t`LandType` int(10) unsigned NOT NULL COMMENT '1=Core, 2=Suburbia',\n\t\tPRIMARY KEY (`ID`),\n\t\tKEY `FK_guild_lands_guilds` (`GuildID`),\n\t\tCONSTRAINT `FK_guild_lands_guilds` FOREIGN KEY (`GuildID`) REFERENCES `guilds` (`ID`)\n\t) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;\n\n\tCREATE TABLE IF NOT EXISTS `personal_lands` (\n\t\t`ID` int(10) unsigned NOT NULL AUTO_INCREMENT,\n\t\t`CharID` int(10) unsigned NOT NULL,\n\t\t`Name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,\n\t\t`GeoID1` int(10) unsigned NOT NULL,\n\t\t`GeoID2` int(10) unsigned NOT NULL,\n\t\t`IsTemp` tinyint(3) unsigned NOT NULL DEFAULT '0',\n\t\tPRIMARY KEY (`ID`),\n\t\tKEY `FK_guild_lands_character` (`CharID`),\n\t\tCONSTRAINT `FK_guild_lands_character` FOREIGN KEY (`CharID`) REFERENCES `character` (`ID`)\n\t) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;\n\n\tCREATE TABLE IF NOT EXISTS `claims` (\n\t\t`ID` int(10) unsigned NOT NULL AUTO_INCREMENT,\n\t\t`GuildLandID` int(10) unsigned DEFAULT NULL,\n\t\t`PersonalLandID` int(10) unsigned DEFAULT NULL,\n\t\t`SupportPoints` int(11) NOT NULL,\n\t\tPRIMARY KEY (`ID`),\n\t\tUNIQUE KEY `UNQ_GuildLandID` (`GuildLandID`),\n\t\tUNIQUE KEY `UNQ_PersonalLandID` (`PersonalLandID`),\n\t\tCONSTRAINT `FK_claims_guild_lands` FOREIGN KEY (`GuildLandID`) REFERENCES `guild_lands` (`ID`),\n\t\tCONSTRAINT `FK_claims_personal_lands` FOREIGN KEY (`PersonalLandID`) REFERENCES `personal_lands` (`ID`)"
+    },
+    {
+      "name": "Subject types and permission columns",
+      "origin_file": "dev/sourceServer/sql/patch.sql",
+      "line_start": 715,
+      "text": "CREATE TABLE IF NOT EXISTS `claim_subjects` (\n\t\t`ID` int(10) unsigned NOT NULL AUTO_INCREMENT,\n\t\t`CharID` int(10) unsigned DEFAULT NULL,\n\t\t`GuildRoleID` tinyint(3) unsigned DEFAULT NULL,\n\t\t`GuildID` int(10) unsigned DEFAULT NULL,\n\t\t`StandingTypeID` tinyint(3) unsigned DEFAULT NULL,\n\t\tPRIMARY KEY (`ID`),\n\t\tUNIQUE KEY `UNQ_FK_claim_subjects_character` (`CharID`),\n\t\tUNIQUE KEY `UNQ_FK_claim_subjects_guild_roles` (`GuildRoleID`),\n\t\tUNIQUE KEY `UNQ_FK_claim_subjects_guilds` (`GuildID`),\n\t\tUNIQUE KEY `UNQ_FK_claim_subjects_standing_types` (`StandingTypeID`),\n\t\tCONSTRAINT `FK_claim_subjects_character` FOREIGN KEY (`CharID`) REFERENCES `character` (`ID`),\n\t\tCONSTRAINT `FK_claim_subjects_guilds` FOREIGN KEY (`GuildID`) REFERENCES `guilds` (`ID`),\n\t\tCONSTRAINT `FK_claim_subjects_guild_roles` FOREIGN KEY (`GuildRoleID`) REFERENCES `guild_roles` (`ID`),\n\t\tCONSTRAINT `FK_claim_subjects_standing_types` FOREIGN KEY (`StandingTypeID`) REFERENCES `guild_standing_types` (`ID`)\n\t) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;\n\n\tCREATE TABLE IF NOT EXISTS `claim_rules_unmovable` (\n\t\t`ID` int(10) unsigned NOT NULL AUTO_INCREMENT,\n\t\t`UnmovableClaimID` int(10) unsigned NOT NULL,\n\t\t`ClaimSubjectID` int(10) unsigned NOT NULL,\n\t\t`CanUse` tinyint(3) unsigned NOT NULL DEFAULT '0',\n\t\t`CanDestroy` tinyint(3) unsigned NOT NULL DEFAULT '0',\n\t\tPRIMARY KEY (`ID`),\n\t\tKEY `FK_claim_rules_unmovable_unmovable_objects_claims` (`UnmovableClaimID`),\n\t\tKEY `FK_claim_rules_unmovable_claim_subjects` (`ClaimSubjectID`),\n\t\tCONSTRAINT `FK_claim_rules_unmovable_claim_subjects` FOREIGN KEY (`ClaimSubjectID`) REFERENCES `claim_subjects` (`ID`),\n\t\tCONSTRAINT `FK_claim_rules_unmovable_unmovable_objects_claims` FOREIGN KEY (`UnmovableClaimID`) REFERENCES `unmovable_objects_claims` (`ID`)\n\t) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;\n\n\tCREATE TABLE IF NOT EXISTS `claim_rules` (\n\t\t`ID` int(10) unsigned NOT NULL AUTO_INCREMENT,\n\t\t`ClaimID` int(10) unsigned NOT NULL,\n\t\t`ClaimSubjectID` int(10) unsigned NOT NULL,\n\t\t`CanEnter` tinyint(3) unsigned NOT NULL DEFAULT '0',\n\t\t`CanBuild` tinyint(3) unsigned NOT NULL DEFAULT '0',\n\t\t`CanClaim` tinyint(3) unsigned NOT NULL DEFAULT '0',\n\t\t`CanUse` tinyint(3) unsigned NOT NULL DEFAULT '0',\n\t\t`CanDestroy` tinyint(3) unsigned NOT NULL DEFAULT '0',\n\t\tPRIMARY KEY (`ID`),\n\t\tUNIQUE KEY `UNQ_ClaimID_ClaimSubjectID` (`ClaimID`,`ClaimSubjectID`),\n\t\tKEY `FK_claim_rules_claims` (`ClaimID`),\n\t\tKEY `FK_claim_rules_claim_subjects` (`ClaimSubjectID`),\n\t\tCONSTRAINT `FK_claim_rules_claims` FOREIGN KEY (`ClaimID`) REFERENCES `claims` (`ID`),\n\t\tCONSTRAINT `FK_claim_rules_claim_subjects` FOREIGN KEY (`ClaimSubjectID`) REFERENCES `claim_subjects` (`ID`)"
+    },
+    {
+      "name": "Support points migration",
+      "origin_file": "dev/sourceServer/sql/patch.sql",
+      "line_start": 1708,
+      "text": "-- move SupportPoints from claims to lands\nif(sf_isColumnExists('claims', 'SupportPoints')) then\n\talter table guild_lands\n\t\tadd column `SupportPoints` INT NULL;\n\talter table personal_lands\n\t\tadd column `SupportPoints` INT NULL;\n\t\n\t-- skip data moving in MMO - consider no real data yet\n\n\talter table claims\n\t\tdrop column SupportPoints;"
+    },
+    {
+      "name": "YO land type migration",
+      "origin_file": "dev/sourceServer/sql/patch.sql",
+      "line_start": 2610,
+      "text": "change column `LandType` `LandType` INT UNSIGNED NOT NULL COMMENT '3=Yo, 4=Outpost';"
+    },
+    {
+      "name": "p_createGuildYoLandsAndClaims",
+      "origin_file": "dev/sourceServer/sql/patch.sql",
+      "line_start": 3382,
+      "text": "select f_getSubjectIDByRole(1/*Leader*/) as subjectId,       1 as CanEnter, 1 as CanBuild , 1 as CanClaim, 1 as CanUse, 1 as CanDestroy\n\t\t\t\tunion all select f_getSubjectIDByRole(2/*Minor leader*/),    1,1,1,1,1\n\t\t\t\tunion all select f_getSubjectIDByRole(3/*1st tier member*/), 1,1,1,1,1\n\t\t\t\tunion all select f_getSubjectIDByRole(4/*2nd tier member*/), 1,1,1,1,1\n\t\t\t\tunion all select f_getSubjectIDByRole(5/*3rd tier member*/), 1,1,1,1,1\n\t\t\t\tunion all select f_getSubjectIDByRole(6/*Normal member*/),   1,1,1,1,1\n\t\t\t\tunion all select f_getSubjectIDByRole(7/*Recruit*/),         1,1,1,1,0\n\t\t\t\tunion all select f_getSubjectIDByStanding(5/*Ally*/),        1,0,0,0,0\n\t\t\t) as t"
+    },
+    {
+      "name": "p_createOutpostLandAndClaim",
+      "origin_file": "dev/sourceServer/sql/patch.sql",
+      "line_start": 3426,
+      "text": "(myClaimID, f_getSubjectIDByRole(1/*Leader*/),          1,1,1,1,1),\n\t\t\t(myClaimID, f_getSubjectIDByRole(2/*Minor leader*/),    1,1,0,1,0),\n\t\t\t(myClaimID, f_getSubjectIDByRole(3/*1st tier member*/), 1,1,0,0,0),\n\t\t\t(myClaimID, f_getSubjectIDByRole(4/*2nd tier member*/), 1,1,0,0,0),\n\t\t\t(myClaimID, f_getSubjectIDByRole(5/*3rd tier member*/), 1,1,0,0,0),\n\t\t\t(myClaimID, f_getSubjectIDByRole(6/*Normal member*/),   1,1,0,0,0),\n\t\t\t(myClaimID, f_getSubjectIDByRole(7/*Recruit*/),         1,0,0,0,0),\n\t\t\t(myClaimID, f_getSubjectIDByStanding(5/*Ally*/),        1,0,0,0,0);"
+    },
+    {
+      "name": "p_createPersonalLandAndClaim_impl",
+      "origin_file": "dev/sourceServer/sql/patch.sql",
+      "line_start": 3478,
+      "text": "-- insert default rules\n\tinsert into claim_rules\n\t(ClaimID, ClaimSubjectID, CanEnter, CanBuild , CanClaim, CanUse, CanDestroy)\n\tvalues\n\t(claimID, subjID, 1, 1, 1, 1, 1);"
+    },
+    {
+      "name": "p_queueResizePersonalLand",
+      "origin_file": "dev/sourceServer/sql/patch.sql",
+      "line_start": 3553,
+      "text": "select ID into actualLandID from personal_lands where CharID = inCharID and isTemp = 0;\n\tselect ID into temporaryLandID from personal_lands where CharID = inCharID and isTemp = 1;\n\tselect ID into actualClaimID from claims where PersonalLandID = actualLandID;\n\n\tif(exists(select * from personal_lands where CharID = inCharID and isTemp = 0)) then\n\t\tif(temporaryLandID is null) then\n\t\t\tinsert into personal_lands\n\t\t\t(`CharID`, `Name`, `GeoID1`, `GeoID2`, `IsTemp`)\n\t\t\tvalues\n\t\t\t(inCharID, inName, inGeoID1, inGeoID2, 1);\n\t\t\tset temporaryLandID = LAST_INSERT_ID();\n\t\telse\n\t\t\tupdate personal_lands\n\t\t\tset GeoID1 = inGeoID1, GeoID2 = inGeoID2\n\t\t\twhere ID = temporaryLandID;\n\t\tend if;\n\n\t\t-- result\n\t\tselect temporaryLandID as TemporaryPersonalLandID, actualClaimID as ClaimID;"
+    },
+    {
+      "name": "p_onPersonalLandMaintenance",
+      "origin_file": "dev/sourceServer/sql/patch.sql",
+      "line_start": 3587,
+      "text": "select GeoID1, GeoID2 into NewGeoID1, NewGeoID2 from personal_lands where ID = inTemporaryLandID and isTemp = 1;\n\t\n\tif(exists(select * from personal_lands where ID = inLandID and isTemp = 0)\n\tand NewGeoID1 is not null and NewGeoID2 is not null) then\n\t\tupdate personal_lands set GeoID1 = NewGeoID1, GeoID2 = NewGeoID2, SupportPoints = inNewSupportPoints where ID = inLandID;\n\t\tdelete from personal_lands where ID = inTemporaryLandID;"
+    },
+    {
+      "name": "p_deleteLandAndClaimByClaimId",
+      "origin_file": "dev/sourceServer/sql/patch.sql",
+      "line_start": 3616,
+      "text": "if(delPersonalLandID is not NULL) then\n\t\tupdate personal_lands set IsTemp = 2 where ID = delPersonalLandID; -- 2 is Deleted\n\tend if;"
+    }
+  ],
+  "plus_sources": [
+    "source/server/api/lifx_outpost.cpp",
+    "source/server/hooks/outpost/hook_outpost_default_radius.cpp",
+    "source/server/hooks/outpost/hook_outpost_proximity.cpp",
+    "source/server/cm_offsets.h"
+  ],
+  "plus_observations": [
+    "SetOutpostRadius constructs (uint64_t(landID) << 32) | 1 and does not check guild_lands.LandType.",
+    "SetOutpostRadius ignores the native return value and logs after the call; its echo alone is not confirmation.",
+    "Default and proximity setters write process-local atomics. They do not save startup settings.",
+    "Numeric setters use strtoul with a null end pointer and base 0, and reject zero. They do not strictly validate positive decimal input.",
+    "Personal-claim call-site patches can abort with warnings; a getter value alone does not prove installation succeeded."
+  ]
+}

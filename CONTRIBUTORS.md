@@ -64,6 +64,14 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
+Documentation prepared with help from **ChatGPT (Codex)**, in collaboration
+with **Zbigi**, from notes and analyses collected over four months of work on
+**LiFXXL**, a community project based on a modified LiF:YO server:
+
+- `docs/claims_and_settings.md` and `docs/evidence/claims_and_settings_reference.json`
+  — ordinary personal/guild/outpost claims, reference settings and permission
+  defaults; related command-usage clarifications in the outpost documentation.
+
 ## Adding to this file
 
 When code from outside the project lands here, record it in two places: a credit

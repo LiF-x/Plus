@@ -64,6 +64,17 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
+**Zbigi** — documentation prepared with ChatGPT (Codex), based on collected LiFXXL notes:
+
+- `docs/shield_durability_underflow.md` — native failure chain, build-specific
+  RVAs and ABI, and the negative remaining-damage lower-clamp contract.
+- `docs/evidence/shield_durability_reference.json` — static instruction sites,
+  synthetic replay results and provenance fingerprints.
+- `docs/evidence/shield_durability_native_regression.txt` — historical native
+  regression harness output, preserving the original result bytes.
+- `docs/evidence/shield_durability_runtime_reference.json` — anonymized real-server
+  shield session: initialization, readiness and ordinary durability consumption.
+
 ## Adding to this file
 
 When code from outside the project lands here, record it in two places: a credit

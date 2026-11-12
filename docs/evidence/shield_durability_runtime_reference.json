@@ -1,0 +1,120 @@
+{
+  "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
+  "project": "LiFXXL",
+  "session_date": "2026-10-19",
+  "review_date": "2026-11-11",
+  "evidence_type": "Recorded real-server gameplay and SQL observations, rechecked from saved session logs.",
+  "specimen": {
+    "object_type_id": 616,
+    "name": "Kite Shield",
+    "quality": 80,
+    "initial_durability": 18000,
+    "final_durability": 13975,
+    "total_wear": 4025
+  },
+  "startup_marker": "SHIELD_DURABILITY_FIX: remaining damage factor >= 0; native shield wear retained.",
+  "readiness_time": "13:21:42.771",
+  "correction_marker_count": 0,
+  "sql_update_count": 18,
+  "distinct_update_timestamps": 9,
+  "updates": [
+    {
+      "time": "13:47:29",
+      "durability": 16864
+    },
+    {
+      "time": "13:47:29",
+      "durability": 16857
+    },
+    {
+      "time": "13:47:31",
+      "durability": 16637
+    },
+    {
+      "time": "13:47:31",
+      "durability": 16482
+    },
+    {
+      "time": "13:47:33",
+      "durability": 16255
+    },
+    {
+      "time": "13:47:33",
+      "durability": 16095
+    },
+    {
+      "time": "13:47:39",
+      "durability": 15888
+    },
+    {
+      "time": "13:47:39",
+      "durability": 15742
+    },
+    {
+      "time": "13:47:41",
+      "durability": 15506
+    },
+    {
+      "time": "13:47:41",
+      "durability": 15340
+    },
+    {
+      "time": "13:47:47",
+      "durability": 15173
+    },
+    {
+      "time": "13:47:47",
+      "durability": 15056
+    },
+    {
+      "time": "13:47:54",
+      "durability": 14829
+    },
+    {
+      "time": "13:47:54",
+      "durability": 14669
+    },
+    {
+      "time": "13:47:59",
+      "durability": 14469
+    },
+    {
+      "time": "13:47:59",
+      "durability": 14328
+    },
+    {
+      "time": "13:48:05",
+      "durability": 14121
+    },
+    {
+      "time": "13:48:05",
+      "durability": 13975
+    }
+  ],
+  "interpretation": "The recorded live session demonstrates hook initialization, server readiness and ordinary shield wear without zeroing this specimen. Its Q80 shield did not produce a correction marker, so this particular session does not demonstrate the negative-factor correction branch. SQL update count is not a hit count.",
+  "privacy": "Player, item-instance, machine and database identifiers omitted; no raw session logs included.",
+  "source_fingerprints": [
+    {
+      "origin_file": "captainHook/tmp/shield-test-log-review-20261019-1350/main.log",
+      "sha256": "A0F288BE26A59DD343A91A66F256A630B55BDF396CBEAAAA74991AF36BFDFE96"
+    },
+    {
+      "origin_file": "captainHook/tmp/shield-test-log-review-20261019-1350/sql.log",
+      "sha256": "C604F7123D1D98261B8561B0C8F8A088FCBB94658B3FF21EB2993A1BDCDFFA28"
+    },
+    {
+      "origin_file": "captainHook/tmp/shield-test-log-review-20261019-1350/arena-durability-baseline.json",
+      "sha256": "B891E5793E3E7EC8860C2E67C59503B91C1993CB81788395CED1B0B93378958F"
+    },
+    {
+      "origin_file": "captainHook/tmp/shield-test-log-review-20261019-1350/shield-durability.json",
+      "sha256": "D0D57C3EFCDA6D9CF1D8580803D569843703117B94EF3D56B01E4F3DE025D0D4"
+    },
+    {
+      "origin_file": "captainHook/tmp/shield-test-log-review-20261019-1350/wynik.txt",
+      "sha256": "EF953A61346AD9EA31440A058291025F634156E3A548F1CCDFEF3183C962DBD8"
+    }
+  ]
+}

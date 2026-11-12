@@ -1,0 +1,646 @@
+{
+  "schema": 1,
+  "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
+  "project": "LiFXXL",
+  "inspection_date": "2026-11-11",
+  "production_context": "LiFXXL is a community server project with players and draws on real server testing. This record captures reference-code and native regression evidence; the companion runtime record captures a real-server shield session.",
+  "validation": "Read-only static PE inspection; historical test records imported, not rerun.",
+  "binary": {
+    "name": "ddctd_cm_yo_server.exe",
+    "product_version": "yo_1.4.4.5",
+    "size_bytes": 12441032,
+    "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+    "preferred_image_base": "0x140000000"
+  },
+  "code_sites": [
+    {
+      "name": "shield_state_entry",
+      "rva": "0xa7180",
+      "file_offset": "0xa6580",
+      "bytes": "48 8B C4 48 89 58 08 48 89 68 10 48 89 70 18 48 89 78 20 41 56 48 83 EC 70",
+      "instructions": [
+        {
+          "rva": "0xa7180",
+          "mnemonic": "mov",
+          "operands": "rax, rsp"
+        },
+        {
+          "rva": "0xa7183",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rax + 8], rbx"
+        },
+        {
+          "rva": "0xa7187",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rax + 0x10], rbp"
+        },
+        {
+          "rva": "0xa718b",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rax + 0x18], rsi"
+        },
+        {
+          "rva": "0xa718f",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rax + 0x20], rdi"
+        },
+        {
+          "rva": "0xa7193",
+          "mnemonic": "push",
+          "operands": "r14"
+        },
+        {
+          "rva": "0xa7195",
+          "mnemonic": "sub",
+          "operands": "rsp, 0x70"
+        }
+      ]
+    },
+    {
+      "name": "mastery_effect_read",
+      "rva": "0x91e98",
+      "file_offset": "0x91298",
+      "bytes": "41 B8 4A 00 00 00 48 8D 54 24 68 E8 18 CE 44 00 0F 57 C0 F2 48 0F 2A 44 24 68 F2 0F 5E 05 C6 8C 6A 00 66 0F 5A F0",
+      "instructions": [
+        {
+          "rva": "0x91e98",
+          "mnemonic": "mov",
+          "operands": "r8d, 0x4a"
+        },
+        {
+          "rva": "0x91e9e",
+          "mnemonic": "lea",
+          "operands": "rdx, [rsp + 0x68]"
+        },
+        {
+          "rva": "0x91ea3",
+          "mnemonic": "call",
+          "operands": "0x1404decc0"
+        },
+        {
+          "rva": "0x91ea8",
+          "mnemonic": "xorps",
+          "operands": "xmm0, xmm0"
+        },
+        {
+          "rva": "0x91eab",
+          "mnemonic": "cvtsi2sd",
+          "operands": "xmm0, qword ptr [rsp + 0x68]"
+        },
+        {
+          "rva": "0x91eb2",
+          "mnemonic": "divsd",
+          "operands": "xmm0, qword ptr [rip + 0x6a8cc6]"
+        },
+        {
+          "rva": "0x91eba",
+          "mnemonic": "cvtpd2ps",
+          "operands": "xmm6, xmm0"
+        }
+      ]
+    },
+    {
+      "name": "mastery_bonus_scale",
+      "rva": "0xa7207",
+      "file_offset": "0xa6607",
+      "bytes": "0F 28 C7 F3 0F 5E 05 9A 39 69 00 F3 0F 59 84 24 C0 00 00 00 F3 0F 58 F8 0F 28 C2",
+      "instructions": [
+        {
+          "rva": "0xa7207",
+          "mnemonic": "movaps",
+          "operands": "xmm0, xmm7"
+        },
+        {
+          "rva": "0xa720a",
+          "mnemonic": "divss",
+          "operands": "xmm0, dword ptr [rip + 0x69399a]"
+        },
+        {
+          "rva": "0xa7212",
+          "mnemonic": "mulss",
+          "operands": "xmm0, dword ptr [rsp + 0xc0]"
+        },
+        {
+          "rva": "0xa721b",
+          "mnemonic": "addss",
+          "operands": "xmm7, xmm0"
+        },
+        {
+          "rva": "0xa721f",
+          "mnemonic": "movaps",
+          "operands": "xmm0, xmm2"
+        }
+      ]
+    },
+    {
+      "name": "shield_parameter_quality_scale",
+      "rva": "0xa7222",
+      "file_offset": "0xa6622",
+      "bytes": "E8 D3 9D 63 00 44 0F 28 C0 66 0F 6E C3 F3 44 0F 5E 05 20 F3 68 00 0F 5B C0 E8 BA 9D 63 00 44 0F 2F C6 76 04 44 0F 28 C6 8B 47 40 89 44 24 20 89 74 24 24 F3 0F 5E 05 1B 39 69 00 F3 41 0F 59 C0 44 0F 28 C6 F3 0F 59 C7 F3 0F 10 7F 54",
+      "instructions": [
+        {
+          "rva": "0xa7222",
+          "mnemonic": "call",
+          "operands": "0x1406e0ffa"
+        },
+        {
+          "rva": "0xa7227",
+          "mnemonic": "movaps",
+          "operands": "xmm8, xmm0"
+        },
+        {
+          "rva": "0xa722b",
+          "mnemonic": "movd",
+          "operands": "xmm0, ebx"
+        },
+        {
+          "rva": "0xa722f",
+          "mnemonic": "divss",
+          "operands": "xmm8, dword ptr [rip + 0x68f320]"
+        },
+        {
+          "rva": "0xa7238",
+          "mnemonic": "cvtdq2ps",
+          "operands": "xmm0, xmm0"
+        },
+        {
+          "rva": "0xa723b",
+          "mnemonic": "call",
+          "operands": "0x1406e0ffa"
+        },
+        {
+          "rva": "0xa7240",
+          "mnemonic": "comiss",
+          "operands": "xmm8, xmm6"
+        },
+        {
+          "rva": "0xa7244",
+          "mnemonic": "jbe",
+          "operands": "0x1400a724a"
+        },
+        {
+          "rva": "0xa7246",
+          "mnemonic": "movaps",
+          "operands": "xmm8, xmm6"
+        },
+        {
+          "rva": "0xa724a",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [rdi + 0x40]"
+        },
+        {
+          "rva": "0xa724d",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsp + 0x20], eax"
+        },
+        {
+          "rva": "0xa7251",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsp + 0x24], esi"
+        },
+        {
+          "rva": "0xa7255",
+          "mnemonic": "divss",
+          "operands": "xmm0, dword ptr [rip + 0x69391b]"
+        },
+        {
+          "rva": "0xa725d",
+          "mnemonic": "mulss",
+          "operands": "xmm0, xmm8"
+        },
+        {
+          "rva": "0xa7262",
+          "mnemonic": "movaps",
+          "operands": "xmm8, xmm6"
+        },
+        {
+          "rva": "0xa7266",
+          "mnemonic": "mulss",
+          "operands": "xmm0, xmm7"
+        },
+        {
+          "rva": "0xa726a",
+          "mnemonic": "movss",
+          "operands": "xmm7, dword ptr [rdi + 0x54]"
+        }
+      ]
+    },
+    {
+      "name": "remaining_factor_store",
+      "rva": "0xa731b",
+      "file_offset": "0xa671b",
+      "bytes": "F3 45 0F 11 46 38",
+      "instructions": [
+        {
+          "rva": "0xa731b",
+          "mnemonic": "movss",
+          "operands": "dword ptr [r14 + 0x38], xmm8"
+        }
+      ]
+    },
+    {
+      "name": "signed_extra_wear_conversion",
+      "rva": "0xa565d",
+      "file_offset": "0xa4a5d",
+      "bytes": "F3 48 0F 2C CE",
+      "instructions": [
+        {
+          "rva": "0xa565d",
+          "mnemonic": "cvttss2si",
+          "operands": "rcx, xmm6"
+        }
+      ]
+    },
+    {
+      "name": "unsigned_extra_wear_consumption",
+      "rva": "0xeefa1",
+      "file_offset": "0xee3a1",
+      "bytes": "44 0F B7 45 B0 49 8B D4 48 8B 4C 24 60 E8 FD 3E 10 00",
+      "instructions": [
+        {
+          "rva": "0xeefa1",
+          "mnemonic": "movzx",
+          "operands": "r8d, word ptr [rbp - 0x50]"
+        },
+        {
+          "rva": "0xeefa6",
+          "mnemonic": "mov",
+          "operands": "rdx, r12"
+        },
+        {
+          "rva": "0xeefa9",
+          "mnemonic": "mov",
+          "operands": "rcx, qword ptr [rsp + 0x60]"
+        },
+        {
+          "rva": "0xeefae",
+          "mnemonic": "call",
+          "operands": "0x1401f2eb0"
+        }
+      ]
+    },
+    {
+      "name": "equipment_wear_forward",
+      "rva": "0x1f2fbe",
+      "file_offset": "0x1f23be",
+      "bytes": "41 8B D2 E8 4A 54 0A 00",
+      "instructions": [
+        {
+          "rva": "0x1f2fbe",
+          "mnemonic": "mov",
+          "operands": "edx, r10d"
+        },
+        {
+          "rva": "0x1f2fc1",
+          "mnemonic": "call",
+          "operands": "0x140298410"
+        }
+      ]
+    },
+    {
+      "name": "inventory_wear_subtraction",
+      "rva": "0x29848c",
+      "file_offset": "0x29788c",
+      "bytes": "44 0F B7 40 28 66 45 85 C0 75 04 32 C0 EB 1F 66 41 3B D8 8B D7 48 8B CE 66 41 0F 47 D8 45 33 C9 66 44 2B C3 44 88 4C 24 20",
+      "instructions": [
+        {
+          "rva": "0x29848c",
+          "mnemonic": "movzx",
+          "operands": "r8d, word ptr [rax + 0x28]"
+        },
+        {
+          "rva": "0x298491",
+          "mnemonic": "test",
+          "operands": "r8w, r8w"
+        },
+        {
+          "rva": "0x298495",
+          "mnemonic": "jne",
+          "operands": "0x14029849b"
+        },
+        {
+          "rva": "0x298497",
+          "mnemonic": "xor",
+          "operands": "al, al"
+        },
+        {
+          "rva": "0x298499",
+          "mnemonic": "jmp",
+          "operands": "0x1402984ba"
+        },
+        {
+          "rva": "0x29849b",
+          "mnemonic": "cmp",
+          "operands": "bx, r8w"
+        },
+        {
+          "rva": "0x29849f",
+          "mnemonic": "mov",
+          "operands": "edx, edi"
+        },
+        {
+          "rva": "0x2984a1",
+          "mnemonic": "mov",
+          "operands": "rcx, rsi"
+        },
+        {
+          "rva": "0x2984a4",
+          "mnemonic": "cmova",
+          "operands": "bx, r8w"
+        },
+        {
+          "rva": "0x2984a9",
+          "mnemonic": "xor",
+          "operands": "r9d, r9d"
+        },
+        {
+          "rva": "0x2984ac",
+          "mnemonic": "sub",
+          "operands": "r8w, bx"
+        },
+        {
+          "rva": "0x2984b0",
+          "mnemonic": "mov",
+          "operands": "byte ptr [rsp + 0x20], r9b"
+        }
+      ]
+    }
+  ],
+  "historical_evidence": {
+    "recorded_dates": [
+      "2026-10-18",
+      "2026-10-19"
+    ],
+    "native_state_cases": 82944,
+    "corrected": 1728,
+    "unchanged": 81216,
+    "native_wear_comparisons": 331776,
+    "replay_results": [
+      {
+        "quality": 50,
+        "shield_mastery_bonus": 0,
+        "remaining_damage_factor": 0.292893231,
+        "shield_wear": 530,
+        "extra_wear_signed": 146,
+        "extra_wear_u16": 146,
+        "durability_after_extra_wear": 19854
+      },
+      {
+        "quality": 80,
+        "shield_mastery_bonus": 0,
+        "remaining_damage_factor": 0.10557282,
+        "shield_wear": 670,
+        "extra_wear_signed": 52,
+        "extra_wear_u16": 52,
+        "durability_after_extra_wear": 19948
+      },
+      {
+        "quality": 90,
+        "shield_mastery_bonus": 0,
+        "remaining_damage_factor": 0.0513167381,
+        "shield_wear": 711,
+        "extra_wear_signed": 25,
+        "extra_wear_u16": 25,
+        "durability_after_extra_wear": 19975
+      },
+      {
+        "quality": 99,
+        "shield_mastery_bonus": 0,
+        "remaining_damage_factor": 0.00501263142,
+        "shield_wear": 746,
+        "extra_wear_signed": 2,
+        "extra_wear_u16": 2,
+        "durability_after_extra_wear": 19998
+      },
+      {
+        "quality": 100,
+        "shield_mastery_bonus": 0,
+        "remaining_damage_factor": 0.0,
+        "shield_wear": 750,
+        "extra_wear_signed": 0,
+        "extra_wear_u16": 0,
+        "durability_after_extra_wear": 20000
+      },
+      {
+        "quality": 50,
+        "shield_mastery_bonus": 1,
+        "remaining_damage_factor": 0.285822153,
+        "shield_wear": 535,
+        "extra_wear_signed": 142,
+        "extra_wear_u16": 142,
+        "durability_after_extra_wear": 19858
+      },
+      {
+        "quality": 80,
+        "shield_mastery_bonus": 1,
+        "remaining_damage_factor": 0.0966285467,
+        "shield_wear": 677,
+        "extra_wear_signed": 48,
+        "extra_wear_u16": 48,
+        "durability_after_extra_wear": 19952
+      },
+      {
+        "quality": 90,
+        "shield_mastery_bonus": 1,
+        "remaining_damage_factor": 0.0418299437,
+        "shield_wear": 718,
+        "extra_wear_signed": 20,
+        "extra_wear_u16": 20,
+        "durability_after_extra_wear": 19980
+      },
+      {
+        "quality": 99,
+        "shield_mastery_bonus": 1,
+        "remaining_damage_factor": -0.00493729115,
+        "shield_wear": 753,
+        "extra_wear_signed": -2,
+        "extra_wear_u16": 65534,
+        "durability_after_extra_wear": 0
+      },
+      {
+        "quality": 100,
+        "shield_mastery_bonus": 1,
+        "remaining_damage_factor": -0.00999999046,
+        "shield_wear": 757,
+        "extra_wear_signed": -4,
+        "extra_wear_u16": 65532,
+        "durability_after_extra_wear": 0
+      },
+      {
+        "quality": 50,
+        "shield_mastery_bonus": 5,
+        "remaining_damage_factor": 0.257537901,
+        "shield_wear": 556,
+        "extra_wear_signed": 128,
+        "extra_wear_u16": 128,
+        "durability_after_extra_wear": 19872
+      },
+      {
+        "quality": 80,
+        "shield_mastery_bonus": 5,
+        "remaining_damage_factor": 0.0608515143,
+        "shield_wear": 704,
+        "extra_wear_signed": 30,
+        "extra_wear_u16": 30,
+        "durability_after_extra_wear": 19970
+      },
+      {
+        "quality": 90,
+        "shield_mastery_bonus": 5,
+        "remaining_damage_factor": 0.00388264656,
+        "shield_wear": 747,
+        "extra_wear_signed": 1,
+        "extra_wear_u16": 1,
+        "durability_after_extra_wear": 19999
+      },
+      {
+        "quality": 99,
+        "shield_mastery_bonus": 5,
+        "remaining_damage_factor": -0.044736743,
+        "shield_wear": 783,
+        "extra_wear_signed": -22,
+        "extra_wear_u16": 65514,
+        "durability_after_extra_wear": 0
+      },
+      {
+        "quality": 100,
+        "shield_mastery_bonus": 5,
+        "remaining_damage_factor": -0.0499999523,
+        "shield_wear": 787,
+        "extra_wear_signed": -24,
+        "extra_wear_u16": 65512,
+        "durability_after_extra_wear": 0
+      },
+      {
+        "quality": 50,
+        "shield_mastery_bonus": 10,
+        "remaining_damage_factor": 0.222182512,
+        "shield_wear": 583,
+        "extra_wear_signed": 111,
+        "extra_wear_u16": 111,
+        "durability_after_extra_wear": 19889
+      },
+      {
+        "quality": 80,
+        "shield_mastery_bonus": 10,
+        "remaining_damage_factor": 0.0161300898,
+        "shield_wear": 737,
+        "extra_wear_signed": 8,
+        "extra_wear_u16": 8,
+        "durability_after_extra_wear": 19992
+      },
+      {
+        "quality": 90,
+        "shield_mastery_bonus": 10,
+        "remaining_damage_factor": -0.0435515642,
+        "shield_wear": 782,
+        "extra_wear_signed": -21,
+        "extra_wear_u16": 65515,
+        "durability_after_extra_wear": 0
+      },
+      {
+        "quality": 99,
+        "shield_mastery_bonus": 10,
+        "remaining_damage_factor": -0.0944861174,
+        "shield_wear": 820,
+        "extra_wear_signed": -47,
+        "extra_wear_u16": 65489,
+        "durability_after_extra_wear": 0
+      },
+      {
+        "quality": 100,
+        "shield_mastery_bonus": 10,
+        "remaining_damage_factor": -0.100000024,
+        "shield_wear": 825,
+        "extra_wear_signed": -50,
+        "extra_wear_u16": 65486,
+        "durability_after_extra_wear": 0
+      },
+      {
+        "quality": 50,
+        "shield_mastery_bonus": 20,
+        "remaining_damage_factor": 0.151471853,
+        "shield_wear": 636,
+        "extra_wear_signed": 75,
+        "extra_wear_u16": 75,
+        "durability_after_extra_wear": 19925
+      },
+      {
+        "quality": 80,
+        "shield_mastery_bonus": 20,
+        "remaining_damage_factor": -0.0733126402,
+        "shield_wear": 804,
+        "extra_wear_signed": -36,
+        "extra_wear_u16": 65500,
+        "durability_after_extra_wear": 0
+      },
+      {
+        "quality": 90,
+        "shield_mastery_bonus": 20,
+        "remaining_damage_factor": -0.138419986,
+        "shield_wear": 853,
+        "extra_wear_signed": -69,
+        "extra_wear_u16": 65467,
+        "durability_after_extra_wear": 0
+      },
+      {
+        "quality": 99,
+        "shield_mastery_bonus": 20,
+        "remaining_damage_factor": -0.193984866,
+        "shield_wear": 895,
+        "extra_wear_signed": -96,
+        "extra_wear_u16": 65440,
+        "durability_after_extra_wear": 0
+      },
+      {
+        "quality": 100,
+        "shield_mastery_bonus": 20,
+        "remaining_damage_factor": -0.200000048,
+        "shield_wear": 900,
+        "extra_wear_signed": -100,
+        "extra_wear_u16": 65436,
+        "durability_after_extra_wear": 0
+      }
+    ],
+    "limitations": [
+      "Historical isolated replay and Detours harness; game entry point was not run.",
+      "Downstream uint16 conversion and final subtraction were modelled, not a full inventory/SQL execution.",
+      "Not a Plus build, integration test, or live corrected-branch observation."
+    ],
+    "source_fingerprints": [
+      {
+        "origin_file": "captainHook/docs/q100-shield-durability-underflow-2026-10-18.md",
+        "sha256": "F8340FC9122204186E9F40F1CD12663B0633E1B4007EDB54827609280D1DEC1F"
+      },
+      {
+        "origin_file": "captainHook/docs/shield-durability-underflow-fix-2026-10-19.md",
+        "sha256": "30CABDE7FA7148EFCFDD14E666F66DF8BDDE69501AA96A6CC9E392627A0366E7"
+      },
+      {
+        "origin_file": "captainHook/server/hooks/engine/hook_shield_durability.cpp",
+        "sha256": "E754141B66896B1A015515C965DEA68BFCC5B2CA0E73F2812C56ECAC6FA392B3"
+      },
+      {
+        "origin_file": "captainHook/tools/tests/test_shield_durability.py",
+        "sha256": "6A4A3A2E0267B256A21D90EB0B075CF461DCB1F68913055E3E36ED0F62BA6732"
+      },
+      {
+        "origin_file": "captainHook/tools/tests/fixtures/shield_durability.cpp",
+        "sha256": "327EA93000236FC1D287BED633992BC133D61CE07E538B9383ECA8A0ED35C0C2"
+      },
+      {
+        "origin_file": "captainHook/tmp/q100-shield-audit-20261018/result.csv",
+        "sha256": "5631B975987C1733A3FA4B34EB2379C1A9554B91E1486E071690FD0C9FA12D13"
+      },
+      {
+        "origin_file": "captainHook/tmp/shield_durability_fix_test/run.log",
+        "sha256": "2E1159BC606429154DA6DBC91811546CB4126E7F6DE4B866A407CE97FB2C03B2"
+      }
+    ],
+    "native_regression_log": "shield_durability_native_regression.txt",
+    "native_regression_log_format": "Attribution header followed by unchanged original four-line output."
+  },
+  "runtime_evidence": "shield_durability_runtime_reference.json"
+}

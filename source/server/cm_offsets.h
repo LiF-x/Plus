@@ -18,6 +18,12 @@
 
 enum CmOffset : U32
 {
+	// Custom horse-cart pairs and the passive cargo-list loading gate (1.4.4.5).
+	CARRIER_CONVERT_OBJECT_TYPE = 0x23DC90, // U32(mode, ObjectTypeID)
+	CARRIER_PASSIVE_GATE        = 0x24C3C4, // 18 complete bytes, EAX = ObjectTypeID
+	CARRIER_PASSIVE_ACCEPTED    = 0x24C3D6, // builds Entity and calls 0x24F100
+	CARRIER_PASSIVE_REJECTED    = 0x24C474,
+
 	CON_INTERNAL_PRINTF = 0x405090,
 	CON_ADD_CONSTANT = 0x406680,
 	CON_EVALUATE = 0x406A50,

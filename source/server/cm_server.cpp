@@ -35,6 +35,7 @@
 #include "hooks/engine/hook_gem_drop.h"
 #include "hooks/engine/hook_tunnel_drop.h"
 #include "hooks/engine/hook_tree_drop.h"
+#include "hooks/engine/hook_cart_carriers.h"
 
 // A2a #125 equip-over-ghost transport. The intercept is now a VTABLE-SLOT
 // PATCH on NPCDecorative's packUpdate slot (Hooks::NpcDecPack::InstallVtablePatch),
@@ -178,6 +179,7 @@ void Lifx::Server::Init()
 		Hooks::Engine::ConfigureGemDrops(root);
 		Hooks::Engine::ConfigureTunnelDrops(root);
 		Hooks::Engine::ConfigureTreeDrops(root);
+		Hooks::Carrier::ConfigureCartCarriers(root);
 	}
 
 	std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
@@ -552,6 +554,8 @@ void Lifx::Server::AttachHooks()
 	// trampoline rather than going through Detours, so it must NOT be inside
 	// the transaction above.
 	Hooks::Engine::AttachTreeDropHook();
+	// Carrier conversion + the cargo-load gate share their own transaction.
+	Hooks::Carrier::AttachCartCarrierHooks();
 
 	if (commitRc != NO_ERROR) {
 		Con::Warning("[lifx] DetourTransactionCommit FAILED rc=%ld — none of the above hooks are active", (long)commitRc);
@@ -673,6 +677,8 @@ void Lifx::Server::AttachHooks()
 // ---------------------------------------------------------------------------- //
 void Lifx::Server::DetachHooks()
 {
+	// Owns a separate transaction; remove before opening the transaction below.
+	Hooks::Carrier::DetachCartCarrierHooks();
 #if LIFX_EQUIP_PACK_HOOK
 	// Restore the NPCDecorative packUpdate vtable slot (a pointer swap, not a
 	// Detours patch — do it outside the transaction).

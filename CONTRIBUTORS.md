@@ -64,6 +64,15 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
+**Zbigi**, with assistance from **ChatGPT (Codex)** — documentation and analysis
+from four months of work on LiFXXL, a community modified LiF:YO server project:
+
+- `docs/custom_tree_drops.md` — current Plus selector scope, species-log integration
+  requirements and separate felling failure paths; preserves Pabluuz's hook credit.
+- `docs/inventory_stat_lifetime.md` and `docs/evidence/tree_felling_reference.json`
+  — client stat-callback lifetime findings, native anchors and scoped incident/regression evidence.
+- `scripts/verify_tree_felling_reference.py` — read-only reference-binary verification.
+
 ## Adding to this file
 
 When code from outside the project lands here, record it in two places: a credit

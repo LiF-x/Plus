@@ -3,9 +3,9 @@ title: Reverse-engineering offset encyclopedia
 status: re
 domain: reverse-engineering
 tags: [offsets, rva, tree-drops, gem-drops, tunnelling, max-players]
-related: [reverse_engineering.md, farming.md, conventions.md]
+related: [reverse_engineering.md, farming.md, conventions.md, tunnel_geometry.md]
 sources: [source/server/hooks/engine/hook_tree_drop.cpp, source/server/hooks/engine/hook_gem_drop.cpp, source/server/hooks/engine/hook_tunnel_drop.cpp]
-updated: 2026-08-27
+updated: 2026-11-11
 ---
 
 # Reverse-engineering offset encyclopedia
@@ -96,6 +96,10 @@ The current ordered name table is: `0 apple`, `1 birch`, `2 elm`, `3 spruce`,
 The original gem ObjectTypeID range at that selection point is `481..486`.
 
 ## Tunnelling material rewards
+
+**Related investigation:** [Tunnel geometry and quantities](tunnel_geometry.md)
+explains air-layer height, slope, U16 material overflow and startup reconstruction.
+The reward addresses below retain Pabluuz's original scope and authorship.
 
 The observations below separate the three tunnel-digging abilities from ordinary
 mining. They were recovered statically from the verified executable by following

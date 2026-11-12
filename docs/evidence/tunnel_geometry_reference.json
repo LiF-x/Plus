@@ -1,0 +1,287 @@
+{
+  "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
+  "checked": "2026-11-11",
+  "binary": {
+    "name": "ddctd_cm_yo_server.exe",
+    "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+    "size_bytes": 12441032,
+    "image_base": "0x140000000"
+  },
+  "code_sites": [
+    {
+      "name": "forward_common_call",
+      "rva": "0x3a69c3",
+      "file_offset": "0x3a5dc3",
+      "bytes": "E8 68 70 00 00",
+      "instructions": [
+        "0x3a69c3: call 0x1403ada30"
+      ]
+    },
+    {
+      "name": "downward_common_call",
+      "rva": "0x3a6db3",
+      "file_offset": "0x3a61b3",
+      "bytes": "E8 78 6C 00 00",
+      "instructions": [
+        "0x3a6db3: call 0x1403ada30"
+      ]
+    },
+    {
+      "name": "upward_common_call",
+      "rva": "0x3a71a3",
+      "file_offset": "0x3a65a3",
+      "bytes": "E8 88 68 00 00",
+      "instructions": [
+        "0x3a71a3: call 0x1403ada30"
+      ]
+    },
+    {
+      "name": "stock_height",
+      "rva": "0x58681b",
+      "file_offset": "0x585c1b",
+      "bytes": "41 BF 14 00 00 00 44 8D 70 14",
+      "instructions": [
+        "0x58681b: mov r15d, 0x14",
+        "0x586821: lea r14d, [rax + 0x14]"
+      ]
+    },
+    {
+      "name": "slope_and_surface_adjustment",
+      "rva": "0x586b29",
+      "file_offset": "0x585f29",
+      "bytes": "8B 4D C8 41 8D 04 0E 66 44 2B F1 0F 2F FE 66 44 0F 46 F0 83 BD 38 19 00 00 01 74 21 41 0F B7 DF 45 0F B7 C6 41 0F B7 D7 48 8D 4D 88 E8 56 68 00 00 44 0F B7 F8 66 44 2B F3 66 44 03 F0 66 45 3B F7",
+      "instructions": [
+        "0x586b29: mov ecx, dword ptr [rbp - 0x38]",
+        "0x586b2c: lea eax, [r14 + rcx]",
+        "0x586b30: sub r14w, cx",
+        "0x586b34: comiss xmm7, xmm6",
+        "0x586b37: cmovbe r14w, ax",
+        "0x586b3c: cmp dword ptr [rbp + 0x1938], 1",
+        "0x586b43: je 0x140586b66",
+        "0x586b45: movzx ebx, r15w",
+        "0x586b49: movzx r8d, r14w",
+        "0x586b4d: movzx edx, r15w",
+        "0x586b51: lea rcx, [rbp - 0x78]",
+        "0x586b55: call 0x14058d3b0",
+        "0x586b5a: movzx r15d, ax",
+        "0x586b5e: sub r14w, bx",
+        "0x586b62: add r14w, ax",
+        "0x586b66: cmp r14w, r15w"
+      ]
+    },
+    {
+      "name": "floor_from_top_minus_height",
+      "rva": "0x586ba3",
+      "file_offset": "0x585fa3",
+      "bytes": "41 0F B7 DE 66 41 2B DF",
+      "instructions": [
+        "0x586ba3: movzx ebx, r14w",
+        "0x586ba7: sub bx, r15w"
+      ]
+    },
+    {
+      "name": "quantity_multiply",
+      "rva": "0x5907fe",
+      "file_offset": "0x58fbfe",
+      "bytes": "E8 CD E8 F1 FF 0F B7 D8 E8 C5 EF F2 FF 8B CB 44 0F B7 E0 44 0F AF E3 4D 8B 55 00",
+      "instructions": [
+        "0x5907fe: call 0x1404af0d0",
+        "0x590803: movzx ebx, ax",
+        "0x590806: call 0x1404bf7d0",
+        "0x59080b: mov ecx, ebx",
+        "0x59080d: movzx r12d, ax",
+        "0x590811: imul r12d, ebx",
+        "0x590815: mov r10, qword ptr [r13]"
+      ]
+    },
+    {
+      "name": "quantity_u16_argument",
+      "rva": "0x590c3e",
+      "file_offset": "0x59003e",
+      "bytes": "66 44 89 64 24 28",
+      "instructions": [
+        "0x590c3e: mov word ptr [rsp + 0x28], r12w"
+      ]
+    },
+    {
+      "name": "terrain_rebuild_call",
+      "rva": "0x58905a",
+      "file_offset": "0x58845a",
+      "bytes": "E8 B1 0B 00 00",
+      "instructions": [
+        "0x58905a: call 0x140589c10"
+      ]
+    },
+    {
+      "name": "geodata_dimensions",
+      "rva": "0x589ca7",
+      "file_offset": "0x5890a7",
+      "bytes": "48 8B B6 E0 00 00 00 4C 8B F6 49 C1 EE 20",
+      "instructions": [
+        "0x589ca7: mov rsi, qword ptr [rsi + 0xe0]",
+        "0x589cae: mov r14, rsi",
+        "0x589cb1: shr r14, 0x20"
+      ]
+    },
+    {
+      "name": "column_loop_and_finalizers",
+      "rva": "0x589cf7",
+      "file_offset": "0x5890f7",
+      "bytes": "45 33 E4 41 0F B7 FC 66 45 3B E6 0F 83 C4 00 00 00 0F 1F 84 00 00 00 00 00 41 0F B7 DC 66 44 3B E6 0F 83 A1 00 00 00 66 90 E8 3B F8 04 00 44 0F B7 CF 44 0F B7 C3 48 8D 54 24 40 48 8B C8 E8 A6 F0 01 00 44 0F B7 CF 44 0F B7 C3 48 8D 94 24 A8 30 00 00 48 8B 4C 24 40 E8 AC 75 F2 FF 48 8B 84 24 A8 30 00 00 66 3B 05 95 41 30 00 76 4E 44 38 A4 24 AA 30 00 00 74 44 66 3B 05 6A 3D 67 00 76 3B 66 89 05 61 3D 67 00 0F B7 CF 0F B7 C3 89 84 24 B0 30 00 00 89 8C 24 B4 30 00 00 44 8B C5 48 8B 94 24 B0 30 00 00 48 8D 8C 24 A0 30 00 00 E8 65 D0 FE FF 8B 08 89 0D 4D 3E 67 00 66 FF C3 66 3B DE 0F 82 61 FF FF FF 66 FF C7 66 41 3B FE 0F 82 44 FF FF FF E8 4F DF 00 00 48 8B 4C 24 40 E8 B5 46 F2 FF E8 80 47 00 00",
+      "instructions": [
+        "0x589cf7: xor r12d, r12d",
+        "0x589cfa: movzx edi, r12w",
+        "0x589cfe: cmp r12w, r14w",
+        "0x589d02: jae 0x140589dcc",
+        "0x589d08: nop dword ptr [rax + rax]",
+        "0x589d10: movzx ebx, r12w",
+        "0x589d14: cmp r12w, si",
+        "0x589d18: jae 0x140589dbf",
+        "0x589d1e: nop",
+        "0x589d20: call 0x1405d9560",
+        "0x589d25: movzx r9d, di",
+        "0x589d29: movzx r8d, bx",
+        "0x589d2d: lea rdx, [rsp + 0x40]",
+        "0x589d32: mov rcx, rax",
+        "0x589d35: call 0x1405a8de0",
+        "0x589d3a: movzx r9d, di",
+        "0x589d3e: movzx r8d, bx",
+        "0x589d42: lea rdx, [rsp + 0x30a8]",
+        "0x589d4a: mov rcx, qword ptr [rsp + 0x40]",
+        "0x589d4f: call 0x1404b1300",
+        "0x589d54: mov rax, qword ptr [rsp + 0x30a8]",
+        "0x589d5c: cmp ax, word ptr [rip + 0x304195]",
+        "0x589d63: jbe 0x140589db3",
+        "0x589d65: cmp byte ptr [rsp + 0x30aa], r12b",
+        "0x589d6d: je 0x140589db3",
+        "0x589d6f: cmp ax, word ptr [rip + 0x673d6a]",
+        "0x589d76: jbe 0x140589db3",
+        "0x589d78: mov word ptr [rip + 0x673d61], ax",
+        "0x589d7f: movzx ecx, di",
+        "0x589d82: movzx eax, bx",
+        "0x589d85: mov dword ptr [rsp + 0x30b0], eax",
+        "0x589d8c: mov dword ptr [rsp + 0x30b4], ecx",
+        "0x589d93: mov r8d, ebp",
+        "0x589d96: mov rdx, qword ptr [rsp + 0x30b0]",
+        "0x589d9e: lea rcx, [rsp + 0x30a0]",
+        "0x589da6: call 0x140576e10",
+        "0x589dab: mov ecx, dword ptr [rax]",
+        "0x589dad: mov dword ptr [rip + 0x673e4d], ecx",
+        "0x589db3: inc bx",
+        "0x589db6: cmp bx, si",
+        "0x589db9: jb 0x140589d20",
+        "0x589dbf: inc di",
+        "0x589dc2: cmp di, r14w",
+        "0x589dc6: jb 0x140589d10",
+        "0x589dcc: call 0x140597d20",
+        "0x589dd1: mov rcx, qword ptr [rsp + 0x40]",
+        "0x589dd6: call 0x1404ae490",
+        "0x589ddb: call 0x14058e560"
+      ]
+    }
+  ],
+  "method": "Reference instruction and script checks supplement LiFXXL production investigations. Historical runtime observations below are attributed and do not represent a new run for this PR.",
+  "script_defaults": {
+    "Terrain::DigAdjust": 1.0,
+    "Geo::QuantityPerLevel": 3000.0,
+    "Geo::QuantityDamagePerDig": 60000.0,
+    "Geo::TunnellingRockRatio": 0.5
+  },
+  "quantity_examples": [
+    {
+      "height": 20,
+      "quantity_per_level": 3000,
+      "product": 60000,
+      "stored_u16": 60000
+    },
+    {
+      "height": 22,
+      "quantity_per_level": 3000,
+      "product": 66000,
+      "stored_u16": 464
+    },
+    {
+      "height": 28,
+      "quantity_per_level": 3000,
+      "product": 84000,
+      "stored_u16": 18464
+    }
+  ],
+  "maximum_height_without_u16_overflow_at_3000": 21,
+  "floor_examples": [
+    {
+      "direction": "forward",
+      "initial_floor": 1000,
+      "top": 1022,
+      "height": 22,
+      "floor": 1000
+    },
+    {
+      "direction": "upward",
+      "initial_floor": 1000,
+      "top": 1027,
+      "height": 22,
+      "floor": 1005
+    },
+    {
+      "direction": "downward",
+      "initial_floor": 1000,
+      "top": 1017,
+      "height": 22,
+      "floor": 995
+    }
+  ],
+  "column_counts": [
+    {
+      "grid": 3,
+      "terrains": 9,
+      "columns_per_terrain": 261121,
+      "total_columns": 2350089
+    },
+    {
+      "grid": 5,
+      "terrains": 25,
+      "columns_per_terrain": 261121,
+      "total_columns": 6528025
+    },
+    {
+      "grid": 9,
+      "terrains": 81,
+      "columns_per_terrain": 261121,
+      "total_columns": 21150801
+    }
+  ],
+  "historical_runtime_observations": {
+    "geometry_source": "LiFXXL tunnel-height investigation, 2026-08-30; enclosed material result 464 and surface residual 16464 were recorded in the investigation.",
+    "startup_source": "LiFXXL startup tunnel-rebuild investigation, 2026-08-21; complete 81-terrain startup phase.",
+    "instrumented_stock_ms": 204722,
+    "optimized_ms": 6195,
+    "patch_candidate_columns": 319,
+    "rebuilt_tunnel_blocks": 0,
+    "scope": "Historical startup measurements cover candidate enumeration, surface maximum and finalization in a zero-effective-tunnel snapshot. They do not establish reconstruction/collision acceptance for a populated tunnel graph."
+  },
+  "source_fingerprints": [
+    {
+      "origin_file": "captainHook/docs/tunnel_downward_height_fix.md",
+      "sha256": "227934BF8D04ED6AA0B5564F87221FE29E449B367236D6833EFF18CB4B966ED3"
+    },
+    {
+      "origin_file": "captainHook/docs/tunnel-rebuild-startup.md",
+      "sha256": "E933C4A084BE575E611E68AFB24A66983B81A7F546773E2028F98E87D843DC5C"
+    },
+    {
+      "origin_file": "captainHook/server/hooks/engine/hook_tunnel_removal.cpp",
+      "sha256": "C06364C85FDC9DFE27CE9651E9CCB428AA66518C26EB866BA363167B7D104FBD"
+    },
+    {
+      "origin_file": "captainHook/server/hooks/engine/hook_tunnel_rebuild.cpp",
+      "sha256": "FC1D732B229C1609E7C9B4E062F5B969FCA8A67425BD41D3991746C795AA4D4C"
+    },
+    {
+      "origin_file": "dev/sourceServer/scripts/server/cm_config.cs",
+      "sha256": "C7FFF8D65A65069E13B9F3EF241F62BBEA0C929F2CC7F5817F310238BEBD696A"
+    }
+  ]
+}

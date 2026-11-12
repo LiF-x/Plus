@@ -24,6 +24,7 @@
 
 ## Reverse engineering — engine internals & ABI
 
+- [Custom tree drops and species wood integration](custom_tree_drops.md): Current treeDrops only selects the felling output; custom log data, client/server Saw classification, Uproot outputs and SQL rollback diagnosis are separate. | status: re | tags: trees, felling, logs, woodworking, abilities | key: treeDrops, TreeType, 0x3716D0, 0x377805, 0x505862, SQL1020
 - [Reverse engineering setup](reverse_engineering.md): Ghidra setup, the LifxExport.java / LifxEventVtables.java analysis scripts, and the artifact files they produce. | status: reference | tags: ghidra, scripts, tooling
 - [Reverse-engineering offset encyclopedia](offsets.md): Stable RVAs and data layouts for the verified 1.4.4.5 image: tree felling/log selection, gem drops, tunnelling material rewards, maxPlayers slot limit. | status: re | tags: offsets, rva, tree-drops, gem-drops, tunnelling, max-players | key: TREE_SELECTOR=0x3716D0, TREE_SELECTOR_RET=0x3716EA, GEM_CHANCE_CALL=0x3A9258, GEM_ITEM_LOOKUP=0x3A931F, TUNNEL_MATERIALS_CALL=0x3ADEE9, ADD_MATERIALS=0x584120, ADD_ARBITRARY_ITEM=0x3A89E0, MAXPLAYERS_MAX=0xACDFA4, SHA256=ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F
 - [Farming — harvest yield and quality](farming.md): Harvest Crops quantity/quality formulas; weather is a hard 4x switch (fair/(shower+1) within 0.5..2.0), fertility an exact 2x from the crop substance low bit. | status: re | tags: farming, harvest, crops, weather, fertility | key: HARVEST_PLANT=0x3A5030, WEATHER_WINDOW=0x3A527C, WEATHER_GETTER=0x471590, WEATHER_NAMES=0x87FB40, HARVEST_READER=0x3AF9C0
@@ -51,6 +52,7 @@
 
 ## Client
 
+- [Inventory lifetime crash on stat changes](inventory_stat_lifetime.md): Root-container callback survives destruction and can fail on Willpower updates; both destructor paths, signal iterator repair, historical execute-at-1 signature and 22 native regression scenarios. Not implemented in Plus. | status: re | tags: inventory, lifetime, willpower, crash, callbacks | key: CmRootInventoryContainer, 0x42DB40, 0x42DBD0, 0x42DE70, 0x89BF9C, 0x89BFA2, CmStatType=2
 - [Qt / QtWebEngine & HTTPS](qt_and_https.md): A loose-DLL Qt 5.15.2 / Chromium 83 overlay binds against the unmodified 5.9-linked yo_cm_client.exe and runs through to in-world play; the Qt5Network OpenSSL path needs 1.1.x (not 1.0.2/libeay32). | status: re | tags: client, qt, webengine, https, openssl, dll-swap | key: GuiMainMenuMultiplayerWindow, GameTSCtrl("PlayGui"), GID:0x02000003, Qt5WebEngineCore.dll, libcrypto-1_1-x64, libssl-1_1-x64
 - [Client 9x9 grid-size patch](client_grid_patch.md): Verified RE record of the community 0x189554 0x03->0x09 client grid-clamp byte-patch; documented only as a hook target, never to be applied (no-exe-patching rule). | status: re | tags: client, exe-patch, world-grid, federation, handoff | key: 0x189554, yo_cm_client.exe, CLIENT_OPEN_FILE_STREAM (0x61E620), 0x140000000, ddctd_cm_yo_server.exe, Con::Evaluate
 

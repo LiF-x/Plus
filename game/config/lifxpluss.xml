@@ -130,8 +130,10 @@
     <!-- Per-species felled-tree drops. Vanilla drops 653 (softwood) or 626
          (hardwood); each <drop> overrides one species. tree accepts a name
          (apple, birch, elm, spruce, pine, maple, mulberry, oak, aspen, hazel,
-         juniper, spinny) or a raw TreeType 0..255.
-         See docs/offsets.md "Tree felling and movable-log creation". -->
+         juniper, spinny) or a raw TreeType 0..255 (parser range only;
+         this does not register new forest species). The target item must exist.
+         Only the felling result is changed: no custom Saw/Uproot routing or
+         client lifetime fix. See docs/custom_tree_drops.md before adding logs. -->
     <treeDrops enabled="0">
         <!-- <drop tree="oak" itemId="626" /> -->
     </treeDrops>

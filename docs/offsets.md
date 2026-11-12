@@ -3,9 +3,9 @@ title: Reverse-engineering offset encyclopedia
 status: re
 domain: reverse-engineering
 tags: [offsets, rva, tree-drops, gem-drops, tunnelling, max-players]
-related: [reverse_engineering.md, farming.md, conventions.md]
+related: [reverse_engineering.md, farming.md, conventions.md, custom_tree_drops.md]
 sources: [source/server/hooks/engine/hook_tree_drop.cpp, source/server/hooks/engine/hook_gem_drop.cpp, source/server/hooks/engine/hook_tunnel_drop.cpp]
-updated: 2026-08-27
+updated: 2026-11-12
 ---
 
 # Reverse-engineering offset encyclopedia
@@ -83,6 +83,14 @@ Confirmed values:
 The current ordered name table is: `0 apple`, `1 birch`, `2 elm`, `3 spruce`,
 `4 pine`, `5 maple`, `6 mulberry`, `7 oak`, `8 aspen`, `9 hazel`, `10 juniper`,
 `11 spinny`.
+
+The current Plus hook changes only the selected felling ObjectTypeID.
+Its numeric `TreeType 0..255` parser does not register additional forest
+species, and the apple-to-chair test does not validate custom-log processing.
+See [custom tree drops](custom_tree_drops.md) for object data, client/server
+Saw classification and the separate Uproot path. A client crash coinciding
+with a Willpower update has a different
+[inventory callback lifetime mechanism](inventory_stat_lifetime.md).
 
 ## Gem drop hooks
 

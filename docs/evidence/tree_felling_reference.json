@@ -1,0 +1,497 @@
+{
+  "schema_version": 1,
+  "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "checked": "2026-11-12",
+  "scope": "Read-only examination of local reference binaries, data, existing incident records and an existing client regression harness. No game process, deployment or server/database mutation.",
+  "binaries": {
+    "server": {
+      "name": "ddctd_cm_yo_server.exe",
+      "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+      "size_bytes": 12441032,
+      "image_base": "0x140000000"
+    },
+    "client": {
+      "name": "yo_cm_client.exe",
+      "sha256": "1D3F7FD3E64B119DC032CDA77D353AFEFC340AF46C6B7AE30890A9BC99E37999",
+      "size_bytes": 24607688,
+      "image_base": "0x140000000"
+    }
+  },
+  "server_sites": [
+    {
+      "name": "felling_species_lookup",
+      "rva": "0x371447",
+      "file_offset": "0x370847",
+      "bytes": "0F B6 8D 20 01 00 00 E8 4D 2B 11 00",
+      "instructions": [
+        "0x371447: movzx ecx, byte ptr [rbp + 0x120]",
+        "0x37144e: call 0x140483fa0"
+      ]
+    },
+    {
+      "name": "forest_cut_call",
+      "rva": "0x3716a0",
+      "file_offset": "0x370aa0",
+      "bytes": "E8 3B E8 10 00",
+      "instructions": [
+        "0x3716a0: call 0x14047fee0"
+      ]
+    },
+    {
+      "name": "felling_selector",
+      "rva": "0x3716d0",
+      "file_offset": "0x370ad0",
+      "bytes": "B8 8D 02 00 00 B9 72 02 00 00 80 BD 10 01 00 00 00 0F 45 C1 89 85 10 01 00 00",
+      "instructions": [
+        "0x3716d0: mov eax, 0x28d",
+        "0x3716d5: mov ecx, 0x272",
+        "0x3716da: cmp byte ptr [rbp + 0x110], 0",
+        "0x3716e1: cmovne eax, ecx",
+        "0x3716e4: mov dword ptr [rbp + 0x110], eax"
+      ]
+    },
+    {
+      "name": "felling_selector_continuation",
+      "rva": "0x3716ea",
+      "file_offset": "0x370aea",
+      "bytes": "45 85 FF",
+      "instructions": [
+        "0x3716ea: test r15d, r15d"
+      ]
+    },
+    {
+      "name": "movable_creation_call",
+      "rva": "0x371872",
+      "file_offset": "0x370c72",
+      "bytes": "E8 C9 88 ED FF",
+      "instructions": [
+        "0x371872: call 0x14024a140"
+      ]
+    },
+    {
+      "name": "raw_log_state",
+      "rva": "0x240ebe",
+      "file_offset": "0x2402be",
+      "bytes": "8B 47 08 3D 72 02 00 00 74 0C 3D 8D 02 00 00 74 05 0F B7 C3 EB 05",
+      "instructions": [
+        "0x240ebe: mov eax, dword ptr [rdi + 8]",
+        "0x240ec1: cmp eax, 0x272",
+        "0x240ec6: je 0x140240ed4",
+        "0x240ec8: cmp eax, 0x28d",
+        "0x240ecd: je 0x140240ed4",
+        "0x240ecf: movzx eax, bx",
+        "0x240ed2: jmp 0x140240ed9"
+      ]
+    },
+    {
+      "name": "inspect_classification",
+      "rva": "0x39633c",
+      "file_offset": "0x39573c",
+      "bytes": "81 FB 72 02 00 00 0F 84 EA 00 00 00 81 FB 8D 02 00 00 0F 84 DE 00 00 00",
+      "instructions": [
+        "0x39633c: cmp ebx, 0x272",
+        "0x396342: je 0x140396432",
+        "0x396348: cmp ebx, 0x28d",
+        "0x39634e: je 0x140396432"
+      ]
+    },
+    {
+      "name": "saw_classification",
+      "rva": "0x39e769",
+      "file_offset": "0x39db69",
+      "bytes": "3D 8D 02 00 00 74 0D 3D 72 02 00 00 75 30 45 8B C5 41 8B D5 41 8B 4F 08",
+      "instructions": [
+        "0x39e769: cmp eax, 0x28d",
+        "0x39e76e: je 0x14039e77d",
+        "0x39e770: cmp eax, 0x272",
+        "0x39e775: jne 0x14039e7a7",
+        "0x39e777: mov r8d, r13d",
+        "0x39e77a: mov edx, r13d",
+        "0x39e77d: mov ecx, dword ptr [r15 + 8]"
+      ]
+    },
+    {
+      "name": "saw_board_result",
+      "rva": "0x39e7d3",
+      "file_offset": "0x39dbd3",
+      "bytes": "41 8D 80 46 01 00 00 C7 85 40 49 00 00 14 00 00 00 BB 28 00 00 00 EB 12",
+      "instructions": [
+        "0x39e7d3: lea eax, [r8 + 0x146]",
+        "0x39e7da: mov dword ptr [rbp + 0x4940], 0x14",
+        "0x39e7e4: mov ebx, 0x28",
+        "0x39e7e9: jmp 0x14039e7fd"
+      ]
+    },
+    {
+      "name": "saw_billet_result",
+      "rva": "0x39e7eb",
+      "file_offset": "0x39dbeb",
+      "bytes": "8D 82 44 01 00 00 44 89 8D 40 49 00 00 BB 1E 00 00 00",
+      "instructions": [
+        "0x39e7eb: lea eax, [rdx + 0x144]",
+        "0x39e7f1: mov dword ptr [rbp + 0x4940], r9d",
+        "0x39e7f8: mov ebx, 0x1e"
+      ]
+    },
+    {
+      "name": "saw_availability",
+      "rva": "0x39ee12",
+      "file_offset": "0x39e212",
+      "bytes": "3D 72 02 00 00 74 0C 3D 8D 02 00 00 74 05 40 32 F6 EB 12 4C 8B C3",
+      "instructions": [
+        "0x39ee12: cmp eax, 0x272",
+        "0x39ee17: je 0x14039ee25",
+        "0x39ee19: cmp eax, 0x28d",
+        "0x39ee1e: je 0x14039ee25",
+        "0x39ee20: xor sil, sil",
+        "0x39ee23: jmp 0x14039ee37",
+        "0x39ee25: mov r8, rbx"
+      ]
+    },
+    {
+      "name": "uproot_result",
+      "rva": "0x377805",
+      "file_offset": "0x376c05",
+      "bytes": "48 8B 44 24 48 0F B6 80 F4 00 00 00 F6 D8 45 1B C0 41 81 C0 45 01 00 00 C7 44 24 20 01 00 00 00 44 0F B7 CF 41 8B 55 20 49 8B CD E8 AB F8 FF FF",
+      "instructions": [
+        "0x377805: mov rax, qword ptr [rsp + 0x48]",
+        "0x37780a: movzx eax, byte ptr [rax + 0xf4]",
+        "0x377811: neg al",
+        "0x377813: sbb r8d, r8d",
+        "0x377816: add r8d, 0x145",
+        "0x37781d: mov dword ptr [rsp + 0x20], 1",
+        "0x377825: movzx r9d, di",
+        "0x377829: mov edx, dword ptr [r13 + 0x20]",
+        "0x37782d: mov rcx, r13",
+        "0x377830: call 0x1403770e0"
+      ]
+    }
+  ],
+  "client_sites": [
+    {
+      "name": "raw_receiver_identity_helper",
+      "rva": "0x14d5d0",
+      "file_offset": "0x14c9d0",
+      "bytes": "48 8B C1 C3",
+      "instructions": [
+        "0x14d5d0: mov rax, rcx",
+        "0x14d5d3: ret"
+      ]
+    },
+    {
+      "name": "root_constructor_receiver",
+      "rva": "0x42da59",
+      "file_offset": "0x42ce59",
+      "bytes": "48 8B CB E8 6F FB D1 FF 48 8B F8",
+      "instructions": [
+        "0x42da59: mov rcx, rbx",
+        "0x42da5c: call 0x14014d5d0",
+        "0x42da61: mov rdi, rax"
+      ]
+    },
+    {
+      "name": "root_constructor_callback",
+      "rva": "0x42daa3",
+      "file_offset": "0x42cea3",
+      "bytes": "48 8D 0D C6 03 00 00 48 89 48 20 48 89 78 18",
+      "instructions": [
+        "0x42daa3: lea rcx, [rip + 0x3c6]",
+        "0x42daaa: mov qword ptr [rax + 0x20], rcx",
+        "0x42daae: mov qword ptr [rax + 0x18], rdi"
+      ]
+    },
+    {
+      "name": "root_signal_insert",
+      "rva": "0x42dac2",
+      "file_offset": "0x42cec2",
+      "bytes": "48 8D 8D C8 01 00 00 E8 12 6E 20 00",
+      "instructions": [
+        "0x42dac2: lea rcx, [rbp + 0x1c8]",
+        "0x42dac9: call 0x1406348e0"
+      ]
+    },
+    {
+      "name": "root_destructor_hook",
+      "rva": "0x42db4a",
+      "file_offset": "0x42cf4a",
+      "bytes": "48 8D 05 BF 31 B4 00",
+      "instructions": [
+        "0x42db4a: lea rax, [rip + 0xb431bf]"
+      ]
+    },
+    {
+      "name": "root_deleting_destructor_hook",
+      "rva": "0x42dbd6",
+      "file_offset": "0x42cfd6",
+      "bytes": "48 8D 05 33 31 B4 00",
+      "instructions": [
+        "0x42dbd6: lea rax, [rip + 0xb43133]"
+      ]
+    },
+    {
+      "name": "willpower_filter",
+      "rva": "0x42de70",
+      "file_offset": "0x42d270",
+      "bytes": "41 83 F9 02 75 08 0F 28 CA E9 F2 FD FF FF C3",
+      "instructions": [
+        "0x42de70: cmp r9d, 2",
+        "0x42de74: jne 0x14042de7e",
+        "0x42de76: movaps xmm1, xmm2",
+        "0x42de79: jmp 0x14042dc70",
+        "0x42de7e: ret"
+      ]
+    },
+    {
+      "name": "capacity_gui_call",
+      "rva": "0x42dcbe",
+      "file_offset": "0x42d0be",
+      "bytes": "48 8B 89 F0 00 00 00 48 85 C9 74 3D 48 8B 09 48 85 C9 74 35 8B 53 60 E8 76 E2 46 00",
+      "instructions": [
+        "0x42dcbe: mov rcx, qword ptr [rcx + 0xf0]",
+        "0x42dcc5: test rcx, rcx",
+        "0x42dcc8: je 0x14042dd07",
+        "0x42dcca: mov rcx, qword ptr [rcx]",
+        "0x42dccd: test rcx, rcx",
+        "0x42dcd0: je 0x14042dd07",
+        "0x42dcd2: mov edx, dword ptr [rbx + 0x60]",
+        "0x42dcd5: call 0x14089bf50"
+      ]
+    },
+    {
+      "name": "gui_virtual_call",
+      "rva": "0x89bf99",
+      "file_offset": "0x89b399",
+      "bytes": "48 8B 01 FF 90 80 06 00 00",
+      "instructions": [
+        "0x89bf99: mov rax, qword ptr [rcx]",
+        "0x89bf9c: call qword ptr [rax + 0x680]"
+      ]
+    },
+    {
+      "name": "network_stat_setter_call",
+      "rva": "0x337cf3",
+      "file_offset": "0x3370f3",
+      "bytes": "E8 E8 F4 FF FF",
+      "instructions": [
+        "0x337cf3: call 0x1403371e0"
+      ]
+    },
+    {
+      "name": "signal_remove_method",
+      "rva": "0x374255",
+      "file_offset": "0x373655",
+      "bytes": "48 8D 05 24 5B 00 00",
+      "instructions": [
+        "0x374255: lea rax, [rip + 0x5b24]"
+      ]
+    },
+    {
+      "name": "client_saw_availability",
+      "rva": "0x505862",
+      "file_offset": "0x504c62",
+      "bytes": "3D 72 02 00 00 74 0C 3D 8D 02 00 00 74 05 40 32 F6 EB 12",
+      "instructions": [
+        "0x505862: cmp eax, 0x272",
+        "0x505867: je 0x140505875",
+        "0x505869: cmp eax, 0x28d",
+        "0x50586e: je 0x140505875",
+        "0x505870: xor sil, sil",
+        "0x505873: jmp 0x140505887"
+      ]
+    }
+  ],
+  "skill_xml": {
+    "sha256": "69DD87FBDDA6A75CB46BAD3FE3F8CBF90B7A70996EB00AD65E192D69047AFE48",
+    "skills": 57,
+    "will_primary_or_secondary": 22,
+    "bindings": [
+      {
+        "ability_id": 7,
+        "name": "to Lower Ground Level",
+        "skill_id": 1,
+        "skill": "Artisan",
+        "primary": "Int",
+        "secondary": "Str"
+      },
+      {
+        "ability_id": 34,
+        "name": "Cut Down",
+        "skill_id": 1,
+        "skill": "Artisan",
+        "primary": "Int",
+        "secondary": "Str"
+      },
+      {
+        "ability_id": 35,
+        "name": "Uproot",
+        "skill_id": 1,
+        "skill": "Artisan",
+        "primary": "Int",
+        "secondary": "Str"
+      },
+      {
+        "ability_id": 36,
+        "name": "Cut Down",
+        "skill_id": 1,
+        "skill": "Artisan",
+        "primary": "Int",
+        "secondary": "Str"
+      },
+      {
+        "ability_id": 37,
+        "name": "a Billet",
+        "skill_id": 8,
+        "skill": "Carpentry",
+        "primary": "Con",
+        "secondary": "Str"
+      },
+      {
+        "ability_id": 38,
+        "name": "a Board",
+        "skill_id": 8,
+        "skill": "Carpentry",
+        "primary": "Con",
+        "secondary": "Str"
+      },
+      {
+        "ability_id": 39,
+        "name": "a Building Log",
+        "skill_id": 8,
+        "skill": "Carpentry",
+        "primary": "Con",
+        "secondary": "Str"
+      }
+    ],
+    "scope": "Current inspected LiFXXL data snapshot; not an immutable vanilla skill catalogue."
+  },
+  "plus_tree_drops": {
+    "attributes_read": [
+      "enabled",
+      "tree",
+      "itemId"
+    ],
+    "numeric_tree_type_parser_range": [
+      0,
+      255
+    ],
+    "registered_names": [
+      "apple",
+      "birch",
+      "elm",
+      "spruce",
+      "pine",
+      "maple",
+      "mulberry",
+      "oak",
+      "aspen",
+      "hazel",
+      "juniper",
+      "spinny"
+    ],
+    "not_implemented": [
+      "new forest species registration",
+      "custom-log client/server Saw classification",
+      "boardItemId and billetItemId routing",
+      "uprootBillets",
+      "root inventory stat callback lifetime repair",
+      "log transaction retry"
+    ]
+  },
+  "client_lifetime": {
+    "constructor": "0x42D920",
+    "destructors": [
+      "0x42DB40",
+      "0x42DBD0"
+    ],
+    "callback": "0x42DE70",
+    "capacity_update": "0x42DC70",
+    "character_info_singleton": "0x15E0A48",
+    "stat_signal_offset": "0x1C8",
+    "signal_mutex_offset": "0x38",
+    "active_iterator_count_offset": "0x18",
+    "active_iterator_array_offset": "0x20",
+    "node_size": "0x28",
+    "node_receiver_offset": "0x18",
+    "node_method_offset": "0x20",
+    "native_remove_pattern": "0x3741F0",
+    "native_remove_hardcoded_other_method": "0x379D80",
+    "unlink_node": "0x634990",
+    "free_node": "0xDB95C0",
+    "stat_setter": "0x3371E0",
+    "willpower_type": 2,
+    "correction": "Disconnect the receiver/method pair before either destructor releases fields; preserve the signal lock, active iterators and other receivers. Adapt the remove pattern: 0x3741F0 hardcodes a different callback."
+  },
+  "incident": {
+    "date": "2026-10-17",
+    "exception_code": "0xc0000005",
+    "operation": "execute",
+    "exception_address": "0x1",
+    "top_return_rva": "0x89bfa2",
+    "calling_instruction_rva": "0x89BF9C",
+    "scope": "Historical combat-session dump. Confirms the crash signature, not every tree report or the lifetime history of the original heap object."
+  },
+  "client_regression": {
+    "date": "2026-11-12",
+    "tested_client_sha256": "635B2067F72847C0F82E395DEB42903ABB914927756CD997C8CE78DF88A19F0F",
+    "harness_sha256": "FC24B89F1140880B4FA732918B3017CF49B53E3B954A15604E5990242FB5522B",
+    "cases_passed": 22,
+    "negative_controls": 2,
+    "repeated_lifecycle_cycles": 128,
+    "native": [
+      "root constructor",
+      "both root destructors",
+      "stat setter and signal dispatch",
+      "stat filter and capacity calculation",
+      "signal list insertion/removal",
+      "GuiInventoryContainer::init until fault"
+    ],
+    "fixtures": [
+      "allocator",
+      "mutex",
+      "base container ctor/dtor",
+      "initial stat getter",
+      "post-destruction memory reuse",
+      "final GUI refresh virtual method"
+    ],
+    "scope": "Existing LiFXXL client repair rechecked using Unicorn 2.1.4; native instructions and simulated services/retired memory, not a running game or a Plus client implementation. No executable files were modified."
+  },
+  "historical_log_creation": {
+    "date": "2026-09-06",
+    "executed_calls": 833,
+    "error_1020_failures": 101,
+    "executed_patches_after_explicit_strength_down": 31,
+    "successful_windows_with_actual_strength_decrease": 2,
+    "scope": "Aggregates from the existing production-log audit. Counts are not newly queried production state; adjacent statements alone do not identify conflicting transaction read views."
+  },
+  "provenance": [
+    {
+      "document": "tree-drop-hook.md",
+      "sha256": "DAB5B014344F4A6D4C82233186BBDB1D1B4E83A1694BCD3454E2BE01FD0D0EE6"
+    },
+    {
+      "document": "tree-drop-static-audit-2026-09-05.md",
+      "sha256": "62B562B9870666AB514029F16C50D15A045BCA5B8A775DAA9B1F39EC79B882A0"
+    },
+    {
+      "document": "felling-strength-lock-sql-audit-2026-09-06.md",
+      "sha256": "9A02F1B608F76E4893B4118BBD24A75FBEBFACE30B6CD9300583DDF07118F05D"
+    },
+    {
+      "document": "log-transaction-retry-2026-09-06.md",
+      "sha256": "2C27A1EB62B6081312B0377D179385B1B06A0BE28F32E18E52D30A64DBF4F22F"
+    },
+    {
+      "document": "inventory-stat-lifetime.md",
+      "sha256": "2745757680F5916065A0A9E2BB65738967A153312F0EA3FD0261D8A6270278A2"
+    },
+    {
+      "document": "inventory-stat-skill-matrix.md",
+      "sha256": "46E1B2595B4BE81687A15430AB6168952CFDC5E1660BF44A343BC8FB4BBA703B"
+    },
+    {
+      "document": "combat-client-crash-2026-10-17.txt",
+      "sha256": "8735B18C3397FF363875841066251123E075DD1F3D8650BAE27436B85B1D7691"
+    }
+  ]
+}

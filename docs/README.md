@@ -57,6 +57,7 @@ LiFx is a Detours-based extension framework for the *Life is Feudal: Your Own* d
 | --- | --- | --- |
 | [Reverse engineering setup](reverse_engineering.md) | 📖 | Ghidra setup, the `LifxExport.java` / `LifxEventVtables.java` analysis scripts, and the artifact files they produce. |
 | [Reverse-engineering offset encyclopedia](offsets.md) | 🔬 | Stable RVAs and data layouts for the verified 1.4.4.5 server image: tree felling, gem drops, tunnelling rewards, and the `maxPlayers` slot limit. |
+| [Custom tree drops and species wood integration](custom_tree_drops.md) | 🔬 | Current `treeDrops` scope, custom-log data and action requirements, Saw/Uproot seams and missing-log diagnosis. |
 | [Farming — harvest yield and quality](farming.md) | 🔬 | `Harvest Crops` RE: the exact quantity formula (weather is a fourfold switch, fertility a twofold one) and the separate item-quality formula. |
 | [NetEvent vtable layout](net_events.md) | 🔬 | Torque NetEvent vtable layout, slot semantics, and the per-event (pack, unpack, process) handler table. |
 | [NetEvent receive / send path](netevent_receive_path.md) | 🔬 | The NetEvent receive/dispatch path: how an inbound event is unpacked and routed to its process handler. |
@@ -84,6 +85,7 @@ LiFx is a Detours-based extension framework for the *Life is Feudal: Your Own* d
 
 | Page | Status | What it covers |
 | --- | --- | --- |
+| [Inventory lifetime crash on stat changes](inventory_stat_lifetime.md) | 🔬 | Stale root-container callback on Willpower changes, destructor repair contract, incident signature and 22 native regression scenarios. |
 | [Qt / QtWebEngine & HTTPS](qt_and_https.md) | 🔬 | A loose-DLL Qt 5.15.2 / Chromium 83 overlay binds against the unmodified 5.9-linked client and runs to in-world play; Qt5Network needs OpenSSL 1.1.x. |
 | [Client 9x9 grid-size patch](client_grid_patch.md) | 🔬 | Verified RE record of the community `0x189554` `0x03`→`0x09` grid-clamp byte-patch — documented as a hook target only, never to be applied (no-exe-patching rule). |
 

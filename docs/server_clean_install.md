@@ -3,9 +3,9 @@ title: Clean dedicated-server install
 status: ops
 domain: operations
 tags: [steamcmd, install, runbook, wine, mariadb]
-related: [build.md, loader_and_injection.md, architecture.md]
+related: [build.md, loader_and_injection.md, architecture.md, terrain_file_formats.md]
 sources: [docs/lif_server_clean_install.md, build.md, loader_and_injection.md, source/server/cm_offsets.h]
-updated: 2026-06-26
+updated: 2026-11-12
 ---
 
 # Clean dedicated-server install
@@ -13,6 +13,10 @@ updated: 2026-06-26
 Start-to-finish, reproducible procedure for installing a **vanilla** *Life is Feudal: Your Own* dedicated server from SteamCMD on Linux, then configuring it, booting it, and verifying it. The result is a pristine, unmodified install bound to a UDP world port with its own MariaDB world DB. This is the *stock* path only — no LiFx, no `pdh.dll` proxy, no DLL overrides. For getting LiFx into the process afterward, see [`loader_and_injection.md`](loader_and_injection.md); for rebuilding/re-downloading the binaries, see the re-download note in [`build.md`](build.md).
 
 > Scope: stock server only. Everything below is exactly and only what SteamCMD delivers plus a DB connection config. No custom DLLs, no injection, no third-party payloads.
+
+Additional file-format reference:
+[Terrain data files](terrain_file_formats.md) describes `.ter`, `.ter2idx` and
+`.ter2dat` decoding, lossless serialization and consistency checks for terrain edits.
 
 ---
 

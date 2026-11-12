@@ -21,6 +21,14 @@ A complete map of the LiF AI behavior-tree system (42 nodes), the animal spawn m
 the earlier hypothetical animal-spawn recipe. In particular, animals use their
 manager factory, and character data loading precedes player control binding.
 
+**Reading the status:** `re` is the page-level label for mixed evidence under
+the [contribution rules](contributing.md#status-legend). It does not withdraw
+the existing code/binary-confirmed findings or label LiFXXL as an offline project.
+Those findings remain verified within their stated scope; inferred parameter
+meanings, illustrative recipes and proposed extensions are identified separately.
+The [verification breakdown](#status--provenance-of-this-contribution) below
+distinguishes source confirmation from a new runtime result for this PR.
+
 ## 1. The AI behavior-tree system at a glance
 
 The native NPC/animal AI system uses Torque-style behavior trees. This does not describe every possible controller for an ordinary `Player`. Trees are authored as XML files, loaded by the **`BehaviorsManager`** singleton, and built from a fixed set of C++ node classes under the namespace `AI::Nodes::*`. The tree is "ticked" per frame; each node returns success / failure / running and the composites decide what to evaluate next.
@@ -828,6 +836,19 @@ character behind. Runtime cleanup does not undo saved inventory or terrain work.
 | Duplicate actor after reconnect/respawn | Prior registry entry, pending callbacks, existing player ownership and cleanup completion. |
 
 ### Status & provenance of this contribution
+
+| Material | Evidence and scope |
+|---|---|
+| Existing node-registration and XML-loader findings | Their documented code/binary confirmation is retained. Parameter meanings explicitly marked "likely" remain inferences. |
+| Corrected animal factory ABI and spawn-pattern examples | Confirmed against native instructions and the attached source excerpts; the ABI regression check covers the changed calling convention. |
+| Player/AiPlayer loading sequence | Traced in the identified scripts and AiPlayer source revision. Source confirmation is not a new end-to-end spawn/respawn result in Plus. |
+| Illustrative recipes and proposed extension work | Examples and proposals; these are not all installed or runtime-accepted Plus commands. |
+
+The page previously used `verified`. Its aggregate `re` status now makes this
+mixed scope explicit, following `docs/contributing.md`. A new in-game test is
+not required for a fact directly established from engine/LiFx code to qualify
+as verified; the label must not erase that distinction or the existing project's
+real-server use.
 
 The review checked readable source excerpts and native instruction bytes and
 corrected the animal factory's third parameter to `float` in the caller and

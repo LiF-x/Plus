@@ -1,0 +1,310 @@
+{
+  "title": "Animal and player spawn/loading boundaries",
+  "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
+  "reviewed": "2026-11-12",
+  "binary": {
+    "name": "ddctd_cm_yo_server.exe",
+    "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+    "size_bytes": 12441032,
+    "image_base": "0x140000000"
+  },
+  "code_sites": [
+    {
+      "name": "factory_float_argument",
+      "rva": "0x195ff0",
+      "file_offset": "0x1953f0",
+      "bytes": "41 8B F9 0F 28 F2 8B DA 48 8B E9 8B CA E8 8E 67 FF FF",
+      "instructions": [
+        "0x195ff0: mov edi, r9d",
+        "0x195ff3: movaps xmm6, xmm2",
+        "0x195ff6: mov ebx, edx",
+        "0x195ff8: mov rbp, rcx",
+        "0x195ffb: mov ecx, edx",
+        "0x195ffd: call 0x14018c790"
+      ]
+    },
+    {
+      "name": "factory_quality_forward",
+      "rva": "0x196080",
+      "file_offset": "0x195480",
+      "bytes": "0F 28 CE 48 8B 4C 24 30 E8 D3 DB 14 00",
+      "instructions": [
+        "0x196080: movaps xmm1, xmm6",
+        "0x196083: mov rcx, qword ptr [rsp + 0x30]",
+        "0x196088: call 0x1402e3c60"
+      ]
+    },
+    {
+      "name": "quality_float_store",
+      "rva": "0x2e3c60",
+      "file_offset": "0x2e3060",
+      "bytes": "F3 0F 11 89 CC 24 00 00 C3",
+      "instructions": [
+        "0x2e3c60: movss dword ptr [rcx + 0x24cc], xmm1",
+        "0x2e3c68: ret"
+      ]
+    },
+    {
+      "name": "spawn_pattern_filename_reference",
+      "rva": "0x199941",
+      "file_offset": "0x198d41",
+      "bytes": "4C 8D 05 08 3A 60 00",
+      "instructions": [
+        "0x199941: lea r8, [rip + 0x603a08]"
+      ]
+    },
+    {
+      "name": "animal_count_validator",
+      "rva": "0x177e47",
+      "file_offset": "0x177247",
+      "bytes": "8B 83 98 00 00 00 39 05 45 61 95 00 0F 8F 55 01 00 00 3B 05 3D 61 95 00 0F 8F 49 01 00 00",
+      "instructions": [
+        "0x177e47: mov eax, dword ptr [rbx + 0x98]",
+        "0x177e4d: cmp dword ptr [rip + 0x956145], eax",
+        "0x177e53: jg 0x140177fae",
+        "0x177e59: cmp eax, dword ptr [rip + 0x95613d]",
+        "0x177e5f: jg 0x140177fae"
+      ]
+    },
+    {
+      "name": "animal_count_setter",
+      "rva": "0x1575b0",
+      "file_offset": "0x1569b0",
+      "bytes": "48 83 EC 28 48 8D 0D 65 4B 63 00 89 15 67 65 97 00 E8 2A E9 FF FF 48 85 C0 74 17",
+      "instructions": [
+        "0x1575b0: sub rsp, 0x28",
+        "0x1575b4: lea rcx, [rip + 0x634b65]",
+        "0x1575bb: mov dword ptr [rip + 0x976567], edx",
+        "0x1575c1: call 0x140155ef0",
+        "0x1575c6: test rax, rax",
+        "0x1575c9: je 0x1401575e2"
+      ]
+    },
+    {
+      "name": "animal_count_spawn_setup",
+      "rva": "0x19bdf9",
+      "file_offset": "0x19b1f9",
+      "bytes": "48 63 15 28 1D 93 00 4C 8D 43 30 48 8D 4B 30",
+      "instructions": [
+        "0x19bdf9: movsxd rdx, dword ptr [rip + 0x931d28]",
+        "0x19be00: lea r8, [rbx + 0x30]",
+        "0x19be04: lea rcx, [rbx + 0x30]"
+      ]
+    },
+    {
+      "name": "player_respawn_entry",
+      "rva": "0xec0f0",
+      "file_offset": "0xeb4f0",
+      "bytes": "40 55 53 56 57 41 56 48 8D AC 24 20 E8 FF FF B8 E0 18 00 00 E8 C7 38 5F 00 48 2B E0 48 C7 45 C8 FE FF FF FF 4C 8B F1 48 8D B9 A8 0A 00 00 48 8B 07 48 8B CF FF 50 38 84 C0 75 43 E8 10 8F 31 00",
+      "instructions": [
+        "0xec0f0: push rbp",
+        "0xec0f2: push rbx",
+        "0xec0f3: push rsi",
+        "0xec0f4: push rdi",
+        "0xec0f5: push r14",
+        "0xec0f7: lea rbp, [rsp - 0x17e0]",
+        "0xec0ff: mov eax, 0x18e0",
+        "0xec104: call 0x1406df9d0",
+        "0xec109: sub rsp, rax",
+        "0xec10c: mov qword ptr [rbp - 0x38], 0xfffffffffffffffe",
+        "0xec114: mov r14, rcx",
+        "0xec117: lea rdi, [rcx + 0xaa8]",
+        "0xec11e: mov rax, qword ptr [rdi]",
+        "0xec121: mov rcx, rdi",
+        "0xec124: call qword ptr [rax + 0x38]",
+        "0xec127: test al, al",
+        "0xec129: jne 0x1400ec16e",
+        "0xec12b: call 0x140405040"
+      ]
+    },
+    {
+      "name": "player_spawn_point_loader",
+      "rva": "0x17a1d0",
+      "file_offset": "0x1795d0",
+      "bytes": "40 55 53 57 48 8D 6C 24 E0 48 81 EC 20 01 00 00 48 C7 45 98 FE FF FF FF 48 8B 1D 21 40 95 00 48 8D 4C 24 30 E8 D7 AF 2D 00 90 48 8D 4C 24 40",
+      "instructions": [
+        "0x17a1d0: push rbp",
+        "0x17a1d2: push rbx",
+        "0x17a1d3: push rdi",
+        "0x17a1d4: lea rbp, [rsp - 0x20]",
+        "0x17a1d9: sub rsp, 0x120",
+        "0x17a1e0: mov qword ptr [rbp - 0x68], 0xfffffffffffffffe",
+        "0x17a1e8: mov rbx, qword ptr [rip + 0x954021]",
+        "0x17a1ef: lea rcx, [rsp + 0x30]",
+        "0x17a1f4: call 0x1404551d0",
+        "0x17a1f9: nop",
+        "0x17a1fa: lea rcx, [rsp + 0x40]"
+      ]
+    },
+    {
+      "name": "player_random_spawn_selector",
+      "rva": "0x179e60",
+      "file_offset": "0x179260",
+      "bytes": "40 55 53 56 57 41 56 48 8B EC 48 83 EC 50 48 C7 45 E0 FE FF FF FF 4C 8B F1 B1 01 E8 10 E2 3F 00",
+      "instructions": [
+        "0x179e60: push rbp",
+        "0x179e62: push rbx",
+        "0x179e63: push rsi",
+        "0x179e64: push rdi",
+        "0x179e65: push r14",
+        "0x179e67: mov rbp, rsp",
+        "0x179e6a: sub rsp, 0x50",
+        "0x179e6e: mov qword ptr [rbp - 0x20], 0xfffffffffffffffe",
+        "0x179e76: mov r14, rcx",
+        "0x179e79: mov cl, 1",
+        "0x179e7b: call 0x140578090"
+      ]
+    }
+  ],
+  "constants": [
+    {
+      "name": "animals_count_min",
+      "rva": "0xacdf98",
+      "type": "<i",
+      "value": 0
+    },
+    {
+      "name": "animals_count_max",
+      "rva": "0xacdf9c",
+      "type": "<i",
+      "value": 100
+    }
+  ],
+  "string_references": [
+    {
+      "name": "animal_pattern_path",
+      "rva": "0x79d350",
+      "value": "data/cm_spawn_patterns.xml"
+    },
+    {
+      "name": "player_spawn_points_path",
+      "pointer_rva": "0xace210",
+      "rva": "0x7949e0",
+      "value": "data/player_spawn_points.xml"
+    }
+  ],
+  "abi_correction": {
+    "function_rva": "0x195fd0",
+    "third_parameter": "float quality",
+    "incoming_register": "XMM2",
+    "old_declaration": "uint32_t quality (integer argument in R8D)",
+    "forwarding": "XMM2 -> XMM6 -> XMM1 -> float store at object +0x24CC",
+    "scope": "Signature correction only; no new acceptance of placement, navigation, combat or death behavior."
+  },
+  "effective_pattern_observation": {
+    "pattern_count": 18,
+    "family_entry_count": 24,
+    "all_substance_tokens_numeric": true,
+    "scope": "Read-only file observation; no population measurement."
+  },
+  "source_fragments": [
+    {
+      "reference": "Readable server reference: scripts/server/game.cs",
+      "first_line": 1,
+      "last_line": 15,
+      "purpose": "Physics and behavior/datablock initialization order",
+      "text": "function onServerCreated()\n{\n    physicsInitWorld(\"server\");\n    if (isScriptFile(\"art/datablocks/managedDatablocks.cs\"))\n    {\n        exec(\"art/datablocks/managedDatablocks.cs\");\n    }\n    if (isScriptFile(\"art/forest/managedItemData.cs\"))\n    {\n        exec(\"art/forest/managedItemData.cs\");\n    }\n    initBehaviorsManager();\n    exec(\"art/datablocks/datablockExec.cs\");\n    exec(\"./scriptExec.cs\");\n}"
+    },
+    {
+      "reference": "Readable server reference: scripts/server/world.cs",
+      "first_line": 20,
+      "last_line": 39,
+      "purpose": "Terrain-list success and temporary player objects precede animal initialization",
+      "text": "    echo(\"Loading terrain list\");\n    if (!InitTerrainList($dataMirrorPath))\n    {\n        error(\"Fatal: Can\\'t init terrain list (mirror path=\\\"\" @ $dataMirrorPath @ \"\\\"). Terminating.\");\n        quit();\n        return;\n    }\n    %obj = new Player(\"\")\n    {\n        .dataBlock = PlayerMaleData;\n    };\n    %obj.delete();\n    %obj = new Player(\"\")\n    {\n        .dataBlock = PlayerFemaleData;\n    };\n    %obj.delete();\n    %obj = \"\";\n    echo(\"*** Mission loaded\");\n    initAnimalsSpawnControl();"
+    },
+    {
+      "reference": "Readable server reference: core/scripts/server/clientConnection.cs",
+      "first_line": 121,
+      "last_line": 125,
+      "purpose": "Registry insertion before player-manager initialization",
+      "text": "function serverCmdReadyToInventory(%client)\n{\n    %client.insertIntoRegistry();\n    %client.initPlayerManager();\n}"
+    },
+    {
+      "reference": "Readable server reference: core/scripts/server/clientConnection.cs",
+      "first_line": 130,
+      "last_line": 161,
+      "purpose": "Client readiness flag and queue-drain spawn gate",
+      "text": "function serverCmdClientReadyToEnterGame(%client)\n{\n    messageClient(%client, 'MsgConnectionError', \"\", $Pref::Server::ConnectionError);\n    echo(\"CADD: \" @ %client @ \" \" @ %client.getAddress());\n    %client.prepareClient();\n}\nfunction GameConnection::onClientEnterGame(%this)\n{\n    if (!%this.readyToGetIn)\n    {\n        commandToClient(%this, 'setCameraSpeed', $Camera::movementSpeed);\n        %this.readyToGetIn = 1;\n        hack(%this, \"Player ready to get in, waiting for trySpawnPlayer() call...\");\n    }\n}\nfunction GameConnection::trySpawnPlayer(%this)\n{\n    if (%this.readyToGetIn && (%this.getEventQueueSize() == 0))\n    {\n        hack(%this, \"Player ready to get in, spawning Player object...\");\n        %this.schDataLoaded = \"\";\n        spawnPlayer(%this);\n    }\n    else\n    {\n        if (%this.getEventQueueSize())\n        {\n            warn(\"Client\", %this, \"have still\", %this.getEventQueueSize(), \"NetEvents pending to be sent... Already sent:\", %this.getEventsSent());\n        }\n        %this.schDataLoaded = %this.schedule(256, trySpawnPlayer);\n    }\n}"
+    },
+    {
+      "reference": "Readable server reference: core/scripts/server/clientConnection.cs",
+      "first_line": 218,
+      "last_line": 228,
+      "purpose": "Ghosting readiness callback chain",
+      "text": "function GameConnection::prepareClient(%this)\n{\n    warn(\"GC:\" SPC %this SPC \"CharId:\" SPC %this.getCharacterId());\n    %this.setName(\"ch_\" @ %this.getCharacterId());\n    %this.activateGhosting();\n}\nfunction GameConnection::onGhostAlwaysObjectsReceived(%this)\n{\n    commandToClient(%this, 'AllGhostAlwaysReceived');\n    %this.onClientEnterGame();\n}"
+    },
+    {
+      "reference": "Readable server reference: core/scripts/server/spawn.cs",
+      "first_line": 1,
+      "last_line": 29,
+      "purpose": "Player creation, lists, client references and control binding",
+      "text": "$Game::DefaultPlayerClass = \"Player\";\n$Game::DefaultPlayerDataBlock = \"DefaultPlayerData\";\n$Game::DefaultPlayerSpawnGroups = \"PlayerSpawnPoints PlayerDropPoints\";\nsingleton SimSet(PlayerList)\n{\n};\nfunction spawnPlayer(%client)\n{\n    if (isObject(%client.Player))\n    {\n        error(\"Attempting to create a player for a client that already has one!\");\n    }\n    %datablock = %client.getPlayerDatablock();\n    %player = spawnObject($Game::DefaultPlayerClass, %datablock);\n    MissionCleanup.add(%player);\n    PlayerList.add(%player);\n    %player.client = %client;\n    %player.scopeToClient(%client);\n    %client.Player = %player;\n    %client.setControlObject(%player);\n    if (isMethod(Player, setReferencedClient))\n    {\n        %player.setReferencedClient(%client);\n    }\n    hack(\"Spawned player\", %player, %player.getClassName(), \"at\", %player.getPosition());\n    $pl = %player;\n}"
+    },
+    {
+      "reference": "Readable animal datablock reference: Wolf.cs",
+      "first_line": 1,
+      "last_line": 14,
+      "purpose": "Registered type and behavior path",
+      "text": "datablock AnimalData(WolfData : DefaultPlayerData)\n{\n    id = 143;\n    animalTypeId = 755;\n    footprintTexture = \"art/Textures/AnimalFootprints/Wolf_fs.png\";\n    footprintTextureLinearSize = 0.4;\n    footprintGap = 0.6;\n    footprintTrackWidth = 0.4;\n    shapeFile = \"art/models/3d/mobiles/wildanimals/wolf.dts\";\n    soundFilesPrefix = \"wolf\";\n    behavior = \"data/ai/cmAiWolf.xml\";\n    boundingBox = \"1 2.4 1.8\";\n    runSurfaceAngle = 50;\n    maxHP = 150;"
+    },
+    {
+      "reference": "LiFXXL AiPlayer 2026-10-13: mod.cs",
+      "first_line": 428,
+      "last_line": 455,
+      "purpose": "Local connection registration and asynchronous character-load request",
+      "text": "function LifXXLAiPlayerCharacter::beginCharacterLoad(%this)\n{\n    if (isObject(NetConnection::findByCharId(%this.charId)))\n    {\n        %this.fail(\"CharacterID became registered during DB activation\");\n        return;\n    }\n\n    %connection = new GameConnection(\"\")\n    {\n        lifxxlAiPlayerLoader = %this;\n        lifxxlAiPlayerSynthetic = true;\n    };\n    if (!%connection.LifXXL_registerAiPlayerConnection(%this.charId))\n    {\n        %connection.delete();\n        %this.fail(\"CaptainHook rejected the server-local GameConnection\");\n        return;\n    }\n    %this.connectionObjectId = %connection.getId();\n    %connection.charId = %this.charId;\n    %connection.lifxxlAiPlayerAccountId = %this.accountId;\n    %connection.registerByCharacter();\n    %this.connection = %connection;\n    %this.state = \"LOADING\";\n    %connection.initPlayerManager();\n    LifXXLAiPlayer.schedule(100, \"pollCharacterInfo\", %this);\n}"
+    },
+    {
+      "reference": "LiFXXL AiPlayer 2026-10-13: mod.cs",
+      "first_line": 471,
+      "last_line": 513,
+      "purpose": "Datablock readiness sentinel and actor/control linkage",
+      "text": "    {\n        cancel(%connection.schDataLoaded);\n        %connection.schDataLoaded = \"\";\n    }\n    %datablock = %connection.getPlayerDatablock();\n    if (%datablock $= \"DefaultPlayerData\")\n    {\n        %loader.loadAttempts++;\n        if (%loader.loadAttempts >= $LifXXLAiPlayer::CharacterLoadMaxAttempts)\n        {\n            %loader.fail(\"timed out waiting for CharacterInfo\");\n            return;\n        }\n        %this.schedule(\n            $LifXXLAiPlayer::CharacterLoadRetryMs,\n            \"pollCharacterInfo\",\n            %loader);\n        return;\n    }\n\n    %loader.state = \"SPAWNING\";\n    %actor = new Player(\"\")\n    {\n        dataBlock = %datablock;\n    };\n    if (!isObject(%actor))\n    {\n        %loader.fail(\"new Player failed\");\n        return;\n    }\n\n    %loader.actor = %actor;\n    %actor.client = %connection;\n    %connection.Player = %actor;\n    // Live clearScopeAlways on this EXE removed Player objects (2026-10-12).\n    // Keep until spatial scope and native object lifetime are verified together.\n    %actor.setScopeAlways();\n    %connection.setControlObject(%actor);\n    if (isMethod(Player, setReferencedClient))\n    {\n        %actor.setReferencedClient(%connection);\n    }\n    %this.schedule(100, \"finishCharacterSpawn\", %loader);"
+    },
+    {
+      "reference": "LiFXXL AiPlayer 2026-10-13: mod.cs",
+      "first_line": 530,
+      "last_line": 547,
+      "purpose": "Identity checks before native actor binding and activation",
+      "text": "    {\n        %loader.fail(\"Player did not inherit the expected CharacterID\");\n        return;\n    }\n\n    if (!%loader.connection.LifXXL_bindAiActor(%loader.actor.getId()))\n    {\n        %loader.fail(\"native actor binding failed\");\n        return;\n    }\n    %loader.actor.position = %loader.position;\n    %loader.actor.rotation = \"0 0 1 0\";\n    %loader.actor.setProcessTick(1);\n    %loader.state = \"ACTIVE\";\n    LifXXLAiPlayerActive.add(%loader);\n    echo(\"LifXXLAiPlayer: spawned CharacterID\" SPC %loader.charId SPC\n        \"(\" @ trim(%loader.characterName) @ \") actor=\" @ %loader.actor SPC\n        \"position=\" @ %loader.position @ \".\");"
+    }
+  ],
+  "readiness": {
+    "connected_player": "readyToGetIn AND getEventQueueSize()==0; retry 256 ms",
+    "local_aiplayer": "bounded datablock polling, then actor/connection charID equality and successful native binding",
+    "caveat": "Readiness checks come from the identified scripts; they are not a complete packet trace or proof of currently loaded overrides."
+  },
+  "validation": {
+    "native_image_and_instruction_bytes_checked": true,
+    "regression": {
+      "source": "scripts/test_animal_create_abi.cpp",
+      "production_hook_compiled": true,
+      "cases": 12,
+      "errors": 0,
+      "qualities": [
+        12.5,
+        50.0,
+        99.75
+      ],
+      "covers": [
+        "factory arguments and return value",
+        "single native call",
+        "null result",
+        "non-hostile path",
+        "ordered hostile callbacks"
+      ],
+      "execution": "Local compiled regression executable with a substitute native factory; no game process."
+    },
+    "changed_translation_units_compiled": [
+      "lifx_hostile.cpp",
+      "hook_animal_create.cpp",
+      "hooks_engine.cpp"
+    ],
+    "full_build": "Blocked by unchanged hook_proc_desc.cpp:107, MSVC C2466 (zero-sized array). No full DLL build accepted.",
+    "server_or_client_executed": false,
+    "deployment_performed": false
+  },
+  "provenance": "Readable server source and AiPlayer source revision were inspected; existing real-server use is not relabelled as a simulated test."
+}

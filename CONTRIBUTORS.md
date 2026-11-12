@@ -64,6 +64,17 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
+**Zbigi** — documentation prepared with ChatGPT (Codex), based on collected LiFXXL notes:
+
+- `docs/ai_and_spawning.md` and `docs/animal_spawn.md` — animal spawning,
+  ordered player/AiPlayer loading, readiness, respawn and corrected factory ABI
+- `docs/evidence/spawn_loading_reference.json` — source excerpts and native-byte evidence
+- `source/server/hooks/character/hook_animal_create.{h,cpp}`,
+  `source/server/api/lifx_hostile.cpp` and `source/server/cm_offsets.h` — float
+  quality argument in the factory call and detour
+- `scripts/test_animal_create_abi.cpp` — argument-preservation regression check
+- Corresponding documentation index entries
+
 ## Adding to this file
 
 When code from outside the project lands here, record it in two places: a credit

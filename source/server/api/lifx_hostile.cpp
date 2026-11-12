@@ -905,8 +905,9 @@ namespace
 	constexpr unsigned  kSimObjectIdOff          = 0x90;    // SimObject mId (u32), set by registerObject
 	constexpr uint32_t  kWolfTypeId              = 755;
 
-	// __fastcall(rcx=mgr, rdx=typeId, r8=quality, r9=id[0=auto], stack=flag) -> Animal*
-	using PfnCreateAnimal = void* (__fastcall*)(void* mgr, uint32_t typeId, uint32_t quality,
+	// ABI correction: third-argument float quality is passed in XMM2.
+	// __fastcall(rcx=mgr, rdx=typeId, xmm2=quality, r9=id[0=auto], stack=flag) -> Animal*
+	using PfnCreateAnimal = void* (__fastcall*)(void* mgr, uint32_t typeId, float quality,
 	                                            int id, uint8_t flag);
 
 	void SpawnHostileCore(uint32_t typeId, const char* x, const char* y, const char* z)
@@ -919,7 +920,7 @@ namespace
 			return;
 		}
 		auto createAnimal = reinterpret_cast<PfnCreateAnimal>(::Engine::ModuleBase() + kCreateAnimalRva);
-		void* animal = createAnimal(mgr, typeId, /*quality*/ 50, /*id auto*/ 0, /*flag*/ 1);
+		void* animal = createAnimal(mgr, typeId, /*quality*/ 50.0f, /*id auto*/ 0, /*flag*/ 1);
 		if (!animal || !SafeReadable(animal, kSimObjectIdOff + 4)) {
 			Con::Warning("[lifx-spike] spawnHostile: createAnimal(type %u) returned null "
 			             "(no AnimalData registered with that type id?)", typeId);

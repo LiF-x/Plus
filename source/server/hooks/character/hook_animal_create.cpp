@@ -35,7 +35,7 @@ void* Hooks::AnimalCreate::LastBandit()
 	return g_lastBandit.load(std::memory_order_relaxed);
 }
 
-void* __fastcall Hooks::AnimalCreate::OnCreateAnimal(void* mgr, uint32_t typeId, uint32_t quality,
+void* __fastcall Hooks::AnimalCreate::OnCreateAnimal(void* mgr, uint32_t typeId, float quality,
                                                      int id, unsigned char flag)
 {
 	void* animal = _Animal_CreateAnimal(mgr, typeId, quality, id, flag);

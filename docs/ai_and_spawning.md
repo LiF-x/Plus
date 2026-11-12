@@ -1,19 +1,37 @@
 ---
 title: AI behaviors & spawning
-status: verified
+status: re
 domain: reverse-engineering
 tags: [ai, behavior-tree, spawning, animation, triggers]
-related: [animal_spawn.md, animal_data_model.md, character_ai_re.md]
-updated: 2026-06-26
+related: [animal_spawn.md, animal_data_model.md, character_ai_re.md, offline_char_load.md]
+sources: [docs/evidence/spawn_loading_reference.json, source/server/cm_offsets.h, source/server/hooks/character/hook_animal_create.cpp, source/server/api/lifx_hostile.cpp]
+updated: 2026-11-12
 ---
 
 # AI Behaviors and Spawning
 
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
+
 A complete map of the LiF AI behavior-tree system (42 nodes), the animal spawn manager, the Torque-standard trigger volumes, and concrete recipes for "spawn entity in zone, play animation on spawn".
+
+**Spawn/loading review (2026-11-12):** the scope clarification and corrections in sections 4,
+7 and 9 and the [loading-order guide](#loading-order-and-readiness) supersede
+the earlier hypothetical animal-spawn recipe. In particular, animals use their
+manager factory, and character data loading precedes player control binding.
+
+**Reading the status:** `re` is the page-level label for mixed evidence under
+the [contribution rules](contributing.md#status-legend). It does not withdraw
+the existing code/binary-confirmed findings or label LiFXXL as an offline project.
+Those findings remain verified within their stated scope; inferred parameter
+meanings, illustrative recipes and proposed extensions are identified separately.
+The [verification breakdown](#status--provenance-of-this-contribution) below
+distinguishes source confirmation from a new runtime result for this PR.
 
 ## 1. The AI behavior-tree system at a glance
 
-LiF runs every AI-controlled creature on a Torque-style behavior tree. Trees are authored as XML files, loaded by the **`BehaviorsManager`** singleton, and built from a fixed set of C++ node classes under the namespace `AI::Nodes::*`. The tree is "ticked" per frame; each node returns success / failure / running and the composites decide what to evaluate next.
+The native NPC/animal AI system uses Torque-style behavior trees. This does not describe every possible controller for an ordinary `Player`. Trees are authored as XML files, loaded by the **`BehaviorsManager`** singleton, and built from a fixed set of C++ node classes under the namespace `AI::Nodes::*`. The tree is "ticked" per frame; each node returns success / failure / running and the composites decide what to evaluate next.
 
 The system is **already extensively script-exposed** — you can register new behavior XMLs, hot-reload them, and inspect loaded trees from TorqueScript without touching C++:
 
@@ -510,7 +528,7 @@ LiF has a dedicated XML-driven spawn manager for wild animals, independent of th
                     AnimalFamilyInfo (XML)
                           │
                           ▼  load
-                    SpawnPattern   ────────► substance / biome filters
+                    SpawnPattern   ────────► geological substance filters
                           │
                           ▼  generated at server start
                     SpawnPoint(s)
@@ -526,41 +544,46 @@ LiF has a dedicated XML-driven spawn manager for wild animals, independent of th
 |---|---|---|
 | `Animals::SpawnControl::SpawnControl` (ctor) | `0x1998F0` | Singleton constructor. |
 | `initAnimalsSpawnControl()` *(TorqueScript)* | `0x2A1F0` | Construct the singleton; runs once at boot. |
-| `Animals::SpawnControl::_loadPatternsFromXML` | `0x19C7A0` | **Read every `SpawnPattern` XML file.** |
+| `Animals::SpawnControl::_loadPatternsFromXML` | `0x19C7A0` | Read the configured spawn-pattern file (`data/cm_spawn_patterns.xml` in this image). |
 | `Animals::SpawnControl::SpawnPattern::loadFromXml` | `0x19DD50` | Parse one pattern XML. |
 | `Animals::SpawnControl::SpawnPattern::AnimalFamilyInfo::loadFromXML` | `0x19DA40` | Parse one family entry within a pattern. |
 | `Animals::SpawnControl::_generateSpawnPoints` | `0x19C040` | Build the in-memory spawn-point list once XML is loaded. |
 | `Animals::SpawnControl::processTick` | `0x19E310` | The driver — runs every tick to fill / cull populations. |
 | `startStretchedAnimalSpawnMaintenance()` *(TorqueScript)* | `0x2A2F0` | Begin the maintenance loop. |
 
-### 4.2 Selection helpers
+### 4.2 Population selection and creation are separate
 
-`processTick` walks: pattern → cluster → substance → geo point.
+**Correction:** the earlier table assigned the same RVA to several
+different selection helpers without distinguishing their boundaries. Those
+ambiguous aliases are not a usable hook contract. The population path selects
+eligible terrain/pattern/family candidates before the native animal factory;
+the factory itself is `Animals::Manager::createAnimal` at `0x195FD0`.
 
-| Function | RVA | Returns |
-|---|---|---|
-| `_selectRandomPattern` | `0x19CD00` | Pick a spawn pattern. |
-| `_selectRandomCluster` | `0x19C040` | Within the pattern, pick a cluster (group of related spawns). |
-| `_selectRandomSubstance` | `0x19C040` | Pick a creature substance/sub-family. |
-| `_getClusterInitGeoPoint` | `0x19D630` | Initial point for a new cluster. |
-| `_getClusterRandomGeoPoint` | `0x19ACD0` | Randomized point within cluster bounds. |
-| `getSpawnPosition` | `0x19D630` | Final transformed position handed to the creator. |
+The world setting `<animalsCount>` feeds the potential spawn-point target;
+it is not an exact simultaneous living-animal count. Native settings validation
+accepts `0..100` in the inspected unmodified 1.4.4.5 image (range constants
+`0xACDF98` / `0xACDF9C`). The accepted setting reaches `0xACDB28` through
+`0x1575B0`; spawn setup reads it at `0x19BDF9`. Family counts, eligibility and
+population processing still affect actual animals. Raising a limit in an
+extension does not itself establish a sustainable population.
 
 ### 4.3 Spawn-pattern XML schema (verified from the binary)
 
 Source confirmed by decompiling `_loadPatternsFromXML` (`0x19C7A0`), `SpawnPattern::loadFromXml` (`0x19DD50`), and `AnimalFamilyInfo::loadFromXML` (`0x19DA40`). Same XML library (TinyXml1) as the behavior trees.
 
 ```xml
-<spawn_patterns cluster_size="100">
-    <pattern probability="50" substances="forest plains">
-        <family name="WolfData" count="2 5" quality="30 80"/>
-        <family name="DeerData" count="10 20" quality="40 90"/>
-    </pattern>
-    <pattern probability="30" substances="swamp">
-        <family name="BoarData" count="3 6" quality="40 70"/>
+<spawn_patterns cluster_size="32">
+    <pattern probability="10" substances="7 8">
+        <family name="WolfData" count="2 3" quality="30 70"/>
     </pattern>
 </spawn_patterns>
 ```
+
+**Correction:** this example uses numeric geological substance IDs,
+as in the checked file. The former `forest plains swamp` labels were not valid
+examples of those IDs. This is an illustrative pattern, not a complete replacement
+for the effective file; retain other root attributes and entries when editing it.
+Substance eligibility does not define an arbitrary XYZ trigger zone.
 
 | Element / attribute | Required? | Meaning |
 |---|---|---|
@@ -568,19 +591,24 @@ Source confirmed by decompiling `_loadPatternsFromXML` (`0x19C7A0`), `SpawnPatte
 | `cluster_size` (on root) | **yes** | Integer parsed via `strtol`. Stored in `DAT_140ACE730` — the global spawn-cluster size. Missing → `spawn cluster size info is absent`. |
 | `<pattern>` (child of root) | yes, ≥1 | Each represents one spawn rule. Iterated with `firstChild("pattern")` / `nextSibling("pattern")`. |
 | `probability` (on `<pattern>`) | **yes** | Integer relative weight when randomly picking a pattern. Missing → `spawn pattern probability info is absent`. |
-| `substances` (on `<pattern>`) | **yes** | Whitespace-delimited list (space / tab / newline) of substance/biome filter strings. Missing → `spawn pattern substances info is absent`. |
+| `substances` (on `<pattern>`) | **yes** | Whitespace-delimited numeric geological substance IDs, not free-form biome names. Missing → `spawn pattern substances info is absent`. |
 | `<family>` (child of `<pattern>`) | yes, ≥1 | Each represents one animal family within the pattern. |
 | `name` (on `<family>`) | **yes** | Name of an `AnimalData` datablock (TorqueScript-defined). The loader does an RTTI-checked `__RTDynamicCast` to `AnimalData::RTTI_Type_Descriptor`; if the named SimObject either doesn't exist or isn't an `AnimalData`, the loader prints `No animalData with name %s` and rejects the family entry. Missing entirely → `animal family name info is absent`. |
 | `count` (on `<family>`) | **yes** | **Space-delimited range** "min max" parsed as two `long`s (e.g., `count="2 5"` → spawn 2 to 5 animals). If only one token, max defaults to min. Missing → `animal family count info is absent`. |
 | `quality` (on `<family>`) | **yes** | Same space-delimited "min max" range, applied to the spawned animal's quality stat (e.g., `quality="30 80"`). Missing → `animal family quality info is absent`. |
 
-### 4.5 Where the XMLs live
+### 4.4 File location and changes to spawn rules
 
-Look in your LiF server install for files referenced by `_loadPatternsFromXML`. The string list around `FUN_14019c7a0` will give the canonical filenames at runtime; commonly something like `data/animals/spawn_patterns/*.xml`. (We can `objdump`/`strings` the binary again narrowed to that function if you need exact paths.)
+**Verified:** the constructor references `data/cm_spawn_patterns.xml`
+at RVA `0x199941`. Inspect the effective file and the matching animal datablocks.
+The family `name` resolves a datablock; the datablock's `behavior` field selects
+its AI XML (for example, `WolfData` uses `data/ai/cmAiWolf.xml` in the reference).
+There is no behavior-name field in the documented family schema.
 
-### 4.4 The "spawn in zone" question — answered
-
-You don't *necessarily* need a Torque Trigger to spawn animals in a specific zone. The native pattern XML already supports geo-region constraints — that's how the LiF world places wolves in forests and not in cities. Adding a new spawn rule for "this zone, this creature, this density" is **an XML edit**, not C++ surgery. Find an existing pattern, copy it, change the constraints, register the new file, and `reloadBehaviorXml()` won't help here — there's no equivalent script API exposed for `SpawnControl::reload`, so you'll need a server restart to pick it up (or LiFx can hook `_loadPatternsFromXML` and add a `reloadSpawnPatterns()` console command — see §7 below).
+`reloadBehaviorXml()` reloads behavior definitions; it is not a population or
+spawn-pattern reload command. Apply pattern changes through the intended startup
+path or a separately implemented, lifecycle-aware reload facility. Do not call
+the manager initializer repeatedly as a substitute for that facility.
 
 ## 5. Torque-standard Trigger volumes
 
@@ -618,86 +646,236 @@ The `PlayAnimation` AI node ultimately calls `NPCS::AnimatedNPC::setAnimation` a
 
 The attack-anim data is its own XML system (`AttackAnimationDataManager`). Generic NPC animations are likely loaded as part of the creature datablock.
 
-## 7. Recipe — "spawn an animal in a zone with a custom intro animation"
+## 7. Choosing an animal-spawn path
 
-Three independent paths. Pick by whether you want the spawn driven by a level trigger (player entered) or a global rule (population maintenance):
+**Correction (2026-11-12):** the former trigger recipe used
+`spawnObject("Wolf", ...)`, an unverified `setBehaviorTree` method and XML tags
+that did not match section 2.7. It is superseded by the choices below.
 
-### Path A — entirely in TorqueScript, zero LiFx changes
+| Goal | Suitable entry point | Required dependencies |
+|---|---|---|
+| Natural population | `data/cm_spawn_patterns.xml` and existing `AnimalData` families. | Numeric substance eligibility, loaded datablocks, navigation, terrain and spawn manager. |
+| Manual diagnostic spawn | Engine GM `/animal <AnimalDataName>` path. | A registered animal datablock and the normal native lifecycle. The command changes the running world. |
+| Trigger or scripted placement | A wrapper around the native manager factory and checked placement path. | Main-thread execution, manager availability, valid type, compatible behavior, ownership and cleanup. |
 
-For "when a player enters this zone, spawn a wolf that plays a 'birth' animation."
+The LiFXXL reference wrapper is
+`LifXXL_spawnNaturalAnimal(typeId, quality, x, y, z, yawDegrees)`; it returns
+the registered object ID or `0`, calls `createAnimal` with automatic animal ID
+and AI enabled, then the native position/rotation setter at `0x101DC0`.
+This is an extension API, not a stock or current Plus command. Its presence in
+source is not a new runtime acceptance result for every species or location.
 
-1. **Author a behavior tree XML** that starts with the spawn animation:
-   ```xml
-   <Sequence>
-     <PlayAnimationTimed name="wolf_spawn_emerge" duration="2.5"/>
-     <!-- now hand off to the wolf's normal idle/aggression tree -->
-     <Selector>
-       <Sequence>
-         <HasTarget/>
-         <EnemyInRange/>
-         <Attack/>
-       </Sequence>
-       <RandomSelector>
-         <Wait duration="3"/>
-         <GoToPosition target="random"/>
-       </RandomSelector>
-     </Selector>
-   </Sequence>
-   ```
-2. **Register it** from server-start script:
-   ```ts
-   registerBehavior("wolf_with_spawn_anim", "data/behaviors/wolf_emerge.xml");
-   reloadBehaviorXml();
-   ```
-3. **Place a `Trigger` volume** in the level (mission editor or .mis file) with a `TriggerData` named e.g. `WolfSpawnTriggerData`.
-4. **Override the trigger callback** in script:
-   ```ts
-   function WolfSpawnTriggerData::onEnterTrigger(%this, %trigger, %obj) {
-     // %obj is the entering object (Player). Spawn a wolf at the trigger's center.
-     %wolf = spawnObject("Wolf", "WolfDataDefault");
-     %wolf.setTransform(%trigger.getTransform());
-     %wolf.setBehaviorTree("wolf_with_spawn_anim");
-   }
-   ```
-   (The exact `setBehaviorTree`-equivalent script call is somewhere in the `BehaviorsManager` exports; `showBehaviorTrees()` plus a script reflection sweep will reveal the per-creature attach API. If LiF doesn't already expose it cleanly, that's the only LiFx-side line of C++ you need — a `Con::AddCommand` wrapper around the C++ "attach tree" call.)
+For an introductory animation, use the actual behavior XML schema and an
+animation supported by the selected model. An illustrative fragment is:
 
-This path is the smallest change. Server stays the stock binary, no LiFx hook required beyond the existing `[LiFx]` console marker.
+```xml
+<node class="Sequence">
+    <node class="PlayAnimationTimed" value="existing_animation_name 2.5"/>
+    <!-- Follow with the creature's compatible behavior subtree. -->
+</node>
+```
 
-### Path B — extend the animal SpawnControl XML
-
-For "globally, in this region, spawn N wolves; each plays the emerge anim on creation."
-
-1. **Add or edit a `SpawnPattern` XML** under the LiF install (location revealed by `_loadPatternsFromXML` strings; we can pin it precisely if needed). Constrain it to your geo region.
-2. **Set the creature's default behavior tree** to the one you registered in path A. The `AnimalFamilyInfo` entry references a behavior name.
-3. **Restart the server** (no script reload API exposed for spawn patterns by default — see hook proposal in §8).
-
-### Path C — LiFx hook for direct control
-
-If you want fine-grained per-spawn control (e.g., "different animation depending on time of day"), hook `Animals::SpawnControl::_createPotentialAnimals` (`0x19ACD0`) and, in the post-creation callback, call `NPCS::AnimatedNPC::setAnimation` directly with your chosen anim name. ~30 lines.
+Select the behavior through the animal's datablock or a verified native binding.
+Registering an XML name alone does not attach it to an already created animal.
+An animal's returned object ID proves creation/registration, not complete
+navigation, collision, combat or death behavior. See
+[On-demand animal spawning](animal_spawn.md) for the native factory and its
+corrected **float quality** ABI.
 
 ## 8. Proposed LiFx hooks worth adding for AI/spawn modding
 
-Not required for the basic recipe above, but cheap quality-of-life additions:
+These are research proposals, not implemented commands. In particular, a
+reload must reconcile existing candidates and animals before replacing their
+configuration; an entry-point hook alone does not provide that lifecycle.
 
 | Hook target | RVA | Purpose |
 |---|---|---|
 | `Animals::SpawnControl::_loadPatternsFromXML` | `0x19C7A0` | Expose a `Con::AddCommand("reloadSpawnPatterns")` so admins can hot-reload spawn rules without a restart. |
-| `Animals::SpawnControl::_createPotentialAnimals` | `0x19ACD0` | Post-spawn event surface — emit `Con::Echo("[spawn] %s at %s,%s,%s")` for every animal spawn, optionally call a TorqueScript callback. |
+| `Animals::Manager::createAnimal` | `0x195FD0` | Confirmed factory hook; see `AnimalCreate` and the float ABI correction. Creation callbacks still precede full placement/readiness. |
 | `AI::BehaviorTree::_createNode` | `0x153D20` | If you want LiFx to add new node types from C++, this is the registration call to either hook (insert custom case) or wrap. |
 | `BehaviorsManager::reloadBehaviorXML` *(internal)* | `FUN_1401506D0`/`FUN_1401510E0` | Hook to log every behavior reload — useful while authoring trees. |
 
+## Loading order and readiness
+
+**Scope (2026-11-12).** This section follows the readable server
+scripts, the native 1.4.4.5 animal factory and the 2026-10-13 LiFXXL AiPlayer
+source revision. [Evidence and source excerpts](evidence/spawn_loading_reference.json)
+identify the checked boundaries. It is a sequence of relevant dependencies,
+not a complete inventory of every server-startup subsystem.
+
+### Shared startup dependencies
+
+| Stage | Observed call order / dependency |
+|---|---|
+| Server initialization | Configuration and database initialization precede world use. |
+| `onServerCreated()` | `physicsInitWorld("server")`, optional managed datablocks/forest data, `initBehaviorsManager()`, then `art/datablocks/datablockExec.cs` and the server scripts. |
+| Datablocks | The inspected list loads player data before animal data; animal family names must resolve to existing `AnimalData` objects. A behavior file is selected by the animal datablock's `behavior` field. |
+| `createWorld()` | `InitTerrainList(...)` must succeed; temporary male/female `Player` objects are created and deleted before `initAnimalsSpawnControl()`. These temporary objects are not connected characters. |
+| Simulation | `physicsStartSimulation("server")` occurs later in world creation. A manager's existence alone does not establish that the intended terrain, navigation and simulation are ready. |
+
+The animal manager requires enabled navigation in the inspected build. Check
+that the intended terrain and navigable placement exist before requesting an
+animal there. A visible model, a nonzero `SimObjectID`, and an active animal are
+different observations; test movement, collision, damage and one stable death
+through the complete lifecycle.
+
+```mermaid
+flowchart TD
+    W[World, datablocks and terrain ready] --> A[Animal patterns and candidates]
+    A --> F[Native animal factory and placement]
+    F --> S[Animal AI and simulation]
+    W --> C[Character data loading]
+    C --> H[Connected client readiness]
+    H --> P[Player creation and control binding]
+    C --> L[Local AiPlayer readiness check]
+    L --> B[Player creation and native actor binding]
+    B --> I[Controller supplies player inputs]
+```
+
+The diagram shows dependencies; the animal and character branches need not
+execute serially, and starting a server does not load every database character.
+
+### Connected player: callbacks and the point where spawning is allowed
+
+Character data loading and client preparation are separate parts of entry.
+The checked script establishes the following gates, rather than a single
+synchronous `spawn` call:
+
+| Boundary | What happens | What it does not establish |
+|---|---|---|
+| Connection authorization | `onAuthorized()` and `postConnectRoutine()` prepare the session and send the character list. | No `Player` object yet. |
+| Inventory readiness | `serverCmdReadyToInventory()` calls `insertIntoRegistry()` and then `initPlayerManager()`. | Returning from this call is not a certificate that asynchronous character loading is complete. |
+| Character data | The native character loader supplies stats, inventory and equipment for the selected `charID`; its connect-time entry is `CHARACTER_LOAD_INMEM = 0x1BB290`. | A standalone `CmCharacterInfo` is not a world actor or a connection. |
+| Client world readiness | `serverCmdClientReadyToEnterGame()` calls `prepareClient()`, which starts ghosting. `onGhostAlwaysObjectsReceived()` calls `onClientEnterGame()`. | This callback sets `readyToGetIn`; it does not itself create the player. |
+| Spawn gate | `trySpawnPlayer()` requires both `readyToGetIn` and `getEventQueueSize() == 0`. Otherwise it schedules another check after `256 ms`. | An empty queue by itself is insufficient. |
+| Creation | `spawnPlayer()` obtains `getPlayerDatablock()` and calls `spawnObject("Player", datablock)`. | Merely creating an object does not bind control or prove equipment/identity readiness. |
+| Binding | Add to `MissionCleanup` and `PlayerList`; assign `player.client`; scope to that client; assign `connection.Player`; call `setControlObject(player)`; call `setReferencedClient(connection)` when available. | The connected-client path is not a complete recipe for a server-local actor without a remote client. |
+
+The registry/load request is the beginning of asynchronous work. Preserve the
+engine's completion callbacks and the spawn gate; do not skip the gate because a
+SQL row exists or an arbitrary delay has elapsed. The excerpts establish callback
+behavior, not a complete network packet timeline. For the standalone data-loader
+details, see [character data loading](offline_char_load.md); “offline” in that
+existing title means a character without a client login, not a simulated server.
+
+Use distinct identifiers in diagnostics: `charID` identifies the persistent
+character; the connection and the `Player` each have their own `SimObjectID`.
+Check that the created actor and owning connection report the expected `charID`
+before equipping it or starting a controller.
+
+### AiPlayer backed by a real character
+
+The LiFXXL reference uses a normal **`Player`**, an existing database character
+and a registered server-local `GameConnection`. It supplies inputs through its
+own bridge; it does not turn a `Player` into an `Animals::Animal` by attaching an
+animal behavior XML. Full bridge/controller details are in the
+[AiPlayer contribution](https://github.com/LiF-x/Plus/pull/24).
+
+The reviewed loader follows this order:
+
+1. Validate the requested existing identities, reject an already registered
+   character, and resolve its intended terrain position. Its controlled setup
+   can temporarily activate an inactive character row; it records and restores
+   that flag. This is not a general instruction to activate arbitrary accounts.
+2. Create the local connection, register it with the native AiPlayer bridge,
+   assign `charId`, call `registerByCharacter()` and request
+   `initPlayerManager()`. Enter `LOADING`.
+3. Poll character readiness. This revision waits while `getPlayerDatablock()`
+   still returns `DefaultPlayerData`, applies a bounded retry policy, and cancels
+   its competing normal spawn schedule. That sentinel is a revision-specific
+   prerequisite, not a universal check that every equipment operation is done.
+4. Create `new Player` with the resolved datablock, bind both player/connection
+   references and control, and schedule final validation. The reference also
+   retains its explicit object-lifetime/scoping policy.
+5. Verify the connection and actor `charID`, then call
+   `LifXXL_bindAiActor(actorID)`. Only after a successful bind set position,
+   rotation and process ticking, and place the actor in the active set.
+6. Restore any temporary database flag and finish the loader. Start a role only
+   after its own identity, equipment, terrain and action-readiness checks pass.
+   `ACTIVE` is a loader state, not proof that an attack or work action succeeded.
+
+The `LifXXL_*` bridge functions are reference-extension APIs, not functions
+provided by stock LiF or automatically installed by Plus. A real `charID`
+preserves the character/inventory/skill path; it does not implement navigation,
+target decisions or movement inputs by itself. A `new Player()` without the
+connection/data/binding sequence is not equivalent to this implementation.
+
+### Initial placement, respawn and cleanup
+
+Keep the position policies separate:
+
+| Situation | Position/lifecycle source |
+|---|---|
+| Animal population | Terrain-substance filters and native spawn-point selection; this is not an explicit XYZ zone definition. |
+| On-demand animal | Native manager creation plus an appropriate checked placement/lifecycle path. The factory has no position argument. |
+| AiPlayer initial load | The reviewed loader resolves the saved GeoID or its explicitly selected placement and validates the resulting terrain position. |
+| Player fallback respawn | `data/player_spawn_points.xml` supplies GeoIDs under `<points><point>...</point></points>`. The native loader is `0x17A1D0`; random selection is `0x179E60`. Other native respawn policies can take precedence. |
+
+`Player::RespawnPlayer` (`0xEC0F0`) operates on the existing player. An entry
+callback attached only to the script `spawnPlayer()` function is therefore not
+a reliable “every respawn” event. Preserve native death/respawn ownership and
+wait for post-respawn equipment readiness before resuming an AiPlayer role.
+Do not create a second actor with the same identity to imitate respawn.
+
+On exit, stop the controller and its schedules, drain pending native actions,
+and release character/connection ownership in the prescribed order. The AiPlayer
+reference keeps the player links available while character teardown still needs
+them. Deleting the model first can leave a pending loader or a registered
+character behind. Runtime cleanup does not undo saved inventory or terrain work.
+
+### Diagnosing a spawn that looks only partly successful
+
+| Observation | Check next |
+|---|---|
+| Family rejected / no animals | Effective `cm_spawn_patterns.xml`, numeric substance IDs, existing family datablock name, manager/nav readiness and the configured spawn target. |
+| Animal renders but cannot move or take damage | Native manager ownership, placement, AI/collision activation and compatible datablock/behavior. Do not infer readiness from the returned object ID. |
+| Character loads indefinitely | Correct identity, character-load completion/errors, datablock sentinel and bounded retry state; avoid a second simultaneous loader. |
+| Connected player does not appear | `readyToGetIn`, pending event count, scheduled `trySpawnPlayer` and client world readiness. |
+| Player exists but does not react | Player/connection/control links, referenced client, native AiPlayer binding, process ticking and actual movement input. |
+| Missing gear or wrong identity | Actor and connection `charID`, loaded inventory/equipment, and role-specific readiness; do not create replacement items as a loading fix. |
+| Duplicate actor after reconnect/respawn | Prior registry entry, pending callbacks, existing player ownership and cleanup completion. |
+
+### Status & provenance of this contribution
+
+| Material | Evidence and scope |
+|---|---|
+| Existing node-registration and XML-loader findings | Their documented code/binary confirmation is retained. Parameter meanings explicitly marked "likely" remain inferences. |
+| Corrected animal factory ABI and spawn-pattern examples | Confirmed against native instructions and the attached source excerpts; the ABI regression check covers the changed calling convention. |
+| Player/AiPlayer loading sequence | Traced in the identified scripts and AiPlayer source revision. Source confirmation is not a new end-to-end spawn/respawn result in Plus. |
+| Illustrative recipes and proposed extension work | Examples and proposals; these are not all installed or runtime-accepted Plus commands. |
+
+The page previously used `verified`. Its aggregate `re` status now makes this
+mixed scope explicit, following `docs/contributing.md`. A new in-game test is
+not required for a fact directly established from engine/LiFx code to qualify
+as verified; the label must not erase that distinction or the existing project's
+real-server use.
+
+The review checked readable source excerpts and native instruction bytes and
+corrected the animal factory's third parameter to `float` in the caller and
+detour. The attached record identifies the server image and source revision.
+The changed translation units compile, and the local ABI regression check passes
+all 12 cases. A full MSVC Release build is blocked by the unchanged zero-sized
+`kExtensionRows` array in `hook_proc_desc.cpp:107` (C2466); a complete DLL build
+is not accepted by these checks. They do not establish a new in-game spawn/respawn
+result. No server/client is started,
+restarted or deployed as part of this contribution. The project has real-server
+use; that fact and the validation performed for this change are separate facts.
+
 ## 9. Quick command reference
 
-From TorqueScript at runtime (no LiFx needed):
+**Clarification:** inspection commands and lifecycle operations have
+different purposes. The following behavior commands do not create an animal:
 
-```
-showBehaviorTrees();                                  // list every loaded tree
-printBehaviorTree("wolf");                            // dump a tree
-registerBehavior("name", "data/behaviors/file.xml");  // register a new XML
-reloadBehaviorXml();                                  // hot-reload all trees
-initAnimalsSpawnControl();                            // (re)init spawn manager (rarely needed)
-startStretchedAnimalSpawnMaintenance();               // begin the maintenance tick
-initPlayerSpawnPoints();                              // (re)init player-only spawn points
+```ts
+showBehaviorTrees();
+printBehaviorTree("registered_name");
+registerBehavior("name", "data/behaviors/file.xml");
+reloadBehaviorXml();
 ```
 
-If you want me to chase the XML formats more precisely — read `_loadPatternsFromXML` (`0x19C7A0`) and `SpawnPattern::loadFromXml` (`0x19DD50`) decompiles to nail down the exact element/attribute names — say the word.
+`initAnimalsSpawnControl()` and `initPlayerSpawnPoints()` are initialization
+entry points, not general-purpose live reload commands. Similarly,
+`startStretchedAnimalSpawnMaintenance()` requests population-maintenance work;
+it is not a request to create one animal at a supplied position. Keep these on
+their intended lifecycle paths. Use the loading-order guide above to distinguish
+configuration, data readiness, object creation and simulation.

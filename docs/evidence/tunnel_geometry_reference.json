@@ -1,5 +1,7 @@
 {
   "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
   "checked": "2026-11-11",
   "binary": {
     "name": "ddctd_cm_yo_server.exe",

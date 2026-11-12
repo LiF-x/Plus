@@ -97,7 +97,7 @@ The original gem ObjectTypeID range at that selection point is `481..486`.
 
 ## Tunnelling material rewards
 
-**Related investigation by Zbigi:** [Tunnel geometry and quantities](tunnel_geometry.md)
+**Related investigation:** [Tunnel geometry and quantities](tunnel_geometry.md)
 explains air-layer height, slope, U16 material overflow and startup reconstruction.
 The reward addresses below retain Pabluuz's original scope and authorship.
 

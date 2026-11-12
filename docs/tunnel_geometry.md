@@ -1,6 +1,7 @@
 ---
 title: Tunnel geometry, material quantities and startup rebuild
 author: Zbigi
+assistance: ChatGPT (Codex)
 status: re
 domain: reverse-engineering
 tags: [tunnels, geometry, quantities, geology, startup]
@@ -11,7 +12,9 @@ updated: 2026-11-11
 
 # Tunnel geometry, material quantities and startup rebuild
 
-LiFXXL production investigations and documentation contributed by **Zbigi**.
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
 
 Tunnel shape, work/material quantities and startup reconstruction are connected.
 Increasing a compiled height from 20 to 22 altitude steps can overflow a U16
@@ -166,7 +169,7 @@ rows directly does not implement geological tunnel removal.
 
 ## Status & provenance
 
-**Zbigi** checked the reference instructions, script values and calculations on
+The review checked the reference instructions, script values and calculations on
 2026-11-11. The contribution draws on the operating LiFXXL project and retains
 the scope of its historical geometry and startup observations. The public JSON
 contains source fingerprints and the native evidence needed to inspect the

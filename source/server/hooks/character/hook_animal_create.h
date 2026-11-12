@@ -29,7 +29,7 @@
 	Hooks::AnimRemap::Register so the setAnimation flood is suppressed and the
 	death->tombstone redirect tracks it — regardless of HOW it was spawned.
 
-	ABI correction by Zbigi: quality is float (third argument in XMM2).
+	ABI correction: quality is float (third argument in XMM2).
 	Signature: Animal* __fastcall createAnimal(mgr, u32 typeId, float quality, int id, u8 flag).
 *  =================================================================================== */
 

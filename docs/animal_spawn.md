@@ -24,7 +24,11 @@ updated: 2026-11-12
 Animal* createAnimal(Manager* mgr, u32 animalTypeId, float quality, int id /*0 = auto*/, u8 flag)
 ```
 
-**ABI correction by Zbigi (2026-11-12):** the former `u32 quality` declaration
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
+
+**ABI correction (2026-11-12):** the former `u32 quality` declaration
 was incorrect. RVA `0x195FF3` saves the third argument from `XMM2`; `0x196080`
 passes it through `XMM1` to `0x2E3C60`, which stores it as a float at `+0x24CC`.
 Both the detour/trampoline and direct caller must declare `float`; the direct

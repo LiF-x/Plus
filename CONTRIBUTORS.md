@@ -64,7 +64,7 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
-**Zbigi** — animal factory ABI correction and spawn-loading documentation:
+**Zbigi** — documentation prepared with ChatGPT (Codex), based on collected LiFXXL notes:
 
 - `docs/ai_and_spawning.md` and `docs/animal_spawn.md` — animal spawning,
   ordered player/AiPlayer loading, readiness, respawn and corrected factory ABI

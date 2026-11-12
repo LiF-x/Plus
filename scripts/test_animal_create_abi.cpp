@@ -1,6 +1,6 @@
 /* ===================================================================================
     Copyright (c) 2026, LiFx Contributors. All Rights Reserved.
-    Contributed by Zbigi.
+    Contributed by Zbigi with assistance from ChatGPT (Codex).
 
     This file is a part of LiFx.
 

@@ -905,7 +905,7 @@ namespace
 	constexpr unsigned  kSimObjectIdOff          = 0x90;    // SimObject mId (u32), set by registerObject
 	constexpr uint32_t  kWolfTypeId              = 755;
 
-	// ABI correction by Zbigi: third-argument float quality is passed in XMM2.
+	// ABI correction: third-argument float quality is passed in XMM2.
 	// __fastcall(rcx=mgr, rdx=typeId, xmm2=quality, r9=id[0=auto], stack=flag) -> Animal*
 	using PfnCreateAnimal = void* (__fastcall*)(void* mgr, uint32_t typeId, float quality,
 	                                            int id, uint8_t flag);

@@ -10,9 +10,13 @@ updated: 2026-11-12
 
 # AI Behaviors and Spawning
 
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
+
 A complete map of the LiF AI behavior-tree system (42 nodes), the animal spawn manager, the Torque-standard trigger volumes, and concrete recipes for "spawn entity in zone, play animation on spawn".
 
-**Spawn/loading review by Zbigi (2026-11-12):** the scope clarification and corrections in sections 4,
+**Spawn/loading review (2026-11-12):** the scope clarification and corrections in sections 4,
 7 and 9 and the [loading-order guide](#loading-order-and-readiness) supersede
 the earlier hypothetical animal-spawn recipe. In particular, animals use their
 manager factory, and character data loading precedes player control binding.
@@ -541,7 +545,7 @@ LiF has a dedicated XML-driven spawn manager for wild animals, independent of th
 
 ### 4.2 Population selection and creation are separate
 
-**Correction by Zbigi:** the earlier table assigned the same RVA to several
+**Correction:** the earlier table assigned the same RVA to several
 different selection helpers without distinguishing their boundaries. Those
 ambiguous aliases are not a usable hook contract. The population path selects
 eligible terrain/pattern/family candidates before the native animal factory;
@@ -567,12 +571,11 @@ Source confirmed by decompiling `_loadPatternsFromXML` (`0x19C7A0`), `SpawnPatte
 </spawn_patterns>
 ```
 
-**Correction by Zbigi:** this example uses numeric geological substance IDs,
+**Correction:** this example uses numeric geological substance IDs,
 as in the checked file. The former `forest plains swamp` labels were not valid
 examples of those IDs. This is an illustrative pattern, not a complete replacement
 for the effective file; retain other root attributes and entries when editing it.
 Substance eligibility does not define an arbitrary XYZ trigger zone.
-
 
 | Element / attribute | Required? | Meaning |
 |---|---|---|
@@ -588,7 +591,7 @@ Substance eligibility does not define an arbitrary XYZ trigger zone.
 
 ### 4.4 File location and changes to spawn rules
 
-**Verified by Zbigi:** the constructor references `data/cm_spawn_patterns.xml`
+**Verified:** the constructor references `data/cm_spawn_patterns.xml`
 at RVA `0x199941`. Inspect the effective file and the matching animal datablocks.
 The family `name` resolves a datablock; the datablock's `behavior` field selects
 its AI XML (for example, `WolfData` uses `data/ai/cmAiWolf.xml` in the reference).
@@ -637,7 +640,7 @@ The attack-anim data is its own XML system (`AttackAnimationDataManager`). Gener
 
 ## 7. Choosing an animal-spawn path
 
-**Correction by Zbigi (2026-11-12):** the former trigger recipe used
+**Correction (2026-11-12):** the former trigger recipe used
 `spawnObject("Wolf", ...)`, an unverified `setBehaviorTree` method and XML tags
 that did not match section 2.7. It is superseded by the choices below.
 
@@ -686,7 +689,7 @@ configuration; an entry-point hook alone does not provide that lifecycle.
 
 ## Loading order and readiness
 
-**Contribution by Zbigi (2026-11-12).** This section follows the readable server
+**Scope (2026-11-12).** This section follows the readable server
 scripts, the native 1.4.4.5 animal factory and the 2026-10-13 LiFXXL AiPlayer
 source revision. [Evidence and source excerpts](evidence/spawn_loading_reference.json)
 identify the checked boundaries. It is a sequence of relevant dependencies,
@@ -826,7 +829,7 @@ character behind. Runtime cleanup does not undo saved inventory or terrain work.
 
 ### Status & provenance of this contribution
 
-**Zbigi** checked readable source excerpts and native instruction bytes and
+The review checked readable source excerpts and native instruction bytes and
 corrected the animal factory's third parameter to `float` in the caller and
 detour. The attached record identifies the server image and source revision.
 The changed translation units compile, and the local ABI regression check passes
@@ -837,10 +840,9 @@ result. No server/client is started,
 restarted or deployed as part of this contribution. The project has real-server
 use; that fact and the validation performed for this change are separate facts.
 
-
 ## 9. Quick command reference
 
-**Clarification by Zbigi:** inspection commands and lifecycle operations have
+**Clarification:** inspection commands and lifecycle operations have
 different purposes. The following behavior commands do not create an animal:
 
 ```ts

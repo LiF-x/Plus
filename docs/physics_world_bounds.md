@@ -1,6 +1,7 @@
 ---
 title: Larger maps — full-world physics bounds
 author: Zbigi
+assistance: ChatGPT (Codex)
 status: re
 domain: reverse-engineering
 tags: [physics, collision, broadphase, terrain, maps]
@@ -11,7 +12,9 @@ updated: 2026-11-12
 
 # Larger maps — full-world physics bounds
 
-LiFXXL findings and documentation contributed by **Zbigi**.
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
 
 When one server loads an entire 9 × 9 world, its collision broadphase must
 cover that world's actual coordinates. In the reference server, Bullet starts
@@ -73,7 +76,7 @@ endpoints. Apply the intended inputs during startup before construction.
 
 ## Exact terrain coordinates and the 9 × 9 example
 
-**Correction by Zbigi:** older notes used a `2048`-unit stride and called
+**Correction:** older notes used a `2048`-unit stride and called
 `±9216` the exact world boundary. The reference coordinate function at
 `0x578EF0` multiplies terrain-column/row differences by **2044**, then subtracts
 **1020**. Its float constants are at `0x8D30B8` and `0x8D30B4` respectively.
@@ -170,7 +173,7 @@ speedup nor a linear memory increase follows from the map-size ratio.
 
 ## Status & provenance
 
-**Author: Zbigi.** The 2026-11-12 documentation review checked the original
+The 2026-11-12 documentation review checked the original
 constructor inputs, instruction ranges, native terrain-coordinate constants
 and selected uniform-bounds implementation. All published excerpts exclude
 unrelated integration code. Existing LiFXXL server operation is the project

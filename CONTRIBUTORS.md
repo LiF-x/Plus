@@ -64,7 +64,7 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
-**Zbigi** (LiFXXL) — full-world physics bounds documentation:
+**Zbigi** — documentation prepared with ChatGPT (Codex), based on collected LiFXXL notes:
 
 - `docs/physics_world_bounds.md` and `docs/evidence/physics_world_bounds_reference.json`
   — Bullet constructor limits, exact terrain geometry and the 9 × 9 example.

@@ -1,6 +1,8 @@
 {
   "title": "Full-world physics bounds for a 9x9 map",
   "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
   "reviewed": "2026-11-12",
   "scope": "Single server loading the complete map. Native static inspection and selected uniform-extent implementation excerpts; no new server execution or benchmark.",
   "binary": {

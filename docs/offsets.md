@@ -189,7 +189,7 @@ server browser advertised 128 slots.
 
 ## Status & provenance
 
-**Additional reference by Zbigi:** [Full-world physics bounds](physics_world_bounds.md)
+**Additional reference:** [Full-world physics bounds](physics_world_bounds.md)
 documents `BtWorld` initialization (`0x14E0D0`), its constructor input vectors
 (`0x789020` / `0x789030`), and the native `2044`-unit terrain stride when sizing
 the collision broadphase for a complete 9 × 9 world.

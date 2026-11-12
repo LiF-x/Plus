@@ -216,7 +216,11 @@ Poking `+0x16A0` (= Table A row 47 expires_at) to a value before `applied_at` ca
 
 ### Shipping API
 
-**Documentation correction by Zbigi, 2026-11-11.** The implementation already
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
+
+**Documentation correction (2026-11-11).** The implementation already
 contains the broadcaster that the older investigation below listed as future work.
 This section describes the checked-in code and preserves the earlier game-test
 observations below. The documentation review did not repeat those game tests.
@@ -422,7 +426,7 @@ Outputs:
 
 ## Status & provenance
 
-The **Player API documentation correction by Zbigi (2026-11-11)** was checked
+The **Player API documentation correction (2026-11-11)** was checked
 against `SetEffectExpiry`, `ExtendEffect`, `ClearEffect`, `BroadcastEffectCmd`,
 `PlayerEffectRow` and `BroadcastEffectDelta` in the linked implementation, plus
 the attached Resurrected broadcast hook and `ResolveResurrectionMs`. It changes

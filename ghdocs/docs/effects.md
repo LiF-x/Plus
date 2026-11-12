@@ -1,6 +1,10 @@
 # Effects on a player
 
-API documentation correction by **Zbigi** (2026-11-11).
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
+
+API documentation update (2026-11-11).
 
 These commands are **methods on a server-side `Player` object** — invoke them
 through `%p` after resolving the Player from a charID.

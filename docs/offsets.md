@@ -3,9 +3,9 @@ title: Reverse-engineering offset encyclopedia
 status: re
 domain: reverse-engineering
 tags: [offsets, rva, tree-drops, gem-drops, tunnelling, max-players]
-related: [reverse_engineering.md, farming.md, conventions.md]
-sources: [source/server/hooks/engine/hook_tree_drop.cpp, source/server/hooks/engine/hook_gem_drop.cpp, source/server/hooks/engine/hook_tunnel_drop.cpp]
-updated: 2026-08-27
+related: [reverse_engineering.md, farming.md, conventions.md, server_player_capacity.md]
+sources: [source/server/hooks/engine/hook_tree_drop.cpp, source/server/hooks/engine/hook_gem_drop.cpp, source/server/hooks/engine/hook_tunnel_drop.cpp, source/server/hooks/engine/hook_player_capacity.cpp]
+updated: 2026-11-12
 ---
 
 # Reverse-engineering offset encyclopedia
@@ -152,7 +152,7 @@ analysis and dump triage are in `more-slots.md`.
 
 | RVA | Meaning |
 | --- | --- |
-| `+0x793830` | Null-terminated `maxPlayers` configuration key. |
+| `+0x792830` | Null-terminated `maxPlayers` configuration key; checked against the reference PE. |
 | `+0xB7DC7C` | Vanilla/default `maxPlayers` value; observed as `64`. |
 | `+0x45ADB0` | Generic integer configuration getter used for `maxPlayers`. |
 | `+0x176E9B` | Calls the getter for `maxPlayers`. |
@@ -177,6 +177,12 @@ with `128` confirmed that the validator saw field `+0x9C = 128`, returned true,
 and the normal settings pipeline retained two copies containing `128`. The
 server browser advertised 128 slots.
 
+**Follow-up:** the earlier `0x793830` string address was incorrect;
+the native load resolves to `0x792830`. Configuration acceptance and advertised
+slots also leave a separate 64-pointer movement buffer unchanged. See
+[Server player capacity](server_player_capacity.md) for the 65th-entry overflow,
+the four buffer references and the evidence supporting this correction.
+
 ## Useful debugger cautions
 
 - x64dbg hardware write breakpoints stop after the write, so the writer is
@@ -195,7 +201,9 @@ recovered statically and are byte-pattern-checked at attach time by
 `hook_gem_drop.cpp` and `hook_tunnel_drop.cpp`, but the inferred signatures
 called out above are not fully runtime-verified.
 
-Two references in this page point at material that is **not yet in this
-repository**: `more-slots.md` and `server/hooks/engine/hook_more_slots.cpp`.
-They are retained as written so the analysis stays intact; port them before
-relying on that section.
+The historical references `more-slots.md` and
+`server/hooks/engine/hook_more_slots.cpp` name external LiFXXL material, not
+files provided by Plus. The [player-capacity reference](server_player_capacity.md)
+supplies the in-repository explanation and byte evidence. Plus now provides an
+independent implementation of the documented boundaries in the optional
+[`hook_player_capacity.cpp`](../source/server/hooks/engine/hook_player_capacity.cpp).

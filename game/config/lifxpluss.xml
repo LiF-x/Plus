@@ -136,6 +136,12 @@
         <!-- <drop tree="oak" itemId="626" /> -->
     </treeDrops>
 
+    <!-- Optional single-server capacity extension. Raises both the settings
+         ceiling and the 64-entry movement buffer; slots must be 65..128.
+         Also set <maxPlayers>128</maxPlayers> in the actual world XML.
+         Startup only; restart the process to disable. See docs/server_player_capacity.md. -->
+    <playerCapacity enabled="0" slots="128" />
+
     <!-- Logging configuration -->
     <log>
         <level>0</level> <!-- 0 - allow all, 1 - skip INFO, 2 - skip INFO and WARN, 3 - allow only ERRORS -->

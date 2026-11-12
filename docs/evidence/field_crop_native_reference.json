@@ -1,0 +1,258 @@
+{
+  "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
+  "inspection_date": "2026-11-11",
+  "production_context": "LiFXXL is a community server project with players, and its documentation draws on real server tests. This evidence record captures the specific reference-binary inspection supporting the Plus review.",
+  "method": "Read-only PE byte inspection and disassembly of original reference binaries; neither executable was launched. Feed decisions are evaluated from the decoded predicate, not measured in a running building.",
+  "scope": "Unmodified reference binaries and the pinned PR source; not the currently deployed LiFXXL or Plus process.",
+  "reviewed_pr": {
+    "url": "https://github.com/LiF-x/Plus/pull/14",
+    "head": "9cc6067302e4710fae5c92da6d2b5aab56152df6",
+    "author": "GreedyFox",
+    "source_url": "https://github.com/GreediestFox/Plus/blob/9cc6067302e4710fae5c92da6d2b5aab56152df6/source/server/hooks/engine/hook_crop_types.cpp"
+  },
+  "server": {
+    "executable": "ddctd_cm_yo_server.exe",
+    "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+    "size": 12441032,
+    "image_base": "0x140000000",
+    "sites": [
+      {
+        "name": "feed_item_predicate",
+        "rva": "0x1b0e70",
+        "file_offset": "0x1b0270",
+        "bytes": "8B 4A 08 8D 81 A0 FE FF FF 83 F8 17 77 0A BA 5D 05 80 00 0F A3 C2 72 16 8D 81 FE FB FF FF 83 F8 01 76 0B 81 F9 06 04 00 00 74 03 32 C0 C3 B0 01 C3",
+        "instructions": [
+          {
+            "rva": "0x1b0e70",
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [rdx + 8]"
+          },
+          {
+            "rva": "0x1b0e73",
+            "mnemonic": "lea",
+            "operands": "eax, [rcx - 0x160]"
+          },
+          {
+            "rva": "0x1b0e79",
+            "mnemonic": "cmp",
+            "operands": "eax, 0x17"
+          },
+          {
+            "rva": "0x1b0e7c",
+            "mnemonic": "ja",
+            "operands": "0x1401b0e88"
+          },
+          {
+            "rva": "0x1b0e7e",
+            "mnemonic": "mov",
+            "operands": "edx, 0x80055d"
+          },
+          {
+            "rva": "0x1b0e83",
+            "mnemonic": "bt",
+            "operands": "edx, eax"
+          },
+          {
+            "rva": "0x1b0e86",
+            "mnemonic": "jb",
+            "operands": "0x1401b0e9e"
+          },
+          {
+            "rva": "0x1b0e88",
+            "mnemonic": "lea",
+            "operands": "eax, [rcx - 0x402]"
+          },
+          {
+            "rva": "0x1b0e8e",
+            "mnemonic": "cmp",
+            "operands": "eax, 1"
+          },
+          {
+            "rva": "0x1b0e91",
+            "mnemonic": "jbe",
+            "operands": "0x1401b0e9e"
+          },
+          {
+            "rva": "0x1b0e93",
+            "mnemonic": "cmp",
+            "operands": "ecx, 0x406"
+          },
+          {
+            "rva": "0x1b0e99",
+            "mnemonic": "je",
+            "operands": "0x1401b0e9e"
+          },
+          {
+            "rva": "0x1b0e9b",
+            "mnemonic": "xor",
+            "operands": "al, al"
+          },
+          {
+            "rva": "0x1b0e9d",
+            "mnemonic": "ret",
+            "operands": ""
+          },
+          {
+            "rva": "0x1b0e9e",
+            "mnemonic": "mov",
+            "operands": "al, 1"
+          },
+          {
+            "rva": "0x1b0ea0",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      },
+      {
+        "name": "seed_item_lookup",
+        "rva": "0x3a9790",
+        "file_offset": "0x3a8b90",
+        "bytes": "89 4C 24 08 48 83 EC 28 48 8D 54 24 30 48 8D 0D 6C F5 7E 00 E8 17 FE FF FF 8B 00 48 83 C4 28 C3",
+        "instructions": [
+          {
+            "rva": "0x3a9790",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rsp + 8], ecx"
+          },
+          {
+            "rva": "0x3a9794",
+            "mnemonic": "sub",
+            "operands": "rsp, 0x28"
+          },
+          {
+            "rva": "0x3a9798",
+            "mnemonic": "lea",
+            "operands": "rdx, [rsp + 0x30]"
+          },
+          {
+            "rva": "0x3a979d",
+            "mnemonic": "lea",
+            "operands": "rcx, [rip + 0x7ef56c]"
+          },
+          {
+            "rva": "0x3a97a4",
+            "mnemonic": "call",
+            "operands": "0x1403a95c0"
+          },
+          {
+            "rva": "0x3a97a9",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [rax]"
+          },
+          {
+            "rva": "0x3a97ab",
+            "mnemonic": "add",
+            "operands": "rsp, 0x28"
+          },
+          {
+            "rva": "0x3a97af",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      }
+    ]
+  },
+  "client": {
+    "executable": "yo_cm_client.exe",
+    "sha256": "1D3F7FD3E64B119DC032CDA77D353AFEFC340AF46C6B7AE30890A9BC99E37999",
+    "size": 24607688,
+    "image_base": "0x140000000",
+    "sites": [
+      {
+        "name": "sow_required_item_lookup",
+        "rva": "0x509530",
+        "file_offset": "0x508930",
+        "bytes": "89 4C 24 08 48 83 EC 28 48 8D 54 24 30 48 8D 0D CC 0E 13 01 E8 17 FE FF FF 8B 00 48 83 C4 28 C3",
+        "instructions": [
+          {
+            "rva": "0x509530",
+            "mnemonic": "mov",
+            "operands": "dword ptr [rsp + 8], ecx"
+          },
+          {
+            "rva": "0x509534",
+            "mnemonic": "sub",
+            "operands": "rsp, 0x28"
+          },
+          {
+            "rva": "0x509538",
+            "mnemonic": "lea",
+            "operands": "rdx, [rsp + 0x30]"
+          },
+          {
+            "rva": "0x50953d",
+            "mnemonic": "lea",
+            "operands": "rcx, [rip + 0x1130ecc]"
+          },
+          {
+            "rva": "0x509544",
+            "mnemonic": "call",
+            "operands": "0x140509360"
+          },
+          {
+            "rva": "0x509549",
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [rax]"
+          },
+          {
+            "rva": "0x50954b",
+            "mnemonic": "add",
+            "operands": "rsp, 0x28"
+          },
+          {
+            "rva": "0x50954f",
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      }
+    ]
+  },
+  "feed_predicate": {
+    "input": "Item definition type ID at [RDX+8]",
+    "accepted_item_ids": [
+      352,
+      354,
+      355,
+      356,
+      358,
+      360,
+      362,
+      375,
+      1026,
+      1027,
+      1030
+    ],
+    "sample_decisions": [
+      {
+        "crop": "Rye",
+        "seed_and_harvest_item_id": 3175,
+        "accepted_by_reference_predicate": false
+      },
+      {
+        "crop": "Barley",
+        "seed_and_harvest_item_id": 3176,
+        "accepted_by_reference_predicate": false
+      },
+      {
+        "crop": "Oat",
+        "seed_and_harvest_item_id": 3177,
+        "accepted_by_reference_predicate": false
+      },
+      {
+        "crop": "Hops",
+        "seed_and_harvest_item_id": 3751,
+        "accepted_by_reference_predicate": false
+      },
+      {
+        "crop": "Sugar Beet",
+        "seed_and_harvest_item_id": 3752,
+        "accepted_by_reference_predicate": false
+      }
+    ]
+  }
+}

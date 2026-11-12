@@ -57,7 +57,7 @@ LiFx is a Detours-based extension framework for the *Life is Feudal: Your Own* d
 | --- | --- | --- |
 | [Reverse engineering setup](reverse_engineering.md) | 📖 | Ghidra setup, the `LifxExport.java` / `LifxEventVtables.java` analysis scripts, and the artifact files they produce. |
 | [Reverse-engineering offset encyclopedia](offsets.md) | 🔬 | Stable RVAs and data layouts for the verified 1.4.4.5 server image: tree felling, gem drops, tunnelling rewards, and the `maxPlayers` slot limit. |
-| [Farming — harvest yield and quality](farming.md) | 🔬 | `Harvest Crops` RE: the exact quantity formula (weather is a fourfold switch, fertility a twofold one) and the separate item-quality formula. |
+| [Farming — harvest yield, quality and custom field crops](farming.md) | 🔬 | Pabluuz's harvest formulas; covers custom crop stages, native client seed mapping, making produce edible, and adding feed for breeding buildings, with source and byte evidence. |
 | [NetEvent vtable layout](net_events.md) | 🔬 | Torque NetEvent vtable layout, slot semantics, and the per-event (pack, unpack, process) handler table. |
 | [NetEvent receive / send path](netevent_receive_path.md) | 🔬 | The NetEvent receive/dispatch path: how an inbound event is unpacked and routed to its process handler. |
 | [NetEvent ABI](netevent_abi.md) | 🔬 | Settled negative result: no per-class pack/unpack exists in any static vtable; serialization is runtime-built, so SectorHandoff must implement its own. |

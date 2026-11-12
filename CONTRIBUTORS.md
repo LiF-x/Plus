@@ -68,6 +68,11 @@ server hooks, plus the analysis documenting them:
 
 - `docs/server_player_capacity.md` — The separate settings ceiling and 64-pointer movement buffer, 65th-entry overflow, four relocation references and corrected maxPlayers string RVA.
 - `docs/evidence/server_player_capacity_reference.json` — inspected native bytes and source evidence.
+- `source/server/hooks/engine/hook_player_capacity.{h,cpp}` and
+  `scripts/test_player_capacity.cpp` — new Plus implementation and executable-memory
+  regression for the settings ceiling and movement buffer, prepared with
+  ChatGPT (Codex) in collaboration with Zbigi; based on the documented native
+  boundaries, without importing the external capacity implementation.
 
 ## Adding to this file
 

@@ -14,6 +14,7 @@
 
 #include "hook_proc_desc.h"
 #include "engine_internals.h"
+#include <initializer_list>
 
 __CM_INSTATNTIATE(_Furnace_LookupProcDesc);
 
@@ -104,7 +105,9 @@ struct LifxFurnaceRow
 };
 static_assert(sizeof(LifxFurnaceRow) == 28, "row size must match engine layout");
 
-static const LifxFurnaceRow kExtensionRows[] =
+// A standard empty list keeps the no-overrides configuration valid in MSVC.
+// Uncommented rows retain static storage and the same first-match order.
+static constexpr std::initializer_list<LifxFurnaceRow> kExtensionRows =
 {
 	// ===== example #1: new vostaskus-style item =====
 	// Uncomment and edit type IDs to match your DB rows.
@@ -115,7 +118,7 @@ static const LifxFurnaceRow kExtensionRows[] =
 };
 
 static constexpr size_t kExtensionRowCount =
-	sizeof(kExtensionRows) / sizeof(kExtensionRows[0]);
+	kExtensionRows.size();
 
 // ----------------------------------------------------------------------------
 // LiFx C++ reimplementation of the engine's lookup (alternative to trampoline).

@@ -137,6 +137,9 @@
     <ClInclude Include="..\source\server\hooks\engine\hook_recipe_starting_tools.h">
       <Filter>Server\Hooks\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\server\hooks\engine\hook_player_capacity.h">
+      <Filter>Server\Hooks\Engine</Filter>
+    </ClInclude>
     <ClInclude Include="..\source\server\hooks\engine\hook_tree_drop.h">
       <Filter>Server\Hooks\Engine</Filter>
     </ClInclude>
@@ -312,6 +315,9 @@
       <Filter>Server\Hooks\Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\source\server\hooks\engine\hook_recipe_starting_tools.cpp">
+      <Filter>Server\Hooks\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\server\hooks\engine\hook_player_capacity.cpp">
       <Filter>Server\Hooks\Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\source\server\hooks\engine\hook_tree_drop.cpp">

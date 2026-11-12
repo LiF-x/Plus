@@ -4,8 +4,8 @@ status: re
 domain: reverse-engineering
 tags: [offsets, rva, tree-drops, gem-drops, tunnelling, max-players]
 related: [reverse_engineering.md, farming.md, conventions.md, server_player_capacity.md]
-sources: [source/server/hooks/engine/hook_tree_drop.cpp, source/server/hooks/engine/hook_gem_drop.cpp, source/server/hooks/engine/hook_tunnel_drop.cpp]
-updated: 2026-11-11
+sources: [source/server/hooks/engine/hook_tree_drop.cpp, source/server/hooks/engine/hook_gem_drop.cpp, source/server/hooks/engine/hook_tunnel_drop.cpp, source/server/hooks/engine/hook_player_capacity.cpp]
+updated: 2026-11-12
 ---
 
 # Reverse-engineering offset encyclopedia
@@ -203,6 +203,7 @@ called out above are not fully runtime-verified.
 
 The historical references `more-slots.md` and
 `server/hooks/engine/hook_more_slots.cpp` name external LiFXXL material, not
-files provided by Plus. [player-capacity reference](server_player_capacity.md)
-supplies the in-repository explanation and byte evidence; it does not port
-the implementation.
+files provided by Plus. The [player-capacity reference](server_player_capacity.md)
+supplies the in-repository explanation and byte evidence. Plus now provides an
+independent implementation of the documented boundaries in the optional
+[`hook_player_capacity.cpp`](../source/server/hooks/engine/hook_player_capacity.cpp).

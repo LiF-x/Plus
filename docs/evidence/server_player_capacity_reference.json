@@ -2,14 +2,14 @@
   "author": "Zbigi",
   "assistance": "ChatGPT (Codex)",
   "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
-  "checked": "2026-11-11",
+  "checked": "2026-11-12",
   "binary": {
     "name": "ddctd_cm_yo_server.exe",
     "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
     "size_bytes": 12441032,
     "image_base": "0x140000000"
   },
-  "method": "Read-only verification of the reference executable and LiFXXL source notes; no new game process or load trial was started for this documentation.",
+  "method": "Reference native bytes rechecked read-only; new Plus implementation exercised in executable-memory regression and built with MSVC. No new game process, deployment or concurrent-player load trial.",
   "code_sites": [
     {
       "name": "max_players_key_and_store",
@@ -154,5 +154,100 @@
       "origin_file": "captainHook/server/hooks/engine/more_slots_code.h",
       "sha256": "DD50A5F11485F97F7465D2AC92219C839F6F5F9B12C306D6A97C91AFE7EF1F0D"
     }
-  ]
+  ],
+  "implementation": {
+    "source": "source/server/hooks/engine/hook_player_capacity.cpp",
+    "configuration": "<playerCapacity enabled=\"1\" slots=\"128\" />",
+    "default_enabled": false,
+    "supported_slots": {
+      "min": 65,
+      "max": 128
+    },
+    "world_configuration": "Set the existing maxPlayers entry in the actual world XML; its value must not exceed slots.",
+    "provenance": "New Plus implementation from the documented native boundaries; external LiFXXL capacity source is not imported.",
+    "image_checks": {
+      "machine": "AMD64",
+      "timestamp": "0x6465EF7D",
+      "size_of_image": "0xC8F000",
+      "complete_instruction_ranges": [
+        "tick_cursor_reset",
+        "tick_append_and_overflow",
+        "settings_validator"
+      ],
+      "stock_bounds": [
+        1,
+        64
+      ],
+      "cursor_before_install": 0
+    },
+    "lifecycle": "Install from console startup before world simulation. Native buffer lives until process exit; no live detach/reconfigure.",
+    "failure_policy": "Malformed config or installation failure stops startup. Page preparation precedes any writes; cache failure restores original bytes, bounds and cursor. Referenced storage survives post-write protection-restore failure.",
+    "linux": "Registered in build_linux.sh; Windows x64 server/DLL run under Wine. No Linux/Wine execution in this review."
+  },
+  "native_text_references": [
+    {
+      "rva": "0x13a55c",
+      "target": "0xb79fb0",
+      "instruction": "lea rax, [rip + 0xa3fa4d]"
+    },
+    {
+      "rva": "0x13a563",
+      "target": "0xb79bc8",
+      "instruction": "mov qword ptr [rip + 0xa3f65e], rax"
+    },
+    {
+      "rva": "0x13b98c",
+      "target": "0xb7a1b0",
+      "instruction": "lea rcx, [rip + 0xa3e81d]"
+    },
+    {
+      "rva": "0x13b993",
+      "target": "0xb79bc8",
+      "instruction": "mov rax, qword ptr [rip + 0xa3e22e]"
+    },
+    {
+      "rva": "0x13b9a2",
+      "target": "0xb79bc8",
+      "instruction": "add qword ptr [rip + 0xa3e21e], 8"
+    },
+    {
+      "rva": "0x13b9ac",
+      "target": "0xb79fb0",
+      "instruction": "mov rcx, qword ptr [rip + 0xa3e5fd]"
+    },
+    {
+      "rva": "0x13b9c6",
+      "target": "0xb79fb0",
+      "instruction": "mov qword ptr [rip + 0xa3e5e3], rbp"
+    }
+  ],
+  "validation": {
+    "regression": "scripts/test_player_capacity.cpp",
+    "checks_passed": 5624,
+    "method": "MSVC x64 executable-memory harness includes the production installer and executes original native reset/append/overflow/validator instructions against fake connections.",
+    "covered_capacities": [
+      64,
+      65,
+      96,
+      128
+    ],
+    "cases": [
+      "Stock deletion on entry 65",
+      "Every admitted connection pointer retained through 16 ticks at each extended capacity",
+      "Native delayed-delete and slot-zero replacement at N+1",
+      "Logical-end canary and cursor",
+      "Native signed settings validator boundaries",
+      "Complete-signature mismatch at every byte",
+      "PE/bounds/late-install rejection",
+      "Valid and malformed XML",
+      "rel32 signed boundaries",
+      "Allocation and page-preparation failures",
+      "Instruction-cache rollback",
+      "Page-restoration failure retains referenced storage"
+    ],
+    "regression_build": "MSVC /std:c++20 /W4 /WX",
+    "full_dll_build": "MSVC v143 x64 Release passed after replacing the existing invalid zero-sized furnace extension array with a standard empty initializer_list; no added furnace recipes.",
+    "runtime_acceptance": "Not performed for this implementation; requires actual 65..128 active players, reconnects, movement and load measurements on target Linux/Wine deployment.",
+    "deployment_performed": false
+  }
 }

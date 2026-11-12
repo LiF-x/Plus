@@ -35,6 +35,7 @@
 #include "hooks/engine/hook_gem_drop.h"
 #include "hooks/engine/hook_tunnel_drop.h"
 #include "hooks/engine/hook_tree_drop.h"
+#include "hooks/engine/hook_player_capacity.h"
 
 // A2a #125 equip-over-ghost transport. The intercept is now a VTABLE-SLOT
 // PATCH on NPCDecorative's packUpdate slot (Hooks::NpcDecPack::InstallVtablePatch),
@@ -178,6 +179,12 @@ void Lifx::Server::Init()
 		Hooks::Engine::ConfigureGemDrops(root);
 		Hooks::Engine::ConfigureTunnelDrops(root);
 		Hooks::Engine::ConfigureTreeDrops(root);
+		if (!Hooks::Engine::ConfigurePlayerCapacity(root))
+		{
+			Lifx::ShowErrorMessage("Invalid playerCapacity configuration: enabled and decimal slots=65..128 are required.");
+			ExitProcess(ERROR_INVALID_DATA);
+			return;
+		}
 	}
 
 	std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
@@ -308,6 +315,15 @@ void Lifx::Server::Destroy()
 // ---------------------------------------------------------------------------- //
 void Lifx::Server::Start()
 {
+	// Console is ready; world settings and simulation have not started yet.
+	// Stop on failure instead of continuing with only part of a capacity fix.
+	if (!Hooks::Engine::AttachPlayerCapacityHook())
+	{
+		Con::Error("[playerCapacity] requested capacity could not be installed; stopping startup");
+		ExitProcess(ERROR_INVALID_DATA);
+		return;
+	}
+
 	// attach internal server (cm_yo) hooks
 	AttachHooks();
 

@@ -3,7 +3,9 @@
 Commands for managing outpost defaults, live outpost edits, and the placement
 distance rules between outposts, guild monuments, and personal claims.
 
-All "distance" values are in engine units (meters).
+Values use the corresponding command's engine convention. The legacy name
+`radius` should not be treated as a universal radius-in-metres conversion;
+check the resulting in-game boundary when calibrating a size change.
 
 ## Defaults for newly-built outposts
 
@@ -30,8 +32,12 @@ Lifx::setOutpostDefaultRadius(40);
 
 ### `Lifx::setOutpostRadius(int guildLandID, int newRadius)`
 
-Change the influence radius of an outpost that already exists. The engine
-persists the new value and rebuilds the visible monument boundary.
+Request a size change for an outpost that already exists. Use its
+`guild_lands.ID`, not a claim ID or building ID. The command does not verify
+that the supplied land belongs to an outpost, so resolve the intended land
+first. The engine handles persistence and boundary rebuilding; the command
+returns no success value, and its console echo alone does not confirm that
+the resize succeeded. Check the saved size and visible boundary afterwards.
 
 ```tcl
 Lifx::setOutpostRadius(101, 35);
@@ -97,3 +103,5 @@ Lifx::setMonumentMinDistanceToPersonalClaim(15);
   small steps in a private world before deploying.
 - The outpost-radius default is read at outpost-creation time; changing it
   later does not retroactively resize existing outposts.
+- Default-size and proximity overrides last for the current process. Reapply
+  persistent overrides through your startup scripts after command registration.

@@ -3,12 +3,18 @@ title: Outposts
 status: re
 domain: reverse-engineering
 tags: [outposts, claims, radius, proximity]
-related: [../ghdocs/docs/outposts.md]
-updated: 2026-06-26
+related: [claims_and_settings.md, ../ghdocs/docs/outposts.md]
+sources: [source/server/api/lifx_outpost.cpp, docs/evidence/claims_and_settings_reference.json]
+updated: 2026-11-12
 ---
 # Outposts
 
 How outpost influence radius and production are wired in LiF:YO, what is and isn't configurable from text files, and the LiFx leverage points.
+
+For personal/guild/outpost record identities, permissions, reference settings
+and the personal-resize lifecycle, see [Ordinary claims and settings](claims_and_settings.md).
+That page also qualifies the legacy `Radius` name: the native area helper
+halves the stored extent, so the name alone does not establish a radius in metres.
 
 ## Storage (DB)
 
@@ -73,6 +79,14 @@ From LiFx:
 2. The tagged `landRef` is `(uint64_t)landID << 32 | 0x01`.
 
 Exposed as `Lifx::setOutpostRadius(landID, newRadius)`.
+
+**ID and result clarification (2026-11-12):** the wrapper supplies tag `0x01`
+itself; it does not verify `guild_lands.LandType=4`. This tag does not validate
+the caller's numeric ID namespace. Supply the verified outpost's
+`guild_lands.ID`, not a claim, personal-land or building ID. The wrapper also
+ignores the native return value, so its echo alone does not confirm success.
+Check persistence and the in-game boundary as described in the
+[resize procedure](claims_and_settings.md#resizing-an-existing-outpost).
 
 ## Production
 

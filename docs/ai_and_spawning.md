@@ -12,7 +12,7 @@ updated: 2026-11-11
 
 A complete map of the LiF AI behavior-tree system (42 nodes), the animal spawn manager, the Torque-standard trigger volumes, and concrete recipes for "spawn entity in zone, play animation on spawn".
 
-**Scope clarification and §10 contribution: Zbigi (LiFXXL), 2026-11-11.**
+**Scope clarification for §10 (2026-11-11).**
 For a server-controlled character with a real database `CharacterID`, see
 [§10, LifXXLAiPlayer](#10-lifxxlaiplayer--a-player-with-a-real-characterid).
 That implementation loads an ordinary `Player` and supplies its input locally;
@@ -714,7 +714,11 @@ If you want me to chase the XML formats more precisely — read `_loadPatternsFr
 
 ## 10. LifXXLAiPlayer — a Player with a real CharacterID
 
-**Author: Zbigi (LiFXXL).** Reference revision: 2026-10-13; documentation
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
+
+Reference revision: 2026-10-13; documentation
 review: 2026-11-11. [Reference evidence](evidence/ai_player_reference.json)
 contains selected source excerpts, native byte checks and extracts from the
 real-server trial report. This section documents the LiFXXL implementation;
@@ -976,7 +980,7 @@ rolled back when AiPlayer was separated from the main installation.
 
 ### 10.9 Status & provenance
 
-**Author: Zbigi.** The [evidence file](evidence/ai_player_reference.json) includes
+The [evidence file](evidence/ai_player_reference.json) includes
 reviewable source excerpts and selected report passages. The reference is an
 archive of work on a real LiFXXL server, not proof that this optional controller
 is enabled on the current server. Documentation preparation read that archive

@@ -64,7 +64,7 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
-**Zbigi** (LiFXXL) — AiPlayer documentation and reference evidence:
+**Zbigi** — documentation prepared with ChatGPT (Codex), based on collected LiFXXL notes:
 
 - `docs/ai_and_spawning.md` — scope clarification and section 10: DB-backed
   `Player` identities, local input, combat, work, lifecycle and real-server trials.

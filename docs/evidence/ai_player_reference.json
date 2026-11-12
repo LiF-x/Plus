@@ -1,6 +1,8 @@
 {
   "title": "LifXXLAiPlayer: DB-backed Player lifecycle and native input",
   "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
   "reviewed": "2026-11-11",
   "canonical_document": "docs/ai_and_spawning.md",
   "reference_revision": "2026-10-13 full-source archive",

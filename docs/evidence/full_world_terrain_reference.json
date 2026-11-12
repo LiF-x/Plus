@@ -1,5 +1,7 @@
 {
   "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
   "checked": "2026-11-11",
   "method": "Read-only checks of reference executables, source configuration and the complete local 81-terrain baseline. This is asset/reference validation within the operating LiFXXL project, not a newly launched game session.",
   "images": [

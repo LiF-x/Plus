@@ -10,7 +10,7 @@ updated: 2026-11-11
 
 # Client 9x9 grid-size patch
 
-**Reference clarification by Zbigi:** the newly fingerprinted client maps file
+**Reference clarification:** the newly fingerprinted client maps file
 offset `0x189554` to RVA `0x18A154`, inside `mov ebx, 3` at `0x18A153`.
 The surrounding instructions select a per-axis size of 3 or 1; that evidence
 alone does not establish a universal coordinate clamp. The earlier unmapped

@@ -64,7 +64,7 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
-**Zbigi** (LiFXXL) — `full_world_terrain` documentation and reference evidence:
+**Zbigi** — documentation prepared with ChatGPT (Codex), based on collected LiFXXL notes:
 
 - `docs/full_world_terrain.md` — Square grid dimensions, terrain IDs and complete data sets, early configuration, native terrain enumeration and startup cost.
 - `docs/evidence/full_world_terrain_reference.json` — inspected native bytes and source evidence.

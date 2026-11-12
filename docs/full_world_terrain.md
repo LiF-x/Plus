@@ -1,6 +1,7 @@
 ---
 title: Larger maps — full-world terrain loading on one server
 author: Zbigi
+assistance: ChatGPT (Codex)
 status: re
 domain: reverse-engineering
 tags: [terrain, maps, loading, configuration, startup]
@@ -11,7 +12,9 @@ updated: 2026-11-11
 
 # Larger maps — full-world terrain loading on one server
 
-LiFXXL experience, reference inspection and documentation contributed by **Zbigi**.
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
 
 A larger world requires matching grid configuration, terrain identities, complete
 server geology, matching client data and initialization of the entire selected
@@ -19,7 +22,7 @@ world. Increasing a client size constant alone does not generate terrain or load
 it on the server. This guide describes **one server process loading the complete
 selected map before normal play**.
 
-LiFXXL runs production servers with players. For this contribution, the
+LiFXXL is a community server project with players. For this contribution, the
 [evidence](evidence/full_world_terrain_reference.json) checks the reference
 executables, configuration sources and all 81 terrain triplets in a 9 × 9
 baseline. Individual map-file fingerprints remain local; the public record
@@ -58,7 +61,7 @@ uses `TerrainSkipCount=405`, with IDs `406..486`. Its 81 index headers independe
 confirm those IDs, and the current configuration-override source sets 405 for
 that package.
 
-**Correction by Zbigi:** an older LiFXXL configuration note kept 441 for every
+**Correction:** an older LiFXXL configuration note kept 441 for every
 size. That is not correct for the inspected `406..486` package. Do not change
 IDs based only on filenames, the world/database ID or an old template. Keep
 configuration, embedded identities and database terrain records consistent.
@@ -194,7 +197,7 @@ an otherwise unchanged inhabited map.
 
 ## Status & provenance
 
-**Zbigi** verified both reference binary fingerprints, four instruction ranges,
+The review verified both reference binary fingerprints, four instruction ranges,
 the client file-offset/RVA conversion, configuration source and all 81 baseline
 triplets on 2026-11-11. Native addresses and aggregate checks are public; the
 per-file map fingerprint inventory remains local. These checks support the

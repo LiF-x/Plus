@@ -152,7 +152,7 @@ analysis and dump triage are in `more-slots.md`.
 
 | RVA | Meaning |
 | --- | --- |
-| `+0x792830` | Null-terminated `maxPlayers` configuration key; corrected by Zbigi against the reference PE. |
+| `+0x792830` | Null-terminated `maxPlayers` configuration key; checked against the reference PE. |
 | `+0xB7DC7C` | Vanilla/default `maxPlayers` value; observed as `64`. |
 | `+0x45ADB0` | Generic integer configuration getter used for `maxPlayers`. |
 | `+0x176E9B` | Calls the getter for `maxPlayers`. |
@@ -177,7 +177,7 @@ with `128` confirmed that the validator saw field `+0x9C = 128`, returned true,
 and the normal settings pipeline retained two copies containing `128`. The
 server browser advertised 128 slots.
 
-**Follow-up by Zbigi:** the earlier `0x793830` string address was incorrect;
+**Follow-up:** the earlier `0x793830` string address was incorrect;
 the native load resolves to `0x792830`. Configuration acceptance and advertised
 slots also leave a separate 64-pointer movement buffer unchanged. See
 [Server player capacity](server_player_capacity.md) for the 65th-entry overflow,
@@ -203,6 +203,6 @@ called out above are not fully runtime-verified.
 
 The historical references `more-slots.md` and
 `server/hooks/engine/hook_more_slots.cpp` name external LiFXXL material, not
-files provided by Plus. Zbigi's [player-capacity reference](server_player_capacity.md)
+files provided by Plus. [player-capacity reference](server_player_capacity.md)
 supplies the in-repository explanation and byte evidence; it does not port
 the implementation.

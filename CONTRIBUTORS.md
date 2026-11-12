@@ -64,7 +64,7 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
-**Zbigi** (LiFXXL) — `server_player_capacity` documentation and reference evidence:
+**Zbigi** — documentation prepared with ChatGPT (Codex), based on collected LiFXXL notes:
 
 - `docs/server_player_capacity.md` — The separate settings ceiling and 64-pointer movement buffer, 65th-entry overflow, four relocation references and corrected maxPlayers string RVA.
 - `docs/evidence/server_player_capacity_reference.json` — inspected native bytes and source evidence.

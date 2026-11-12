@@ -1,6 +1,7 @@
 ---
 title: Server player capacity — the 64-player limit and the 65th connection
 author: Zbigi
+assistance: ChatGPT (Codex)
 status: re
 domain: reverse-engineering
 tags: [server, capacity, max-players, connections, movement]
@@ -11,7 +12,10 @@ updated: 2026-11-11
 
 # Server player capacity — the 64-player limit and the 65th connection
 
-Production diagnosis and documentation contributed by **Zbigi** (LiFXXL).
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
+
 The earlier settings-parser and validator work is credited to **Pabluuz** in
 the [offset encyclopedia](offsets.md#server-settings-and-player-slot-limit).
 
@@ -21,7 +25,7 @@ Raising the first can advertise 128 slots while the second still removes a
 connection when entry 65 is processed in a tick. This is a **64-entry capacity
 reached by entry 65**, not an independent configuration limit of 65.
 
-LiFXXL operates production servers with players. The
+LiFXXL is a community server project with players. The
 [evidence record](evidence/server_player_capacity_reference.json) includes
 historical production-incident aggregates, exact reference instructions and
 source fingerprints; it identifies the historical observations as such.
@@ -52,7 +56,7 @@ Changing the minimum is the wrong operation. Forcing a temporary settings copy
 or returning success from the whole validator also bypasses other validation
 without addressing the movement buffer.
 
-**Address correction by Zbigi:** the `maxPlayers` string is at `0x792830`.
+**Address correction:** the `maxPlayers` string is at `0x792830`.
 The former `0x793830` entry in `offsets.md` is a transcription error for this
 executable. The RIP-relative load at `0x176E8A` and string bytes agree on
 `0x792830`; the evidence records bytes at both locations.
@@ -146,7 +150,7 @@ arbitrary integer. Listing metadata alone is not that proof.
 
 ## Status & provenance
 
-**Zbigi** checked five complete native instruction ranges, both validator
+The review checked five complete native instruction ranges, both validator
 bounds, the virtual-call target and corrected string address against the
 reference executable on 2026-11-11. Historical production aggregates retain
 their source/date in the evidence; individual player identifiers are omitted.

@@ -11,7 +11,7 @@ the in-game admin console where TorqueScript is accepted).
 
 | Page | Purpose |
 |---|---|
-| [Effects on a player](effects.md) | Modify an active effect on a `Player` object (expiry, extend, clear, force a HUD refresh). |
+| [Effects on a player](effects.md) | Edit existing Player effect state or request a resend; validation, duration-policy and client-update limits. |
 | [Timers — Resurrected duration](timers.md) | Override the duration of the post-respawn Resurrected debuff, globally or per player, with optional callback-based policy. |
 | [Player HP & damage](players.md) | Read and write a player's HP, apply damage / heal, knock out, kill. |
 | [Outposts & claims](outposts.md) | Default outpost radius, live radius changes, production retargeting, and the proximity rules between outposts / monuments / personal claims. |

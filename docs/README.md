@@ -64,7 +64,7 @@ LiFx is a Detours-based extension framework for the *Life is Feudal: Your Own* d
 | [Dispatcher wire format](dispatcher_wire_format.md) | 🔬 | YO `cmDispUnitManager` is a party/guild membership sync channel (three uint32 IDs per opcode), not a character/object handoff. |
 | [NPC / Animal class hierarchy](npc_class_hierarchy.md) | ✅ | RTTI-verified Player→NPCS::Base→{AnimatedNPC→Animal} & →PlayerBased→NPCDecorative tree; native combat nodes gate on `Animals::Animal`, not AnimatedNPC. |
 | [Character AI & equip-over-ghost RE](character_ai_re.md) | 🔬 | The A2a character-backed hostile NPC: NPCDecorative carries charStats/equip/death + the AI tree/move-engine, with a vtable-slot-patched packUpdate equip bolt-on. |
-| [Larger maps — full-world navigation and cache](navmesh_world_bounds.md) | 🔬 | Zbigi: early `GlobalNavMesh` sizing, compatible cache generation, exact terrain geometry and complete inspection of a 9 × 9 navigation cache. |
+| [Larger maps — full-world navigation and cache](navmesh_world_bounds.md) | 🔬 | Early `GlobalNavMesh` sizing, compatible cache generation, exact terrain geometry and complete inspection of a 9 × 9 navigation cache. |
 | [AI behaviors & spawning](ai_and_spawning.md) | ✅ | The 42-node AI behavior-tree catalog, `Animals::SpawnControl` XML system, Torque trigger callbacks, animation pipeline, and spawn recipes. |
 | [Animal data model](animal_data_model.md) | 🔬 | Live `_c` world DB has no `animal_*` tables; combat is AnimalData-datablock-driven, loot is recipe/skinning, types register via `LiFx::registerObjectsTypes`. |
 | [On-demand animal spawning](animal_spawn.md) | 🔬 | Spawning `Animals::Animal` via `createAnimal` (0x195FD0) + the death-to-tombstone charStats bind; all RVAs/offsets verified against live source. |

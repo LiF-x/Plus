@@ -64,7 +64,7 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
-**Zbigi** (LiFXXL) — full-world navigation documentation and inspection:
+**Zbigi** — documentation prepared with ChatGPT (Codex), based on collected LiFXXL notes:
 
 - `docs/navmesh_world_bounds.md` and `docs/evidence/navmesh_world_bounds_reference.json`
   — 9 × 9 navigation bounds, cache evidence and real-server startup observations.

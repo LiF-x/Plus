@@ -1,6 +1,6 @@
 """Inspect YO version-4 navmesh framing and base vertices without modifying it.
 
-Author: Zbigi (LiFXXL).
+Prepared with ChatGPT (Codex), in collaboration with Zbigi.
 Uses only the Python standard library. The optional terrain-footprint report
 uses the centered native layout documented in navmesh_world_bounds.md.
 This does not execute the game, query paths, or validate graph connectivity.

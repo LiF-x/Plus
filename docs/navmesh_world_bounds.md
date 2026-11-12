@@ -1,6 +1,7 @@
 ---
 title: Larger maps — full-world navigation and cache
 author: Zbigi
+assistance: ChatGPT (Codex)
 status: re
 domain: reverse-engineering
 tags: [navmesh, navigation, terrain, maps, cache, ai]
@@ -11,7 +12,9 @@ updated: 2026-11-12
 
 # Larger maps — full-world navigation and cache
 
-LiFXXL findings and documentation contributed by **Zbigi**.
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
 
 For a complete 9 × 9 map in one server, configure `GlobalNavMesh` before world
 loading, load all intended terrain geometry, and use a cache generated for the
@@ -74,7 +77,7 @@ The core of a **single-server 9 × 9 initialization callback** is:
 
 ```torquescript
 // Inside the early initialization callback, after checking the 9x9 layout
-// and that GlobalNavMesh exists. Author: Zbigi.
+// and that GlobalNavMesh exists.
 GlobalNavMesh.setTransform("0 0 1500 0 0 1 0");
 GlobalNavMesh.setScale("9210 9210 500");
 %box = GlobalNavMesh.getWorldBox();
@@ -96,7 +99,7 @@ loaded, building has finished or a path exists.
 
 ## The geometry correction and compatible full-world settings
 
-**Correction by Zbigi:** `N*1024-6` is the historical full-world navmesh sizing
+**Correction:** `N*1024-6` is the historical full-world navmesh sizing
 rule retained by the reference mod. It must not be described as exact terrain
 geometry. The native terrain-coordinate function `0x578EF0` uses a stride of
 **2044** and a corner bias of **1020**. For IDs `406..486` around terrain `446`,
@@ -280,7 +283,7 @@ gameplay acceptance:
 
 ## Status & provenance
 
-**Author: Zbigi.** The 2026-11-12 review compared native build/load code,
+The 2026-11-12 review compared native build/load code,
 initialization ordering, full-world configuration and the entire current
 cache's record framing/base vertices. It also retains explicitly dated
 real-server startup evidence. This documentation review did not launch or

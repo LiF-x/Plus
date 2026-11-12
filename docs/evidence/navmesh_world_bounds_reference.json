@@ -1,6 +1,8 @@
 {
   "title": "Full-world navigation bounds and 9x9 cache inspection",
   "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
   "reviewed": "2026-11-12",
   "scope": "Complete map in one server. Static code and read-only cache evidence, plus bounded historical real-server startup observations. No new game session.",
   "binary": {

@@ -64,7 +64,7 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
-**Zbigi** (LiFXXL) — animal-husbandry production experience and documentation:
+**Zbigi** — documentation prepared with ChatGPT (Codex), based on collected LiFXXL notes:
 
 - `docs/animal_breeding.md` — feeding periods, food reserves and quality,
   breeding opportunities, manure and capacity calculations.

@@ -1,6 +1,7 @@
 ---
 title: Animal breeding — feeding cycles, reserves and cleanliness
 author: Zbigi
+assistance: ChatGPT (Codex)
 status: re
 domain: reverse-engineering
 tags: [animals, breeding, feeding, manure, timing]
@@ -11,7 +12,9 @@ updated: 2026-11-11
 
 # Animal breeding — feeding cycles, reserves and cleanliness
 
-Production experience, analysis and documentation contributed by **Zbigi** (LiFXXL).
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
 
 `animalBFPeriod` sets the breeding-cycle interval in minutes. Each cycle consumes
 a species-dependent amount of food, retains unused food after successful feeding,
@@ -21,7 +24,7 @@ cycle or automatically follow `dayCycle`.
 
 This guide concerns animals kept in breeding buildings. It complements the
 [animal data model](animal_data_model.md), whose main subject is spawned animals,
-and the [farming reference](farming.md). LiFXXL operates live servers with players;
+and the [farming reference](farming.md). LiFXXL is a community server project with players;
 the contribution draws on that experience. The accompanying
 [reference evidence](evidence/animal_breeding_reference.json) identifies the
 native code, definitions and calculations checked for this document.
@@ -266,7 +269,6 @@ by itself establish a timer or consumption bug.
 
 ## Status & provenance
 
-This documentation is contributed by **Zbigi** from the operating LiFXXL project.
 For this Plus contribution, the matching executable, 15 selected instruction
 ranges, all 17 animal rows, all five building rows, script defaults and arithmetic
 examples were checked on 2026-11-11. The evidence includes exact bytes, decoded

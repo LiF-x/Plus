@@ -64,7 +64,7 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
-**Zbigi** — terrain file-format research and documentation:
+**Zbigi** — documentation prepared with ChatGPT (Codex), based on collected LiFXXL notes:
 
 - `docs/terrain_file_formats.md` — surface and server geological layouts,
   lossless serialization and consistency checks for terrain edits

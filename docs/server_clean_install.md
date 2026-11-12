@@ -14,7 +14,7 @@ Start-to-finish, reproducible procedure for installing a **vanilla** *Life is Fe
 
 > Scope: stock server only. Everything below is exactly and only what SteamCMD delivers plus a DB connection config. No custom DLLs, no injection, no third-party payloads.
 
-Additional file-format reference by **Zbigi**:
+Additional file-format reference:
 [Terrain data files](terrain_file_formats.md) describes `.ter`, `.ter2idx` and
 `.ter2dat` decoding, lossless serialization and consistency checks for terrain edits.
 

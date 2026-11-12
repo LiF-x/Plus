@@ -1,6 +1,8 @@
 {
   "title": "Terrain surface and server geology file layout",
   "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
   "reviewed": "2026-11-12",
   "scope": "Binary layout and lossless serialization of the inspected compact baseline; no world construction workflow or runtime deployment.",
   "binary": {

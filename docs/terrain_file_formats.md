@@ -4,6 +4,7 @@ status: re
 domain: reverse-engineering
 tags: [terrain, binary-format, geology, serialization, validation]
 author: Zbigi
+assistance: ChatGPT (Codex)
 related: [server_clean_install.md, farming.md]
 sources: [docs/evidence/terrain_file_formats_reference.json, docs/farming.md]
 updated: 2026-11-12
@@ -11,7 +12,11 @@ updated: 2026-11-12
 
 # Terrain data files - reading and preserving the binary layout
 
-**Author: Zbigi.** This reference describes `.ter` version `9` and the inspected
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
+
+This reference describes `.ter` version `9` and the inspected
 compact server `.ter2idx`/`.ter2dat` pair. It covers decoding, lossless serialization
 and consistency checks for terrain edits. The surface, column index and geological
 layers form one related data set; successfully writing one file does not establish
@@ -241,7 +246,6 @@ describes data-integrity requirements, not automatic live replacement commands.
 
 ## Status & provenance
 
-**Document and evidence author: Zbigi.**
 [The reference record](evidence/terrain_file_formats_reference.json) contains
 layouts, representative headers, native instruction bytes, aggregate checks and
 the precise validation scope. It includes no complete terrain files or individual

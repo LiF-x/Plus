@@ -136,6 +136,16 @@
         <!-- <drop tree="oak" itemId="626" /> -->
     </treeDrops>
 
+    <!-- Additional horse-cart ObjectTypeID pairs. Supply matching object,
+         model, datablock and ability definitions on server and client.
+         3016 is the listed LiFx LogCart type; 3018 is the LiFXXL harnessed
+         allocation, not a confirmed reservation in the public LiFx list.
+         Does not create/renumber objects or change cart capacity.
+         See docs/custom_horse_carts.md for registry and content requirements. -->
+    <cartCarriers enabled="0">
+        <cart passiveId="3016" harnessedId="3018" />
+    </cartCarriers>
+
     <!-- Logging configuration -->
     <log>
         <level>0</level> <!-- 0 - allow all, 1 - skip INFO, 2 - skip INFO and WARN, 3 - allow only ERRORS -->

@@ -64,6 +64,15 @@ server hooks, plus the analysis documenting them:
 - `docs/offsets.md` — RVA encyclopedia for the verified 1.4.4.5 server image
 - `docs/farming.md` — `Harvest Crops` quantity and quality formulas
 
+**Zbigi** — WoodCart carrier integration and documentation prepared with ChatGPT (Codex):
+
+- `source/server/hooks/engine/hook_cart_carriers.{h,cpp}` — carrier mapping and
+  passive cargo loading, adapted from the existing LiFXXL implementation
+- `docs/custom_horse_carts.md` and `docs/evidence/custom_horse_carts_reference.json`
+  — setup, native boundaries, cargo persistence and original LogCart provenance
+- `scripts/test_cart_carriers.cpp` — configuration, native gate/ABI and lifecycle
+  regression checks; corresponding configuration, build and index entries
+
 ## Adding to this file
 
 When code from outside the project lands here, record it in two places: a credit

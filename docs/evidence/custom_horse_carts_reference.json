@@ -1,0 +1,551 @@
+{
+  "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "recorded": "2026-11-12",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
+  "server_context": {
+    "basis": "maintainer report",
+    "statement": "LiFXXL is a running community server with players; the maintainer reports making the original WoodCart work. This record checks source/data/native bytes and does not assert a new gameplay session or Plus deployment."
+  },
+  "release": {
+    "repository": "https://github.com/LiF-x/LogCart",
+    "tag": "1.0.0",
+    "commit": "de6d6cf7ccce5057949a6c74e53aa47f585b3966",
+    "credits_url": "https://lifxmod.com/unsupportedmods/log-cart.html",
+    "credits": {
+      "original_mod_made_work": "Zbigi",
+      "model": "Kurai",
+      "LiFx_conversion": "Dorian"
+    },
+    "transport_path": "yolauncher/modpack/mods/LiFx/LogCart/Transport.cs",
+    "transport_excerpt": "//---------------------------- attached Horse Carts -----------------------------------\n\n$Cart::wheelsAnimScale = 0.33;\n\ndatablock AttachedShapeData(HarnessedHorseCart)\n{\n\tid = 695;\n\tobjectTypeId = 3016;\n\t\n\tshapeFile = \"yolauncher/modpack/mods/LiFx/LogCart/Mobiles/transportation/LogCart/LogCart.dts\";\n};\n//-------------------------------------------------------------------------------------",
+    "registration_findings": [
+      "ObjectsTypesCart registers 3016; registration of ObjectsTypesHarnessedLogCart is commented out.",
+      "data/objects_types.xml contains 3016 but not 3018; data/New folder/objects_types.xml also contains 3018.",
+      "Transport.cs declares HarnessedHorseCart with numeric datablock id 695 and objectTypeId 3016."
+    ]
+  },
+  "public_object_type_registry": {
+    "url": "https://lifxmod.com/Docs/objects-types-id-list.html",
+    "checked": "2026-11-12",
+    "entries": [
+      {
+        "id": 3016,
+        "origin": "LiFx LogCart",
+        "parent": 77,
+        "name": "LiFx Log Cart"
+      },
+      {
+        "id": 3018,
+        "origin": null,
+        "parent": null,
+        "name": null,
+        "status": "blank row; public allocation not confirmed"
+      },
+      {
+        "id": 693,
+        "origin": "YO",
+        "parent": 666,
+        "name": "Filia Prati",
+        "namespace": "ObjectTypeID, not a datablock ID"
+      }
+    ],
+    "interpretation": "The hook maps existing types; it does not allocate IDs. Keep the original LogCart identity; coordinate the harnessed allocation for a public content release and check the destination modpack. A blank row does not prove availability."
+  },
+  "binary": {
+    "name": "ddctd_cm_yo_server.exe",
+    "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+    "size_bytes": 12441032,
+    "image_base": "0x140000000"
+  },
+  "code_sites": [
+    {
+      "name": "stock_pair_initialization",
+      "rva": "0x2e014",
+      "file_offset": "0x2d414",
+      "bytes": "C7 44 24 38 B5 05 00 00 C7 44 24 3C 9D 05 00 00 C7 44 24 40 D9 05 00 00 C7 44 24 44 D8 05 00 00",
+      "instructions": [
+        "0x2e014: mov dword ptr [rsp + 0x38], 0x5b5",
+        "0x2e01c: mov dword ptr [rsp + 0x3c], 0x59d",
+        "0x2e024: mov dword ptr [rsp + 0x40], 0x5d9",
+        "0x2e02c: mov dword ptr [rsp + 0x44], 0x5d8"
+      ]
+    },
+    {
+      "name": "carrier_conversion",
+      "rva": "0x23dc90",
+      "file_offset": "0x23d090",
+      "bytes": "48 83 EC 38 85 C9 74 7A 83 F9 01 74 30 41 B9 38 00 00 00 48 8D 05 36 CB 57 00 4C 8D 05 47 CB 57 00 48 89 44 24 20 48 8D 15 73 CB 57 00 41 8D 49 C9 E8 3A 3C 2C 00 33 C0 48 83 C4 38 C3 4C 8B 05 04 82 94 00 49 8B C0 49 8B 48 08 80 79 19 00 75 21 39 51 1C 73 06 48 8B 49 10 EB 06 48 8B C1 48 8B 09 80 79 19 00 74 E9 49 3B C0 74 05 3B 50 1C 73 03 49 8B C0 49 3B C0 74 08 8B 40 20 48 83 C4 38 C3 8B C2 48 83 C4 38 C3",
+      "instructions": [
+        "0x23dc90: sub rsp, 0x38",
+        "0x23dc94: test ecx, ecx",
+        "0x23dc96: je 0x14023dd12",
+        "0x23dc98: cmp ecx, 1",
+        "0x23dc9b: je 0x14023dccd",
+        "0x23dc9d: mov r9d, 0x38",
+        "0x23dca3: lea rax, [rip + 0x57cb36]",
+        "0x23dcaa: lea r8, [rip + 0x57cb47]",
+        "0x23dcb1: mov qword ptr [rsp + 0x20], rax",
+        "0x23dcb6: lea rdx, [rip + 0x57cb73]",
+        "0x23dcbd: lea ecx, [r9 - 0x37]",
+        "0x23dcc1: call 0x140501900",
+        "0x23dcc6: xor eax, eax",
+        "0x23dcc8: add rsp, 0x38",
+        "0x23dccc: ret",
+        "0x23dccd: mov r8, qword ptr [rip + 0x948204]",
+        "0x23dcd4: mov rax, r8",
+        "0x23dcd7: mov rcx, qword ptr [r8 + 8]",
+        "0x23dcdb: cmp byte ptr [rcx + 0x19], 0",
+        "0x23dcdf: jne 0x14023dd02",
+        "0x23dce1: cmp dword ptr [rcx + 0x1c], edx",
+        "0x23dce4: jae 0x14023dcec",
+        "0x23dce6: mov rcx, qword ptr [rcx + 0x10]",
+        "0x23dcea: jmp 0x14023dcf2",
+        "0x23dcec: mov rax, rcx",
+        "0x23dcef: mov rcx, qword ptr [rcx]",
+        "0x23dcf2: cmp byte ptr [rcx + 0x19], 0",
+        "0x23dcf6: je 0x14023dce1",
+        "0x23dcf8: cmp rax, r8",
+        "0x23dcfb: je 0x14023dd02",
+        "0x23dcfd: cmp edx, dword ptr [rax + 0x1c]",
+        "0x23dd00: jae 0x14023dd05",
+        "0x23dd02: mov rax, r8",
+        "0x23dd05: cmp rax, r8",
+        "0x23dd08: je 0x14023dd12",
+        "0x23dd0a: mov eax, dword ptr [rax + 0x20]",
+        "0x23dd0d: add rsp, 0x38",
+        "0x23dd11: ret",
+        "0x23dd12: mov eax, edx",
+        "0x23dd14: add rsp, 0x38",
+        "0x23dd18: ret"
+      ]
+    },
+    {
+      "name": "harness_conversion_call",
+      "rva": "0x3d9dca",
+      "file_offset": "0x3d91ca",
+      "bytes": "B9 01 00 00 00 E8 BC 3E E6 FF",
+      "instructions": [
+        "0x3d9dca: mov ecx, 1",
+        "0x3d9dcf: call 0x14023dc90"
+      ]
+    },
+    {
+      "name": "passive_carrier_gate",
+      "rva": "0x24c3c4",
+      "file_offset": "0x24b7c4",
+      "bytes": "3D B5 05 00 00 74 0B 3D D9 05 00 00 0F 85 9E 00 00 00",
+      "instructions": [
+        "0x24c3c4: cmp eax, 0x5b5",
+        "0x24c3c9: je 0x14024c3d6",
+        "0x24c3cb: cmp eax, 0x5d9",
+        "0x24c3d0: jne 0x14024c474"
+      ]
+    },
+    {
+      "name": "accepted_carrier_load_call",
+      "rva": "0x24c423",
+      "file_offset": "0x24b823",
+      "bytes": "E8 C8 2C 00 00 48 8D 54 24 40 48 8B C8 E8 CB 2C 00 00",
+      "instructions": [
+        "0x24c423: call 0x14024f0f0",
+        "0x24c428: lea rdx, [rsp + 0x40]",
+        "0x24c42d: mov rcx, rax",
+        "0x24c430: call 0x14024f100"
+      ]
+    },
+    {
+      "name": "put_cargo_size_gate",
+      "rva": "0x37e31b",
+      "file_offset": "0x37d71b",
+      "bytes": "E8 90 59 D5 FF 80 78 1C 00 74 1A 48 8B 4D EF E8 81 59 D5 FF 0F B6 48 1C 44 03 F1 44 89 75 67 41 83 FE 0C 76 17",
+      "instructions": [
+        "0x37e31b: call 0x1400d3cb0",
+        "0x37e320: cmp byte ptr [rax + 0x1c], 0",
+        "0x37e324: je 0x14037e340",
+        "0x37e326: mov rcx, qword ptr [rbp - 0x11]",
+        "0x37e32a: call 0x1400d3cb0",
+        "0x37e32f: movzx ecx, byte ptr [rax + 0x1c]",
+        "0x37e333: add r14d, ecx",
+        "0x37e336: mov dword ptr [rbp + 0x67], r14d",
+        "0x37e33a: cmp r14d, 0xc",
+        "0x37e33e: jbe 0x14037e357"
+      ]
+    },
+    {
+      "name": "attached_entity_resolver",
+      "rva": "0x33dda0",
+      "file_offset": "0x33d1a0",
+      "bytes": "8B 49 08 E9 A8 99 0A 00",
+      "instructions": [
+        "0x33dda0: mov ecx, dword ptr [rcx + 8]",
+        "0x33dda3: jmp 0x1403e7750"
+      ]
+    },
+    {
+      "name": "attached_datablock_load",
+      "rva": "0x3e7970",
+      "file_offset": "0x3e6d70",
+      "bytes": "48 8B 8F E8 09 00 00",
+      "instructions": [
+        "0x3e7970: mov rcx, qword ptr [rdi + 0x9e8]"
+      ]
+    },
+    {
+      "name": "attached_object_type_load",
+      "rva": "0x3e797a",
+      "file_offset": "0x3e6d7a",
+      "bytes": "44 8B 81 E8 02 00 00",
+      "instructions": [
+        "0x3e797a: mov r8d, dword ptr [rcx + 0x2e8]"
+      ]
+    }
+  ],
+  "native_contract": {
+    "stock_pairs": [
+      [
+        1461,
+        1437
+      ],
+      [
+        1497,
+        1496
+      ]
+    ],
+    "extension_pair": [
+      3016,
+      3018
+    ],
+    "conversion_abi": "uint32_t __fastcall(uint32_t mode, uint32_t objectTypeId); ECX, EDX -> EAX",
+    "mode_0": "returns the input ID",
+    "mode_1": "looks up passive-to-harnessed map; unmapped ID passes through",
+    "other_modes": "diagnostic path then zero return; delegate rather than inventing reverse conversion",
+    "gate_accept_rva": "0x24C3D6",
+    "gate_reject_rva": "0x24C474",
+    "cargo_load_rva": "0x24F100",
+    "put_rva": "0x37E1D0",
+    "pull_rva": "0x37D880",
+    "cargo_size_sum_rva": "0x24ED60",
+    "stock_size_budget": 12,
+    "local_wood_cart_size_budget": 30,
+    "cargo_registry_global_rva": "0xB87170",
+    "entity_kind_complex": 3,
+    "entity_kind_attached": 4,
+    "complex_type_pointer_offset": "0x370",
+    "type_id_offset": "0x60",
+    "type_properties_pointer_offset": "0x68",
+    "cargo_size_byte_offset": "0x1C",
+    "attached_datablock_pointer_offset": "0x9E8",
+    "datablock_object_type_id_offset": "0x2E8"
+  },
+  "local_object_types": [
+    {
+      "ID": "3016",
+      "ParentID": "77",
+      "Name": "Wood Cart",
+      "IsContainer": "1",
+      "IsMovableObject": "1",
+      "IsUnmovableobject": "0",
+      "MaxContSize": "1000000",
+      "Length": "7",
+      "UnitWeight": "10000"
+    },
+    {
+      "ID": "3018",
+      "ParentID": "77",
+      "Name": "Wood Cart (harnessed)",
+      "IsContainer": "1",
+      "IsMovableObject": "1",
+      "IsUnmovableobject": "0",
+      "MaxContSize": "1000000",
+      "Length": "7",
+      "UnitWeight": "10000"
+    }
+  ],
+  "materialized_data_check": {
+    "client_content": [
+      {
+        "ID": "3016",
+        "ParentID": "77",
+        "Name": "Wood Cart",
+        "IsContainer": "1",
+        "IsMovableObject": "1",
+        "IsUnmovableobject": "0",
+        "MaxContSize": "1000000",
+        "Length": "7",
+        "UnitWeight": "10000"
+      },
+      {
+        "ID": "3018",
+        "ParentID": "77",
+        "Name": "Wood Cart (harnessed)",
+        "IsContainer": "1",
+        "IsMovableObject": "1",
+        "IsUnmovableobject": "0",
+        "MaxContSize": "1000000",
+        "Length": "7",
+        "UnitWeight": "10000"
+      }
+    ]
+  },
+  "local_datablock": {
+    "origin_file": "addons/woodCart/datablocks/transport.cs",
+    "text": "datablock AttachedShapeData(LifXXLHarnessedWoodCart)\n{\n    id = 693;\n    objectTypeId = 3018;\n    shapeFile = \"art/addons/woodCart/LogCart.dts\";\n};",
+    "id_scope": "693 is allocated in this source set; do not assume free in another modpack"
+  },
+  "local_shapes": [
+    {
+      "object_type_id": "3016",
+      "states": [
+        {
+          "state": "Complete",
+          "models": [
+            "art/addons/woodCart/LogCart_passive.dts"
+          ]
+        },
+        {
+          "state": "Incomplete",
+          "models": [
+            "art/models/3d/construction/misc/site/site.dts"
+          ]
+        },
+        {
+          "state": "Damaged",
+          "models": [
+            "art/addons/woodCart/LogCart_passive.dts"
+          ]
+        }
+      ]
+    },
+    {
+      "object_type_id": "3018",
+      "states": [
+        {
+          "state": "Complete",
+          "models": [
+            "art/addons/woodCart/LogCart.dts"
+          ]
+        },
+        {
+          "state": "Working",
+          "models": [
+            "art/addons/woodCart/LogCart.dts"
+          ]
+        },
+        {
+          "state": "Incomplete",
+          "models": [
+            "art/models/3d/construction/misc/site/site.dts"
+          ]
+        },
+        {
+          "state": "Damaged",
+          "models": [
+            "art/addons/woodCart/LogCart.dts"
+          ]
+        }
+      ]
+    }
+  ],
+  "ability_entities": [
+    {
+      "skill": "62",
+      "ability": "108",
+      "name": "Look in Inventory",
+      "entities": [
+        {
+          "kind": "attached_obj",
+          "object_type_ids": [
+            "3018"
+          ]
+        }
+      ]
+    },
+    {
+      "skill": "62",
+      "ability": "288",
+      "name": "Harness",
+      "entities": [
+        {
+          "kind": "complex_obj",
+          "object_type_ids": [
+            "3016"
+          ]
+        }
+      ]
+    },
+    {
+      "skill": "62",
+      "ability": "289",
+      "name": "Unharness",
+      "entities": [
+        {
+          "kind": "attached_obj",
+          "object_type_ids": [
+            "3018"
+          ]
+        }
+      ]
+    },
+    {
+      "skill": "62",
+      "ability": "300",
+      "name": "Put in Cart",
+      "entities": [
+        {
+          "kind": "attached_obj",
+          "object_type_ids": [
+            "3018"
+          ]
+        },
+        {
+          "kind": "complex_obj",
+          "object_type_ids": [
+            "3016"
+          ]
+        }
+      ]
+    },
+    {
+      "skill": "62",
+      "ability": "301",
+      "name": "Pull from Cart",
+      "entities": [
+        {
+          "kind": "attached_obj",
+          "object_type_ids": [
+            "3018"
+          ]
+        },
+        {
+          "kind": "complex_obj",
+          "object_type_ids": [
+            "3016"
+          ]
+        }
+      ]
+    },
+    {
+      "skill": "63",
+      "ability": "224",
+      "name": "Get On",
+      "entities": [
+        {
+          "kind": "attached_obj",
+          "object_type_ids": [
+            "3018"
+          ]
+        }
+      ]
+    },
+    {
+      "skill": "65",
+      "ability": "312",
+      "name": "Rename",
+      "entities": [
+        {
+          "kind": "complex_obj",
+          "object_type_ids": [
+            "3016"
+          ]
+        }
+      ]
+    }
+  ],
+  "local_recipe": [
+    {
+      "ID": "1093",
+      "Name": "Wood Cart",
+      "Description": "A compact cart for transporting logs and timber, with seating for one passenger.",
+      "StartingToolsID": "36",
+      "SkillTypeID": "8",
+      "SkillLvl": "90",
+      "ResultObjectTypeID": "3016",
+      "SkillDepends": "30",
+      "Quantity": "1",
+      "Autorepeat": "0",
+      "IsBlueprint": "0",
+      "ImagePath": "art\\addons\\woodCart\\wood_cart_recipe.png"
+    }
+  ],
+  "local_recipe_requirements": [
+    {
+      "ID": "9510",
+      "RecipeID": "1093",
+      "MaterialObjectTypeID": "235",
+      "Quality": "0",
+      "Influence": "20",
+      "Quantity": "30",
+      "IsRegionItemRequired": "0"
+    },
+    {
+      "ID": "9511",
+      "RecipeID": "1093",
+      "MaterialObjectTypeID": "255",
+      "Quality": "0",
+      "Influence": "15",
+      "Quantity": "4",
+      "IsRegionItemRequired": "0"
+    },
+    {
+      "ID": "9512",
+      "RecipeID": "1093",
+      "MaterialObjectTypeID": "1131",
+      "Quality": "0",
+      "Influence": "15",
+      "Quantity": "20",
+      "IsRegionItemRequired": "0"
+    },
+    {
+      "ID": "9513",
+      "RecipeID": "1093",
+      "MaterialObjectTypeID": "262",
+      "Quality": "0",
+      "Influence": "20",
+      "Quantity": "10",
+      "IsRegionItemRequired": "0"
+    }
+  ],
+  "source_excerpts": [
+    {
+      "origin_file": "captainHook/server/hooks/engine/hook_wood_cart.cpp",
+      "first_line": 140,
+      "text": "            U32 __fastcall OnCarrierObjectTypeConversion(\n                U32 conversionMode,\n                U32 objectTypeId)\n            {\n                if (conversionMode == 1\n                    && objectTypeId == kWoodCartPassiveObjectTypeId)\n                {\n                    return kWoodCartHarnessedObjectTypeId;\n                }\n\n                return gCarrierObjectTypeConversion(\n                    conversionMode,\n                    objectTypeId);\n            }"
+    },
+    {
+      "origin_file": "captainHook/server/hooks/engine/hook_wood_warehouses.cpp",
+      "first_line": 178,
+      "text": "            const auto* properties = *reinterpret_cast<const std::uint8_t* const*>(\n                static_cast<const std::uint8_t*>(objectType) + 0x68);\n            const U32 size = properties[0x1C];\n            if (gWoodCart)\n                return size && used + size <= kWoodCartLimit ? used + size : kFull;\n            return size && used + size <= 12 ? used + size : kFull;"
+    },
+    {
+      "origin_file": "captainHook/server/hooks/engine/hook_wood_warehouses.cpp",
+      "first_line": 77,
+      "text": "            const auto kind = At<U32(__fastcall*)(void*)>(0x34EF20)(entity->get());\n            if (kind == 4)\n            {\n                auto* attached = At<std::uint8_t*(__fastcall*)(void*)>(0x33DDA0)(entity->get());\n                if (!attached)\n                    return 0;\n                const auto* data = *reinterpret_cast<const std::uint8_t* const*>(attached + 0x9E8);\n                return data && *reinterpret_cast<const U32*>(data + 0x2E8) == 3018 ? 3018 : 0;\n            }"
+    },
+    {
+      "origin_file": "sql/patch.sql",
+      "first_line": 2239,
+      "text": "if(!sf_isColumnExists('movable_objects', 'CarrierMovableID')) then\n\tALTER TABLE `movable_objects`\n\t\tADD COLUMN `CarrierMovableID` INT UNSIGNED NULL AFTER `CarrierHorseID`,\n\t\tADD KEY `FK_carrier_movable_to_movables` (`CarrierMovableID`),\n\t\tADD CONSTRAINT `FK_carrier_movable_to_movables` FOREIGN KEY (`CarrierMovableID`) REFERENCES `movable_objects` (`ID`);"
+    }
+  ],
+  "validation": {
+    "native_ranges_checked": 9,
+    "source_xml_and_materialized_client_xml_agree": true,
+    "live_database_queried": false,
+    "server_started": false,
+    "client_started": false,
+    "runtime_test_performed_for_this_record": false,
+    "plus_hook_added": true,
+    "port_test": {
+      "file": "scripts/test_cart_carriers.cpp",
+      "compiler": "MSVC 19.44 x64 /std:c++20 /W4 /WX",
+      "checks_passed": 65651,
+      "gate_ids_checked": 65536,
+      "expected_diagnostics": 17,
+      "scope": "Actual generated gate and Detours in a synthetic image; no game process"
+    },
+    "changed_cpp_units_compile": true,
+    "full_dll_build": "blocked by unchanged source/server/hooks/furnace/hook_proc_desc.cpp:107, C2466, zero-length kExtensionRows array",
+    "deployed": false
+  }
+}

@@ -189,6 +189,10 @@ server browser advertised 128 slots.
 
 ## Status & provenance
 
+For the independent horse-cart carrier mapping and cargo-load gate, see
+[Custom horse carts](custom_horse_carts.md). That page documents `0x23DC90`
+and `0x24C3C4`, their exact signatures, and the optional `cartCarriers` hook.
+
 The tree-felling selector, the `TreeType 0`/`TreeType 7` values, and the apple →
 chair override are runtime-verified. The gem and tunnelling call sites were
 recovered statically and are byte-pattern-checked at attach time by

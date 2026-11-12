@@ -24,6 +24,8 @@
 
 ## Reverse engineering — engine internals & ABI
 
+- [Custom horse carts](custom_horse_carts.md): WoodCart 3016 -> 3018; optional cartCarriers hook for passive-to-harnessed conversion and passive cargo-list loading; object/datablock/ability setup, instance IDs and separate inventory/cargo budgets. | status: re | tags: horse-carts, carrier, object-types, cargo, hooks | key: CARRIER_CONVERT_OBJECT_TYPE=0x23DC90, CARRIER_PASSIVE_GATE=0x24C3C4, cargo load=0x24F100
+
 - [Reverse engineering setup](reverse_engineering.md): Ghidra setup, the LifxExport.java / LifxEventVtables.java analysis scripts, and the artifact files they produce. | status: reference | tags: ghidra, scripts, tooling
 - [Reverse-engineering offset encyclopedia](offsets.md): Stable RVAs and data layouts for the verified 1.4.4.5 image: tree felling/log selection, gem drops, tunnelling material rewards, maxPlayers slot limit. | status: re | tags: offsets, rva, tree-drops, gem-drops, tunnelling, max-players | key: TREE_SELECTOR=0x3716D0, TREE_SELECTOR_RET=0x3716EA, GEM_CHANCE_CALL=0x3A9258, GEM_ITEM_LOOKUP=0x3A931F, TUNNEL_MATERIALS_CALL=0x3ADEE9, ADD_MATERIALS=0x584120, ADD_ARBITRARY_ITEM=0x3A89E0, MAXPLAYERS_MAX=0xACDFA4, SHA256=ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F
 - [Farming — harvest yield and quality](farming.md): Harvest Crops quantity/quality formulas; weather is a hard 4x switch (fair/(shower+1) within 0.5..2.0), fertility an exact 2x from the crop substance low bit. | status: re | tags: farming, harvest, crops, weather, fertility | key: HARVEST_PLANT=0x3A5030, WEATHER_WINDOW=0x3A527C, WEATHER_GETTER=0x471590, WEATHER_NAMES=0x87FB40, HARVEST_READER=0x3AF9C0

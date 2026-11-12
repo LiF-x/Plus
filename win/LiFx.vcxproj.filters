@@ -140,6 +140,9 @@
     <ClInclude Include="..\source\server\hooks\engine\hook_tree_drop.h">
       <Filter>Server\Hooks\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\server\hooks\engine\hook_cart_carriers.h">
+      <Filter>Server\Hooks\Engine</Filter>
+    </ClInclude>
     <ClInclude Include="..\source\server\hooks\engine\hook_tunnel_drop.h">
       <Filter>Server\Hooks\Engine</Filter>
     </ClInclude>
@@ -315,6 +318,9 @@
       <Filter>Server\Hooks\Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\source\server\hooks\engine\hook_tree_drop.cpp">
+      <Filter>Server\Hooks\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\server\hooks\engine\hook_cart_carriers.cpp">
       <Filter>Server\Hooks\Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\source\server\hooks\engine\hook_tunnel_drop.cpp">

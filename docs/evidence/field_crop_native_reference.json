@@ -1,7 +1,9 @@
 {
   "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
   "inspection_date": "2026-11-11",
-  "production_context": "LiFXXL operates live servers with players, and its documentation draws on real server tests. Zbigi contributes that production experience; this evidence record captures the specific reference-binary inspection supporting the Plus review.",
+  "production_context": "LiFXXL is a community server project with players, and its documentation draws on real server tests. This evidence record captures the specific reference-binary inspection supporting the Plus review.",
   "method": "Read-only PE byte inspection and disassembly of original reference binaries; neither executable was launched. Feed decisions are evaluated from the decoded predicate, not measured in a running building.",
   "scope": "Unmodified reference binaries and the pinned PR source; not the currently deployed LiFXXL or Plus process.",
   "reviewed_pr": {

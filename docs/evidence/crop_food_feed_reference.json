@@ -1,7 +1,9 @@
 {
   "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
   "inspection_date": "2026-11-11",
-  "production_context": "LiFXXL operates live servers with players and real server testing. Zbigi contributes that production experience; this record captures the exact source and reference-binary checks supporting the Plus guide.",
+  "production_context": "LiFXXL is a community server project with players and real server testing. This record captures the exact source and reference-binary checks supporting the Plus guide.",
   "method": "Read-only XML/source inspection and PE disassembly. No game process was launched or executable modified for this contribution.",
   "server": {
     "executable": "ddctd_cm_yo_server.exe",

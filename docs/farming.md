@@ -12,8 +12,11 @@ updated: 2026-11-11
 
 Reverse-engineering and analysis contributed by **Pabluuz**.
 
-Custom field-crop integration review and reference evidence contributed by
-**Zbigi** (LiFXXL). The original harvest analysis below retains Pabluuz's authorship.
+The custom field-crop additions cover integration and reference evidence. The original harvest analysis below retains Pabluuz's authorship.
+
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
 
 ## Farming: `Harvest Crops` yield
 
@@ -97,7 +100,7 @@ not the number of items.
 
 ## Custom field crops: separate native and data requirements
 
-**Contribution by Zbigi, 2026-11-11.** This section concerns crops sown on fields.
+**Scope (2026-11-11).** This section concerns crops sown on fields.
 It reviews GreedyFox's [`cropTypes` PR #14](https://github.com/LiF-x/Plus/pull/14)
 at commit `9cc6067302e4710fae5c92da6d2b5aab56152df6`, rather than assuming the
 proposal is installed in the current main branch. The
@@ -182,7 +185,7 @@ which is a different ability and food-selection path.
 
 ### Make a new harvest edible by players
 
-**Implementation guide by Zbigi.** Start with the item's `objects_types` row,
+**Implementation guide.** Start with the item's `objects_types` row,
 not its terrain substance ID or sow ability ID. The native **Eat** ability is
 `43`. Its `skill_types.xml` inventory-item requirement is:
 
@@ -248,7 +251,7 @@ intended food rather than using the highest category merely to enable Eat.
 
 ### Add the harvest as feed for breeding buildings
 
-**Implementation guide by Zbigi.** Keep this separate from the player's Eat
+**Implementation guide.** Keep this separate from the player's Eat
 category. An item may be food, feed, both, or neither. The `cropTypes` proposal
 has no animal-feed option; the following is the integration contract for an
 additional native extension, not configuration already supplied by Plus.
@@ -323,7 +326,7 @@ logic unless changing them is a separate requirement.
 
 ## Status & provenance of the custom-crop contribution
 
-**Production experience contributed by Zbigi:** LiFXXL operates live servers with
+**Server context:** LiFXXL operates live servers with
 players, and its documentation draws on real server tests. The contribution above
 brings that experience into a review of a particular Plus proposal and a practical
 integration guide. The checks below describe the preparation of this contribution.

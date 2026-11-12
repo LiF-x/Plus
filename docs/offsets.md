@@ -189,7 +189,7 @@ server browser advertised 128 slots.
 
 ## Status & provenance
 
-For separate combat findings contributed by **Zbigi** (LiFXXL) on this same executable hash, see
+For separate combat findings on this same executable hash, see
 [Shield durability underflow](shield_durability_underflow.md): the state builder
 at `0xA7180`, remaining-damage field `+0x38`, native wear at `0xA5510`, and the
 downstream unsigned conversion at `0xEEFA1`. That page retains its own evidence

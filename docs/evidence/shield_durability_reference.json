@@ -1,9 +1,11 @@
 {
   "schema": 1,
   "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
   "project": "LiFXXL",
   "inspection_date": "2026-11-11",
-  "production_context": "LiFXXL operates live servers with players and draws on real server testing. This record captures reference-code and native regression evidence; the companion runtime record captures a real-server shield session.",
+  "production_context": "LiFXXL is a community server project with players and draws on real server testing. This record captures reference-code and native regression evidence; the companion runtime record captures a real-server shield session.",
   "validation": "Read-only static PE inspection; historical test records imported, not rerun.",
   "binary": {
     "name": "ddctd_cm_yo_server.exe",

@@ -1,6 +1,7 @@
 ---
 title: Shield durability underflow from over-100-percent protection
 author: Zbigi
+assistance: ChatGPT (Codex)
 status: re
 domain: reverse-engineering
 tags: [combat, shield, durability, mastery, signedness, detours]
@@ -11,9 +12,11 @@ updated: 2026-11-11
 
 # Shield durability underflow from over-100-percent protection
 
-Diagnosis, implementation experience and validation contributed by **Zbigi** (LiFXXL).
+These documentation updates were generated with help from ChatGPT (Codex),
+in collaboration with Zbigi, from notes and analyses collected over four months
+of work on LiFXXL, a community project based on a modified LiF:YO server.
 
-**Production context:** LiFXXL operates live servers with players, and this
+**Server context:** LiFXXL is a community server project with players, and this
 contribution draws on that work. It includes a recorded real-server shield session
 as well as native regression results. Porting the correction into Plus and
 validating that implementation is a separate step.
@@ -158,7 +161,7 @@ other items and would leave the upstream negative-damage calculation unresolved.
 
 ## Recorded real-server session
 
-**Real-server observations contributed by Zbigi.** The preserved 2026-10-19
+**Recorded server observations.** The preserved 2026-10-19
 session contains the `SHIELD_DURABILITY_FIX` initialization marker, followed by
 `Server is up and ready to accept connections` at `13:21:42.771`. The
 [runtime evidence record](evidence/shield_durability_runtime_reference.json)

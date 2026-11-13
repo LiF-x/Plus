@@ -1,0 +1,656 @@
+{
+  "author": "Zbigi",
+  "assistance": "ChatGPT (Codex)",
+  "documentation_context": "Notes and analyses collected over four months of work on LiFXXL, a community project based on a modified LiF:YO server.",
+  "inspection_date": "2026-11-11",
+  "production_context": "This contribution draws on LiFXXL community servers and real-player experience. This record identifies the source definitions, reference instructions and planning calculations checked for the Plus documentation.",
+  "method": "Read-only PE/XML/script inspection and arithmetic checks; no game executable was launched or modified during preparation.",
+  "binary": {
+    "name": "ddctd_cm_yo_server.exe",
+    "version": "1.4.4.5",
+    "sha256": "ACD99BD1A785D95B06494CBADE51A2C14EE60A521D0E88A4BE6AE1B3B685219F",
+    "size_bytes": 12441032,
+    "image_base": "0x140000000"
+  },
+  "code_sites": [
+    {
+      "name": "xml_period_binding",
+      "rva": "0x176e33",
+      "file_offset": "0x176233",
+      "bytes": "48 8D 15 C6 B9 61 00 44 8B 05 2F 6E A0 00 48 8B CE E8 67 3F 2E 00 89 85 90 00 00 00",
+      "instructions": [
+        "0x176e33: lea rdx, [rip + 0x61b9c6]",
+        "0x176e3a: mov r8d, dword ptr [rip + 0xa06e2f]",
+        "0x176e41: mov rcx, rsi",
+        "0x176e44: call 0x14045adb0",
+        "0x176e49: mov dword ptr [rbp + 0x90], eax"
+      ]
+    },
+    {
+      "name": "minutes_to_milliseconds",
+      "rva": "0x177779",
+      "file_offset": "0x176b79",
+      "bytes": "69 8E E0 00 00 00 60 EA 00 00 E8 D8 91 03 00",
+      "instructions": [
+        "0x177779: imul ecx, dword ptr [rsi + 0xe0], 0xea60",
+        "0x177783: call 0x1401b0960"
+      ]
+    },
+    {
+      "name": "period_set_variable",
+      "rva": "0x1b09ac",
+      "file_offset": "0x1afdac",
+      "bytes": "8B D3 48 8D 0D 0B 07 5F 00 E8 46 81 25 00",
+      "instructions": [
+        "0x1b09ac: mov edx, ebx",
+        "0x1b09ae: lea rcx, [rip + 0x5f070b]",
+        "0x1b09b5: call 0x140408b00"
+      ]
+    },
+    {
+      "name": "breeding_timer",
+      "rva": "0x1ada80",
+      "file_offset": "0x1ace80",
+      "bytes": "40 55 56 48 83 EC 28 48 8B E9 E8 11 6D 36 00 8B 95 78 FF FF FF 8B F0 85 D2 75 08 85 C0 0F 85 06 01 00 00 8B 0D 7F 15 92 00 03 CA 3B F1 0F 86 FC 00 00 00",
+      "instructions": [
+        "0x1ada80: push rbp",
+        "0x1ada82: push rsi",
+        "0x1ada83: sub rsp, 0x28",
+        "0x1ada87: mov rbp, rcx",
+        "0x1ada8a: call 0x1405147a0",
+        "0x1ada8f: mov edx, dword ptr [rbp - 0x88]",
+        "0x1ada95: mov esi, eax",
+        "0x1ada97: test edx, edx",
+        "0x1ada99: jne 0x1401adaa3",
+        "0x1ada9b: test eax, eax",
+        "0x1ada9d: jne 0x1401adba9",
+        "0x1adaa3: mov ecx, dword ptr [rip + 0x92157f]",
+        "0x1adaa9: add ecx, edx",
+        "0x1adaab: cmp esi, ecx",
+        "0x1adaad: jbe 0x1401adbaf"
+      ]
+    },
+    {
+      "name": "cycle_calls",
+      "rva": "0x1adad6",
+      "file_offset": "0x1aced6",
+      "bytes": "E8 F5 4E 00 00 48 8B CF E8 FD 46 00 00 48 8B CF E8 B5 54 00 00 48 8B CF E8 AD 5A 00 00",
+      "instructions": [
+        "0x1adad6: call 0x1401b29d0",
+        "0x1adadb: mov rcx, rdi",
+        "0x1adade: call 0x1401b21e0",
+        "0x1adae3: mov rcx, rdi",
+        "0x1adae6: call 0x1401b2fa0",
+        "0x1adaeb: mov rcx, rdi",
+        "0x1adaee: call 0x1401b35a0"
+      ]
+    },
+    {
+      "name": "cycle_timestamp_update",
+      "rva": "0x1adba9",
+      "file_offset": "0x1acfa9",
+      "bytes": "89 B5 78 FF FF FF 48 83 C4 28 5E 5D C3",
+      "instructions": [
+        "0x1adba9: mov dword ptr [rbp - 0x88], esi",
+        "0x1adbaf: add rsp, 0x28",
+        "0x1adbb3: pop rsi",
+        "0x1adbb4: pop rbp",
+        "0x1adbb5: ret"
+      ]
+    },
+    {
+      "name": "portion_getter",
+      "rva": "0x1b0450",
+      "file_offset": "0x1af850",
+      "bytes": "8B 05 2A E8 91 00 45 33 C0 83 F8 FF 74 21 41 8B C8 4C 8D 0D 18 E8 91 00 3B C2 74 17 48 FF C1 41 FF C0 48 6B C1 34 42 8B 04 08 83 F8 FF 75 E9 0F 57 C0 C3 49 63 C0 48 6B C8 34 F3 42 0F 10 44 09 30 C3",
+      "instructions": [
+        "0x1b0450: mov eax, dword ptr [rip + 0x91e82a]",
+        "0x1b0456: xor r8d, r8d",
+        "0x1b0459: cmp eax, -1",
+        "0x1b045c: je 0x1401b047f",
+        "0x1b045e: mov ecx, r8d",
+        "0x1b0461: lea r9, [rip + 0x91e818]",
+        "0x1b0468: cmp eax, edx",
+        "0x1b046a: je 0x1401b0483",
+        "0x1b046c: inc rcx",
+        "0x1b046f: inc r8d",
+        "0x1b0472: imul rax, rcx, 0x34",
+        "0x1b0476: mov eax, dword ptr [rax + r9]",
+        "0x1b047a: cmp eax, -1",
+        "0x1b047d: jne 0x1401b0468",
+        "0x1b047f: xorps xmm0, xmm0",
+        "0x1b0482: ret",
+        "0x1b0483: movsxd rax, r8d",
+        "0x1b0486: imul rcx, rax, 0x34",
+        "0x1b048a: movss xmm0, dword ptr [rcx + r9 + 0x30]",
+        "0x1b0491: ret"
+      ]
+    },
+    {
+      "name": "portion_accumulator",
+      "rva": "0x1b1882",
+      "file_offset": "0x1b0c82",
+      "bytes": "E8 89 45 FF FF 8B 57 08 48 8B C8 E8 BE EB FF FF 48 8B 46 08 F3 0F 58 80 A0 00 00 00 F3 0F 11 80 A0 00 00 00",
+      "instructions": [
+        "0x1b1882: call 0x1401a5e10",
+        "0x1b1887: mov edx, dword ptr [rdi + 8]",
+        "0x1b188a: mov rcx, rax",
+        "0x1b188d: call 0x1401b0450",
+        "0x1b1892: mov rax, qword ptr [rsi + 8]",
+        "0x1b1896: addss xmm0, dword ptr [rax + 0xa0]",
+        "0x1b189e: movss dword ptr [rax + 0xa0], xmm0"
+      ]
+    },
+    {
+      "name": "demand_reset",
+      "rva": "0x1b35f3",
+      "file_offset": "0x1b29f3",
+      "bytes": "C7 83 A0 00 00 00 00 00 00 00",
+      "instructions": [
+        "0x1b35f3: mov dword ptr [rbx + 0xa0], 0"
+      ]
+    },
+    {
+      "name": "item_unit_weight",
+      "rva": "0x27e2e0",
+      "file_offset": "0x27d6e0",
+      "bytes": "8B 41 14 0F 57 C0 F3 48 0F 2A C0 F3 0F 5E 05 75 82 4B 00 C3",
+      "instructions": [
+        "0x27e2e0: mov eax, dword ptr [rcx + 0x14]",
+        "0x27e2e3: xorps xmm0, xmm0",
+        "0x27e2e6: cvtsi2ss xmm0, rax",
+        "0x27e2eb: divss xmm0, dword ptr [rip + 0x4b8275]",
+        "0x27e2f3: ret"
+      ]
+    },
+    {
+      "name": "food_selection_quantity_and_quality",
+      "rva": "0x1b2ad0",
+      "file_offset": "0x1b1ed0",
+      "bytes": "48 8B 3B F3 0F 10 46 34 F3 0F 10 B6 A0 00 00 00 0F 2F F0 0F 86 A3 00 00 00 F3 0F 5C F0 48 8B 4F 18 E8 EA B7 0C 00 8B 57 24 0F 57 C9 F3 48 0F 2A CA F3 0F 59 C8 0F 2F CE 76 23 0F 28 CE F3 0F 5E C8 F3 48 0F 2C C9 8B C1 0F 57 C9 F3 48 0F 2A C8 F3 0F 59 C8 8D 51 01 0F 2F F1 0F 46 D1 85 D2 74 5B 41 0F 2E C0 7A 02 74 53 8B C2 0F 57 C9 F3 48 0F 2A C8 F3 0F 59 C8 F3 0F 10 56 34 0F 28 D9 F3 0F 58 DA 0F B7 47 20 66 0F 6E C0 0F 5B C0 F3 0F 59 C1 F3 0F 59 56 38 F3 0F 58 C2 F3 0F 5E C3 F3 0F 11 46 38 F3 0F 11 5E 34 44 8B CA 4C 8B C7 48 8D 54 24 70 48 8B CE E8 C4 2E FF FF",
+      "instructions": [
+        "0x1b2ad0: mov rdi, qword ptr [rbx]",
+        "0x1b2ad3: movss xmm0, dword ptr [rsi + 0x34]",
+        "0x1b2ad8: movss xmm6, dword ptr [rsi + 0xa0]",
+        "0x1b2ae0: comiss xmm6, xmm0",
+        "0x1b2ae3: jbe 0x1401b2b8c",
+        "0x1b2ae9: subss xmm6, xmm0",
+        "0x1b2aed: mov rcx, qword ptr [rdi + 0x18]",
+        "0x1b2af1: call 0x14027e2e0",
+        "0x1b2af6: mov edx, dword ptr [rdi + 0x24]",
+        "0x1b2af9: xorps xmm1, xmm1",
+        "0x1b2afc: cvtsi2ss xmm1, rdx",
+        "0x1b2b01: mulss xmm1, xmm0",
+        "0x1b2b05: comiss xmm1, xmm6",
+        "0x1b2b08: jbe 0x1401b2b2d",
+        "0x1b2b0a: movaps xmm1, xmm6",
+        "0x1b2b0d: divss xmm1, xmm0",
+        "0x1b2b11: cvttss2si rcx, xmm1",
+        "0x1b2b16: mov eax, ecx",
+        "0x1b2b18: xorps xmm1, xmm1",
+        "0x1b2b1b: cvtsi2ss xmm1, rax",
+        "0x1b2b20: mulss xmm1, xmm0",
+        "0x1b2b24: lea edx, [rcx + 1]",
+        "0x1b2b27: comiss xmm6, xmm1",
+        "0x1b2b2a: cmovbe edx, ecx",
+        "0x1b2b2d: test edx, edx",
+        "0x1b2b2f: je 0x1401b2b8c",
+        "0x1b2b31: ucomiss xmm0, xmm8",
+        "0x1b2b35: jp 0x1401b2b39",
+        "0x1b2b37: je 0x1401b2b8c",
+        "0x1b2b39: mov eax, edx",
+        "0x1b2b3b: xorps xmm1, xmm1",
+        "0x1b2b3e: cvtsi2ss xmm1, rax",
+        "0x1b2b43: mulss xmm1, xmm0",
+        "0x1b2b47: movss xmm2, dword ptr [rsi + 0x34]",
+        "0x1b2b4c: movaps xmm3, xmm1",
+        "0x1b2b4f: addss xmm3, xmm2",
+        "0x1b2b53: movzx eax, word ptr [rdi + 0x20]",
+        "0x1b2b57: movd xmm0, eax",
+        "0x1b2b5b: cvtdq2ps xmm0, xmm0",
+        "0x1b2b5e: mulss xmm0, xmm1",
+        "0x1b2b62: mulss xmm2, dword ptr [rsi + 0x38]",
+        "0x1b2b67: addss xmm0, xmm2",
+        "0x1b2b6b: divss xmm0, xmm3",
+        "0x1b2b6f: movss dword ptr [rsi + 0x38], xmm0",
+        "0x1b2b74: movss dword ptr [rsi + 0x34], xmm3",
+        "0x1b2b79: mov r9d, edx",
+        "0x1b2b7c: mov r8, rdi",
+        "0x1b2b7f: lea rdx, [rsp + 0x70]",
+        "0x1b2b84: mov rcx, rsi",
+        "0x1b2b87: call 0x1401a5a50"
+      ]
+    },
+    {
+      "name": "consume_food_and_manure",
+      "rva": "0x1b2c24",
+      "file_offset": "0x1b2024",
+      "bytes": "F3 0F 10 5E 34 F3 0F 10 96 A0 00 00 00 0F 2F DA 72 5F F3 0F 10 76 3C 0F 28 E6 F3 0F 58 E2 41 0F 2E E0 7A 08 75 06 41 0F 28 C8 EB 17 0F 28 CE F3 0F 59 4E 40 0F 28 C2 F3 0F 59 C5 F3 0F 58 C8 F3 0F 5E CC F3 0F 11 4E 40 0F 28 C2 F3 0F 59 05 D9 38 58 00 F3 0F 58 C6 F3 0F 11 46 3C F3 0F 5C DA F3 0F 11 5E 34 83 7E 44 00 7E 0D 44 89 76 44 EB 07 44 89 76 34 FF 46 44",
+      "instructions": [
+        "0x1b2c24: movss xmm3, dword ptr [rsi + 0x34]",
+        "0x1b2c29: movss xmm2, dword ptr [rsi + 0xa0]",
+        "0x1b2c31: comiss xmm3, xmm2",
+        "0x1b2c34: jb 0x1401b2c95",
+        "0x1b2c36: movss xmm6, dword ptr [rsi + 0x3c]",
+        "0x1b2c3b: movaps xmm4, xmm6",
+        "0x1b2c3e: addss xmm4, xmm2",
+        "0x1b2c42: ucomiss xmm4, xmm8",
+        "0x1b2c46: jp 0x1401b2c50",
+        "0x1b2c48: jne 0x1401b2c50",
+        "0x1b2c4a: movaps xmm1, xmm8",
+        "0x1b2c4e: jmp 0x1401b2c67",
+        "0x1b2c50: movaps xmm1, xmm6",
+        "0x1b2c53: mulss xmm1, dword ptr [rsi + 0x40]",
+        "0x1b2c58: movaps xmm0, xmm2",
+        "0x1b2c5b: mulss xmm0, xmm5",
+        "0x1b2c5f: addss xmm1, xmm0",
+        "0x1b2c63: divss xmm1, xmm4",
+        "0x1b2c67: movss dword ptr [rsi + 0x40], xmm1",
+        "0x1b2c6c: movaps xmm0, xmm2",
+        "0x1b2c6f: mulss xmm0, dword ptr [rip + 0x5838d9]",
+        "0x1b2c77: addss xmm0, xmm6",
+        "0x1b2c7b: movss dword ptr [rsi + 0x3c], xmm0",
+        "0x1b2c80: subss xmm3, xmm2",
+        "0x1b2c84: movss dword ptr [rsi + 0x34], xmm3",
+        "0x1b2c89: cmp dword ptr [rsi + 0x44], 0",
+        "0x1b2c8d: jle 0x1401b2c9c",
+        "0x1b2c8f: mov dword ptr [rsi + 0x44], r14d",
+        "0x1b2c93: jmp 0x1401b2c9c",
+        "0x1b2c95: mov dword ptr [rsi + 0x34], r14d",
+        "0x1b2c99: inc dword ptr [rsi + 0x44]"
+      ]
+    },
+    {
+      "name": "manure_limit_and_percentage",
+      "rva": "0x1b2cca",
+      "file_offset": "0x1b20ca",
+      "bytes": "F3 0F 10 46 3C 0F 2F C1 76 03 FF 46 48 F3 0F 5E C1 F3 0F 10 3D C9 7E 58 00 F3 0F 59 C7 F3 0F 11 86 A4 00 00 00",
+      "instructions": [
+        "0x1b2cca: movss xmm0, dword ptr [rsi + 0x3c]",
+        "0x1b2ccf: comiss xmm0, xmm1",
+        "0x1b2cd2: jbe 0x1401b2cd7",
+        "0x1b2cd4: inc dword ptr [rsi + 0x48]",
+        "0x1b2cd7: divss xmm0, xmm1",
+        "0x1b2cdb: movss xmm7, dword ptr [rip + 0x587ec9]",
+        "0x1b2ce3: mulss xmm0, xmm7",
+        "0x1b2ce7: movss dword ptr [rsi + 0xa4], xmm0"
+      ]
+    },
+    {
+      "name": "breeding_condition_factors",
+      "rva": "0x1b2353",
+      "file_offset": "0x1b1753",
+      "bytes": "66 41 0F 6E 4F 44 0F 5B C9 66 41 0F 6E 57 48 0F 5B D2 F3 0F 10 05 EB 87 58 00 F3 0F 5C C1 F3 0F 5C C2 45 0F 57 C9 F3 41 0F 5F C1 F3 44 0F 10 15 A5 CC 91 00 F3 44 0F 59 D3 F3 44 0F 59 D0 F3 44 0F 5C C1 F3 44 0F 5C C2 F3 45 0F 5F C1 F3 44 0F 10 2D 1F CD 91 00 F3 44 0F 59 EB F3 44 0F 10 35 15 CD 91 00 F3 44 0F 59 F3",
+      "instructions": [
+        "0x1b2353: movd xmm1, dword ptr [r15 + 0x44]",
+        "0x1b2359: cvtdq2ps xmm1, xmm1",
+        "0x1b235c: movd xmm2, dword ptr [r15 + 0x48]",
+        "0x1b2362: cvtdq2ps xmm2, xmm2",
+        "0x1b2365: movss xmm0, dword ptr [rip + 0x5887eb]",
+        "0x1b236d: subss xmm0, xmm1",
+        "0x1b2371: subss xmm0, xmm2",
+        "0x1b2375: xorps xmm9, xmm9",
+        "0x1b2379: maxss xmm0, xmm9",
+        "0x1b237e: movss xmm10, dword ptr [rip + 0x91cca5]",
+        "0x1b2387: mulss xmm10, xmm3",
+        "0x1b238c: mulss xmm10, xmm0",
+        "0x1b2391: subss xmm8, xmm1",
+        "0x1b2396: subss xmm8, xmm2",
+        "0x1b239b: maxss xmm8, xmm9",
+        "0x1b23a0: movss xmm13, dword ptr [rip + 0x91cd1f]",
+        "0x1b23a9: mulss xmm13, xmm3",
+        "0x1b23ae: movss xmm14, dword ptr [rip + 0x91cd15]",
+        "0x1b23b7: mulss xmm14, xmm3"
+      ]
+    },
+    {
+      "name": "breeding_capacity_and_candidate_gate",
+      "rva": "0x1b240c",
+      "file_offset": "0x1b180c",
+      "bytes": "44 3B EF 0F 83 B7 04 00 00 E8 F6 39 FF FF 49 8B D6 48 8B C8 E8 2B E4 FF FF 84 C0 0F 84 8C 04 00 00",
+      "instructions": [
+        "0x1b240c: cmp r13d, edi",
+        "0x1b240f: jae 0x1401b28cc",
+        "0x1b2415: call 0x1401a5e10",
+        "0x1b241a: mov rdx, r14",
+        "0x1b241d: mov rcx, rax",
+        "0x1b2420: call 0x1401b0850",
+        "0x1b2425: test al, al",
+        "0x1b2427: je 0x1401b28b9"
+      ]
+    }
+  ],
+  "constants": [
+    {
+      "name": "item_weight_divisor",
+      "rva": "0x736568",
+      "value": 1000.0
+    },
+    {
+      "name": "manure_per_food_mass",
+      "rva": "0x736550",
+      "value": 0.5
+    }
+  ],
+  "bindings": [
+    {
+      "name": "animalBFPeriod",
+      "rva": "0x792800"
+    },
+    {
+      "name": "$Stable::stableTickMs",
+      "rva": "0x7A10C0"
+    }
+  ],
+  "animal_table": {
+    "rva": "0xACEC80",
+    "record_size": "0x34",
+    "portion_offset": "0x30",
+    "portion_type": "float32",
+    "sentinel": "0xFFFFFFFF",
+    "records": [
+      {
+        "id": 1052,
+        "name": "Chicken",
+        "portion": 0.029999999329447746,
+        "rva": "0xacec80",
+        "bytes": "1C 04 00 00 64 00 00 00 03 00 00 00 07 00 00 00 01 00 00 00 5A 01 00 00 0A 00 00 00 52 01 00 00 86 01 00 00 00 00 00 00 00 00 00 00 CD CC 4C 3D 8F C2 F5 3C"
+      },
+      {
+        "id": 1053,
+        "name": "Rabbit",
+        "portion": 0.029999999329447746,
+        "rva": "0xacecb4",
+        "bytes": "1D 04 00 00 64 00 00 00 02 00 00 00 08 00 00 00 05 00 00 00 AE 01 00 00 01 00 00 00 00 00 00 00 86 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 8F C2 F5 3C"
+      },
+      {
+        "id": 1050,
+        "name": "Sheep",
+        "portion": 0.30000001192092896,
+        "rva": "0xacece8",
+        "bytes": "1A 04 00 00 2C 01 00 00 19 00 00 00 30 00 00 00 0A 00 00 00 AF 01 00 00 01 00 00 00 5B 01 00 00 81 01 00 00 01 00 00 00 00 00 00 00 CD CC 4C 3E 9A 99 99 3E"
+      },
+      {
+        "id": 1051,
+        "name": "Ram",
+        "portion": 0.30000001192092896,
+        "rva": "0xaced1c",
+        "bytes": "1B 04 00 00 2C 01 00 00 19 00 00 00 30 00 00 00 0A 00 00 00 AF 01 00 00 01 00 00 00 5B 01 00 00 81 01 00 00 01 00 00 00 00 00 00 00 CD CC 4C 3E 9A 99 99 3E"
+      },
+      {
+        "id": 1048,
+        "name": "Pig",
+        "portion": 0.30000001192092896,
+        "rva": "0xaced50",
+        "bytes": "18 04 00 00 2C 01 00 00 32 00 00 00 50 00 00 00 0F 00 00 00 AB 01 00 00 01 00 00 00 00 00 00 00 80 01 00 00 01 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3E"
+      },
+      {
+        "id": 1049,
+        "name": "Boar",
+        "portion": 0.30000001192092896,
+        "rva": "0xaced84",
+        "bytes": "19 04 00 00 2C 01 00 00 32 00 00 00 50 00 00 00 14 00 00 00 AB 01 00 00 01 00 00 00 00 00 00 00 80 01 00 00 01 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3E"
+      },
+      {
+        "id": 1046,
+        "name": "Cow",
+        "portion": 1.2000000476837158,
+        "rva": "0xacedb8",
+        "bytes": "16 04 00 00 F4 01 00 00 64 00 00 00 5E 01 00 00 50 00 00 00 AB 01 00 00 04 00 00 00 53 01 00 00 7F 01 00 00 03 00 00 00 00 00 00 00 00 00 00 3F 9A 99 99 3F"
+      },
+      {
+        "id": 1047,
+        "name": "Bull",
+        "portion": 1.2000000476837158,
+        "rva": "0xacedec",
+        "bytes": "17 04 00 00 F4 01 00 00 64 00 00 00 5E 01 00 00 64 00 00 00 AB 01 00 00 04 00 00 00 00 00 00 00 7F 01 00 00 03 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3F"
+      },
+      {
+        "id": 1039,
+        "name": "Horse",
+        "portion": 1.2000000476837158,
+        "rva": "0xacee20",
+        "bytes": "0F 04 00 00 F4 01 00 00 64 00 00 00 FA 00 00 00 32 00 00 00 AB 01 00 00 02 00 00 00 00 00 00 00 82 01 00 00 02 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3F"
+      },
+      {
+        "id": 1040,
+        "name": "Stallion",
+        "portion": 1.2000000476837158,
+        "rva": "0xacee54",
+        "bytes": "10 04 00 00 F4 01 00 00 64 00 00 00 FA 00 00 00 3C 00 00 00 AB 01 00 00 02 00 00 00 00 00 00 00 82 01 00 00 02 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3F"
+      },
+      {
+        "id": 1042,
+        "name": "Warhorse",
+        "portion": 1.2000000476837158,
+        "rva": "0xacee88",
+        "bytes": "12 04 00 00 F4 01 00 00 64 00 00 00 FA 00 00 00 3C 00 00 00 AB 01 00 00 02 00 00 00 00 00 00 00 82 01 00 00 02 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3F"
+      },
+      {
+        "id": 1044,
+        "name": "Hardy Warhorse",
+        "portion": 1.2000000476837158,
+        "rva": "0xaceebc",
+        "bytes": "14 04 00 00 F4 01 00 00 64 00 00 00 FA 00 00 00 3C 00 00 00 AB 01 00 00 02 00 00 00 00 00 00 00 82 01 00 00 02 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3F"
+      },
+      {
+        "id": 1043,
+        "name": "Spirited Warhorse",
+        "portion": 1.2000000476837158,
+        "rva": "0xaceef0",
+        "bytes": "13 04 00 00 F4 01 00 00 64 00 00 00 FA 00 00 00 3C 00 00 00 AB 01 00 00 02 00 00 00 00 00 00 00 82 01 00 00 02 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3F"
+      },
+      {
+        "id": 1045,
+        "name": "Heavy Warhorse",
+        "portion": 1.2000000476837158,
+        "rva": "0xacef24",
+        "bytes": "15 04 00 00 F4 01 00 00 64 00 00 00 FA 00 00 00 3C 00 00 00 AB 01 00 00 02 00 00 00 00 00 00 00 82 01 00 00 02 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3F"
+      },
+      {
+        "id": 1140,
+        "name": "Royal Warhorse",
+        "portion": 1.2000000476837158,
+        "rva": "0xacef58",
+        "bytes": "74 04 00 00 F4 01 00 00 64 00 00 00 FA 00 00 00 3C 00 00 00 AB 01 00 00 02 00 00 00 00 00 00 00 82 01 00 00 02 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3F"
+      },
+      {
+        "id": 1663,
+        "name": "Tamed Moose",
+        "portion": 1.2000000476837158,
+        "rva": "0xacef8c",
+        "bytes": "7F 06 00 00 F4 01 00 00 64 00 00 00 FA 00 00 00 3C 00 00 00 AB 01 00 00 02 00 00 00 00 00 00 00 82 01 00 00 02 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3F"
+      },
+      {
+        "id": 1685,
+        "name": "Courier Horse",
+        "portion": 1.2000000476837158,
+        "rva": "0xacefc0",
+        "bytes": "95 06 00 00 F4 01 00 00 64 00 00 00 FA 00 00 00 3C 00 00 00 AB 01 00 00 02 00 00 00 00 00 00 00 82 01 00 00 02 00 00 00 00 00 00 00 00 00 00 00 9A 99 99 3F"
+      }
+    ]
+  },
+  "building_table": {
+    "rva": "0xACEB40",
+    "record_size": "0x2C",
+    "animal_limit_offset": "0x14",
+    "feed_limit_offset": "0x1C",
+    "manure_limit_offset": "0x20",
+    "sentinel": "0xFFFFFFFF",
+    "records": [
+      {
+        "id": 144,
+        "name": "Coop",
+        "animal_type_ids": [
+          1052,
+          1053
+        ],
+        "animal_limit": 20,
+        "feed_mass_limit": 5,
+        "manure_limit": 3,
+        "full_population_demand": 0.6,
+        "eight_hour_example_at_105_minutes": {
+          "maximum_regular_cycles": 5,
+          "food_mass": 3.0,
+          "manure": 1.5,
+          "dirt_percent": 50.0
+        },
+        "rva": "0xaceb40",
+        "bytes": "90 00 00 00 1C 04 00 00 1D 04 00 00 00 00 00 00 00 00 00 00 14 00 00 00 06 00 00 00 05 00 00 00 03 00 00 00 00 00 00 00 52 01 00 00"
+      },
+      {
+        "id": 143,
+        "name": "Barn",
+        "animal_type_ids": [
+          1048,
+          1049,
+          1050,
+          1051
+        ],
+        "animal_limit": 15,
+        "feed_mass_limit": 40,
+        "manure_limit": 20,
+        "full_population_demand": 4.5,
+        "eight_hour_example_at_105_minutes": {
+          "maximum_regular_cycles": 5,
+          "food_mass": 22.5,
+          "manure": 11.25,
+          "dirt_percent": 56.25
+        },
+        "rva": "0xaceb6c",
+        "bytes": "8F 00 00 00 18 04 00 00 19 04 00 00 1A 04 00 00 1B 04 00 00 0F 00 00 00 14 00 00 00 28 00 00 00 14 00 00 00 01 00 00 00 5B 01 00 00"
+      },
+      {
+        "id": 517,
+        "name": "Wooden Barn",
+        "animal_type_ids": [
+          1048,
+          1049,
+          1050,
+          1051
+        ],
+        "animal_limit": 15,
+        "feed_mass_limit": 40,
+        "manure_limit": 20,
+        "full_population_demand": 4.5,
+        "eight_hour_example_at_105_minutes": {
+          "maximum_regular_cycles": 5,
+          "food_mass": 22.5,
+          "manure": 11.25,
+          "dirt_percent": 56.25
+        },
+        "rva": "0xaceb98",
+        "bytes": "05 02 00 00 18 04 00 00 19 04 00 00 1A 04 00 00 1B 04 00 00 0F 00 00 00 1E 00 00 00 28 00 00 00 14 00 00 00 02 00 00 00 5B 01 00 00"
+      },
+      {
+        "id": 133,
+        "name": "Small Stable",
+        "animal_type_ids": [
+          1046,
+          1047,
+          1039,
+          1040
+        ],
+        "animal_limit": 8,
+        "feed_mass_limit": 80,
+        "manure_limit": 40,
+        "full_population_demand": 9.6,
+        "eight_hour_example_at_105_minutes": {
+          "maximum_regular_cycles": 5,
+          "food_mass": 48.0,
+          "manure": 24.0,
+          "dirt_percent": 60.0
+        },
+        "rva": "0xacebc4",
+        "bytes": "85 00 00 00 16 04 00 00 17 04 00 00 0F 04 00 00 10 04 00 00 08 00 00 00 10 00 00 00 50 00 00 00 28 00 00 00 01 00 00 00 53 01 00 00"
+      },
+      {
+        "id": 134,
+        "name": "Large Stable",
+        "animal_type_ids": [
+          1046,
+          1047,
+          1039,
+          1040
+        ],
+        "animal_limit": 50,
+        "feed_mass_limit": 500,
+        "manure_limit": 250,
+        "full_population_demand": 60.0,
+        "eight_hour_example_at_105_minutes": {
+          "maximum_regular_cycles": 5,
+          "food_mass": 300.0,
+          "manure": 150.0,
+          "dirt_percent": 60.0
+        },
+        "rva": "0xacebf0",
+        "bytes": "86 00 00 00 16 04 00 00 17 04 00 00 0F 04 00 00 10 04 00 00 32 00 00 00 64 00 00 00 F4 01 00 00 FA 00 00 00 04 00 00 00 53 01 00 00"
+      }
+    ]
+  },
+  "reference_script_defaults": {
+    "stableTickMs": 3600000.0,
+    "BreedingPairPen": 0.025,
+    "BreedingNonpair": 0.02,
+    "BreedingPairFree": 0.04
+  },
+  "carrot_example": {
+    "object_type_id": 358,
+    "unit_weight": 230,
+    "mass_per_item": 0.23,
+    "animals": [
+      1046,
+      1047
+    ],
+    "demand_per_cycle": 2.4,
+    "periods": [
+      {
+        "minutes": 60,
+        "nominal_cycles_per_24h": 24,
+        "mass_per_24h": 57.6,
+        "whole_carrots_from_empty_reserve": 251
+      },
+      {
+        "minutes": 90,
+        "nominal_cycles_per_24h": 16,
+        "mass_per_24h": 38.4,
+        "whole_carrots_from_empty_reserve": 167
+      },
+      {
+        "minutes": 120,
+        "nominal_cycles_per_24h": 12,
+        "mass_per_24h": 28.8,
+        "whole_carrots_from_empty_reserve": 126
+      },
+      {
+        "minutes": 240,
+        "nominal_cycles_per_24h": 6,
+        "mass_per_24h": 14.4,
+        "whole_carrots_from_empty_reserve": 63
+      }
+    ]
+  },
+  "example_scope": "Planning examples assume the stated number of successfully processed cycles, fixed full populations, enough feed, no cleaning or inventory changes, and an initially empty food reserve/clean building where specified. They are not a snapshot of loaded production settings.",
+  "source_fingerprints": [
+    {
+      "origin_file": "captainHook/docs/animal-breeding-feed-period-2026-09-12.md",
+      "sha256": "64ABCA53F003B34A7E3C1DA4665A36A9999A40D25015A1F880EB86A1DE3A8138"
+    },
+    {
+      "origin_file": "captainHook/docs/animal-feed-capacities-2026-09-26.md",
+      "sha256": "28A2B0A555E5D73462747F0A835DC67F71CEC3A13C7C54FC2CF2388C1B9F43B6"
+    },
+    {
+      "origin_file": "captainHook/docs/additional-crops-animal-feed-audit-2026-09-26.md",
+      "sha256": "B4BFE5929B3025C51598049C6F1364012D95D0E45DE9EF5C7D2411525B9783A0"
+    },
+    {
+      "origin_file": "dev/sourceServer/scripts/server/cm_config.cs",
+      "sha256": "C7FFF8D65A65069E13B9F3EF241F62BBEA0C929F2CC7F5817F310238BEBD696A"
+    },
+    {
+      "origin_file": "dev/sourceClient/data/objects_types.xml",
+      "sha256": "0FCD4C0089524E3EF233DD55E46E3B64576A9EDB5032E1E1B57084CEC1D703B1"
+    }
+  ]
+}
